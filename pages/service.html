@@ -1,0 +1,1183 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Book A Service — Orion Fx</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Anton&family=Barlow+Condensed:wght@400;500;600;700&family=Oswald:wght@400;500;600&family=Cairo:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+<script src="https://accounts.google.com/gsi/client" async defer></script>
+<script async defer crossorigin="anonymous" src="https://connect.facebook.net/en_US/sdk.js"></script>
+<style>
+
+  :root{
+    --black: #100d0b;
+    --black-2: #1c1815;
+    --panel: #17140f;
+    --red: #e2241b;
+    --red-dim: #7a130d;
+    --steel: #8b8d92;
+    --steel-dim: #4a4c50;
+    --white: #f4f2ec;
+    --amber: #ffb100;
+    --radius: 2px;
+  }
+
+  *{ margin:0; padding:0; box-sizing:border-box; }
+  html{ scroll-behavior: smooth; }
+
+  body{
+    background: var(--black);
+    color: var(--white);
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 18px;
+    line-height: 1.5;
+    overflow-x: hidden;
+  }
+
+  h1,h2,h3,h4{
+    font-family: 'Anton', sans-serif;
+    font-weight: 400;
+    text-transform: uppercase;
+    letter-spacing: 0.02em;
+  }
+
+  .eyebrow, .mono{
+    font-family: 'Oswald', sans-serif;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+  }
+
+  a{ color: inherit; text-decoration: none; }
+  ::selection{ background: var(--red); color: var(--white); }
+
+  body::before{
+    content:"";
+    position: fixed; inset:0;
+    pointer-events: none;
+    z-index: 999;
+    background-image: repeating-linear-gradient(115deg, rgba(255,255,255,0.012) 0px, rgba(255,255,255,0.012) 1px, transparent 1px, transparent 3px);
+    mix-blend-mode: overlay;
+  }
+
+  /* ============ HEADER (shared) ============ */
+  header{
+    position: sticky; top:0; z-index: 500;
+    display:flex; align-items:center; justify-content: space-between;
+    padding: 18px 5%;
+    background: rgba(18,15,12,0.55);
+    -webkit-backdrop-filter: blur(18px) saturate(160%);
+    backdrop-filter: blur(18px) saturate(160%);
+    border-bottom: 1px solid rgba(244,242,236,0.08);
+    box-shadow: 0 8px 30px rgba(0,0,0,0.25);
+  }
+  .logo{ display:flex; align-items:center; gap:12px; }
+  .logo-badge{
+    width:44px; height:44px;
+    border: 2px solid var(--red);
+    clip-path: polygon(50% 0%, 100% 25%, 100% 75%, 50% 100%, 0% 75%, 0% 25%);
+    display:flex; align-items:center; justify-content:center;
+    font-family:'Anton', sans-serif;
+    color: var(--red);
+    font-size: 18px;
+    flex-shrink:0;
+  }
+  .logo-text{ font-family:'Anton', sans-serif; font-size: 26px; line-height: 1; letter-spacing: 0.01em; }
+  .logo-text span{ color: var(--red); }
+  .logo-sub{ font-family:'Oswald', sans-serif; font-size: 10px; letter-spacing: 0.28em; color: var(--steel); margin-top: 2px; }
+
+  nav{ display:flex; align-items:center; gap: 34px; }
+  nav a{
+    font-family:'Oswald', sans-serif; font-size: 13px; letter-spacing: 0.12em;
+    text-transform: uppercase; color: var(--white);
+    position: relative; padding-bottom: 4px; transition: color .25s;
+  }
+  nav a::after{ content:""; position:absolute; left:0; bottom:0; height:2px; width:0; background: var(--red); transition: width .25s; }
+  nav a:hover{ color: var(--red); }
+  nav a:hover::after{ width:100%; }
+  nav a.current{ color: var(--red); }
+  nav a.current::after{ width:100%; }
+
+  .call-pill{
+    display:flex; align-items:center; gap:10px;
+    border: 1px solid var(--red); padding: 9px 18px;
+    font-family:'Oswald', sans-serif; font-size: 13px; letter-spacing: 0.06em;
+    transition: background .25s, color .25s;
+  }
+  .call-pill:hover{ background: var(--red); }
+  .call-pill svg{ width:16px; height:16px; }
+
+  /* ============ PAGE BANNER ============ */
+  .page-banner{
+    position: relative;
+    padding: 70px 5% 50px;
+    border-bottom: 1px solid #262220;
+    overflow: hidden;
+  }
+  .page-banner .glow{
+    position:absolute; top:-30%; left:-5%;
+    width:50vw; height:50vw;
+    background: radial-gradient(circle, rgba(226,36,27,0.14), transparent 65%);
+    pointer-events:none;
+  }
+  .page-banner .crumb{
+    display:flex; align-items:center; gap:10px;
+    font-family:'Oswald', sans-serif; font-size: 12px; letter-spacing:0.1em;
+    color: var(--steel); text-transform: uppercase; margin-bottom: 18px;
+    position:relative; z-index:1;
+  }
+  .page-banner .crumb a:hover{ color: var(--red); }
+  .page-banner h1{ font-size: clamp(38px, 5.5vw, 68px); position:relative; z-index:1; }
+  .page-banner .accent{ color: var(--red); }
+  .page-banner p{ max-width: 560px; color: var(--steel); margin-top: 14px; font-size: 18px; position:relative; z-index:1; }
+
+  /* ============ FORM LAYOUT ============ */
+  .booking-wrap{
+    position: relative;
+    display:grid; grid-template-columns: 1fr 340px;
+    gap: 40px;
+    padding: 60px 5% 110px;
+    align-items: start;
+    overflow: hidden;
+  }
+  .booking-wrap::before{
+    content:"";
+    position:absolute; top:5%; right:0;
+    width:40vw; height:40vw;
+    background: radial-gradient(circle, rgba(226,36,27,0.12), transparent 65%);
+    pointer-events:none; z-index:0;
+  }
+  .booking-wrap::after{
+    content:"";
+    position:absolute; bottom:0; left:-10%;
+    width:30vw; height:30vw;
+    background: radial-gradient(circle, rgba(255,177,0,0.07), transparent 65%);
+    pointer-events:none; z-index:0;
+  }
+  .booking-wrap form, .booking-wrap aside{ position: relative; z-index: 1; }
+
+  form{ display:flex; flex-direction:column; gap: 0; }
+
+  .f-section{
+    border-top: 1px solid #262220;
+    padding: 40px 0;
+  }
+  .f-section:first-child{ border-top:none; padding-top: 0; }
+
+  .f-head{ display:flex; align-items:center; gap:16px; margin-bottom: 28px; }
+  .f-num{
+    width:40px; height:40px; flex-shrink:0;
+    border: 1px solid var(--red); color: var(--red);
+    display:flex; align-items:center; justify-content:center;
+    font-family:'Oswald', sans-serif; font-size: 14px;
+  }
+  .f-head h2{ font-size: 24px; }
+  .f-head .f-sub{ font-family:'Oswald', sans-serif; font-size: 11px; letter-spacing:0.1em; color: var(--steel); text-transform:uppercase; margin-top:2px; }
+
+  .f-grid{
+    display:grid; grid-template-columns: repeat(2, 1fr); gap: 20px;
+  }
+  .f-grid.cols-3{ grid-template-columns: repeat(3, 1fr); }
+  .f-row{ display:flex; flex-direction:column; gap:8px; }
+  .f-row.full{ grid-column: 1 / -1; }
+
+  label{
+    font-family:'Oswald', sans-serif; font-size: 11px; letter-spacing:0.1em;
+    color: var(--steel); text-transform: uppercase;
+  }
+  label .req{ color: var(--red); }
+
+  input[type="text"], input[type="tel"], input[type="email"], input[type="number"], select, textarea{
+    width:100%; background: var(--black-2); border: 1px solid var(--steel-dim);
+    color: var(--white); padding: 13px 14px; font-family:'Barlow Condensed', sans-serif; font-size:17px;
+    outline:none; transition: border-color .25s; border-radius: var(--radius);
+  }
+  input:focus, select:focus, textarea:focus{ border-color: var(--red); }
+  textarea{ resize: vertical; min-height: 90px; }
+  select{ appearance: none; -webkit-appearance:none;
+    background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%238b8d92' stroke-width='2'><path d='M6 9l6 6 6-6'/></svg>");
+    background-repeat: no-repeat; background-position: right 12px center; background-size: 16px;
+  }
+
+  /* service checkbox grid */
+  .svc-grid{ display:grid; grid-template-columns: repeat(3, 1fr); gap: 12px; }
+  .svc-check{
+    display:flex; align-items:center; gap:12px;
+    border: 1px solid rgba(244,242,236,0.09);
+    background: rgba(32,27,21,0.4);
+    -webkit-backdrop-filter: blur(10px) saturate(150%);
+    backdrop-filter: blur(10px) saturate(150%);
+    padding: 14px 16px; cursor:pointer; transition: border-color .25s, background .25s;
+  }
+  .svc-check:hover{ border-color: var(--red); }
+  .svc-check input{ display:none; }
+  .svc-check .box{
+    width:20px; height:20px; flex-shrink:0; border: 1px solid var(--steel);
+    display:flex; align-items:center; justify-content:center; transition: background .2s, border-color .2s;
+  }
+  .svc-check .box svg{ width:12px; height:12px; stroke: var(--black); opacity:0; transition: opacity .15s; }
+  .svc-check input:checked ~ .box{ background: var(--red); border-color: var(--red); }
+  .svc-check input:checked ~ .box svg{ opacity:1; }
+  .svc-check.checked{ border-color: var(--red); background: rgba(226,36,27,0.06); }
+  .svc-check .label-txt{ font-size:16px; }
+  .svc-check .label-txt small{ display:block; font-family:'Oswald', sans-serif; font-size:10px; letter-spacing:0.08em; color:var(--steel); text-transform:uppercase; margin-top:2px; }
+
+  /* ============ CALENDAR ============ */
+  .cal-wrap{
+    display:grid; grid-template-columns: 1fr 260px; gap: 30px;
+  }
+  .cal-card{
+    background: rgba(32,27,21,0.5);
+    -webkit-backdrop-filter: blur(16px) saturate(160%);
+    backdrop-filter: blur(16px) saturate(160%);
+    border: 1px solid rgba(244,242,236,0.09);
+    box-shadow: 0 8px 32px rgba(0,0,0,0.35);
+    padding: 24px;
+  }
+  .cal-head{ display:flex; align-items:center; justify-content:space-between; margin-bottom: 18px; }
+  .cal-head .cal-month{ font-family:'Anton', sans-serif; font-size:20px; }
+  .cal-nav{ display:flex; gap:8px; }
+  .cal-nav button{
+    width:32px; height:32px; background:transparent; border:1px solid var(--steel-dim); color: var(--white);
+    cursor:pointer; display:flex; align-items:center; justify-content:center; transition: border-color .2s;
+  }
+  .cal-nav button:hover{ border-color: var(--red); }
+  .cal-nav button:disabled{ opacity:0.3; cursor:not-allowed; }
+  .cal-nav button svg{ width:14px; height:14px; }
+
+  .cal-dow{ display:grid; grid-template-columns: repeat(7,1fr); margin-bottom:6px; }
+  .cal-dow div{ text-align:center; font-family:'Oswald', sans-serif; font-size:10px; letter-spacing:0.08em; color:var(--steel); text-transform:uppercase; padding:6px 0; }
+
+  .cal-grid{ display:grid; grid-template-columns: repeat(7,1fr); gap:4px; }
+  .cal-day{
+    aspect-ratio: 1; display:flex; align-items:center; justify-content:center;
+    font-family:'Oswald', sans-serif; font-size:14px;
+    border: 1px solid transparent; cursor:pointer; color: var(--white);
+    transition: background .2s, border-color .2s, color .2s;
+  }
+  .cal-day.empty{ visibility:hidden; cursor:default; }
+  .cal-day.disabled{ color: var(--steel-dim); cursor:not-allowed; }
+  .cal-day.available:hover{ border-color: var(--red); }
+  .cal-day.today{ border-color: var(--steel); }
+  .cal-day.selected{ background: var(--red); color: var(--white); }
+
+  .slot-card{
+    background: rgba(32,27,21,0.5);
+    -webkit-backdrop-filter: blur(16px) saturate(160%);
+    backdrop-filter: blur(16px) saturate(160%);
+    border: 1px solid rgba(244,242,236,0.09);
+    box-shadow: 0 8px 32px rgba(0,0,0,0.35);
+    padding: 24px;
+  }
+  .slot-card h3{ font-size: 16px; margin-bottom:4px; }
+  .slot-card .slot-sub{ font-family:'Oswald', sans-serif; font-size:11px; color:var(--steel); letter-spacing:0.08em; text-transform:uppercase; margin-bottom:16px; }
+  .slot-list{ display:flex; flex-direction:column; gap:8px; max-height: 320px; overflow-y:auto; padding-right:4px; }
+  .slot-btn{
+    background: var(--black); border: 1px solid var(--steel-dim); color: var(--white);
+    padding: 10px 12px; font-family:'Oswald', sans-serif; font-size:13px; letter-spacing:0.04em;
+    cursor:pointer; text-align:left; transition: border-color .2s, background .2s, color .2s;
+  }
+  .slot-btn:hover{ border-color: var(--red); }
+  .slot-btn.selected{ background: var(--red); border-color: var(--red); color: var(--white); }
+  .slot-empty{ font-family:'Oswald', sans-serif; font-size:12px; color: var(--steel-dim); letter-spacing:0.05em; }
+
+  .selected-summary{
+    margin-top: 16px; padding-top: 16px; border-top: 1px dashed var(--steel-dim);
+    font-family:'Oswald', sans-serif; font-size:12px; letter-spacing:0.06em; color: var(--steel);
+  }
+  .selected-summary strong{ color: var(--amber); }
+
+  /* ============ SIDEBAR SUMMARY ============ */
+  .side-summary{
+    position: sticky; top: 100px;
+    background: rgba(32,27,21,0.5);
+    -webkit-backdrop-filter: blur(18px) saturate(160%);
+    backdrop-filter: blur(18px) saturate(160%);
+    border: 1px solid rgba(244,242,236,0.09);
+    box-shadow: 0 8px 32px rgba(0,0,0,0.35);
+    padding: 30px;
+  }
+  .side-summary h3{ font-size: 20px; margin-bottom: 20px; }
+  .sum-row{
+    display:flex; justify-content:space-between; gap:10px;
+    padding: 10px 0; border-bottom: 1px solid #262220;
+    font-size: 15px;
+  }
+  .sum-row .k{ color: var(--steel); font-family:'Oswald', sans-serif; font-size:11px; letter-spacing:0.08em; text-transform:uppercase; }
+  .sum-row .v{ text-align:right; max-width: 60%; }
+  .sum-note{ font-family:'Oswald', sans-serif; font-size:11px; color: var(--steel-dim); letter-spacing:0.04em; margin-top:18px; line-height:1.6; }
+
+  .terms-row{ display:flex; align-items:flex-start; gap:10px; margin-top: 22px; }
+  .terms-row input{ margin-top:4px; }
+  .terms-row label{ text-transform:none; font-size:13px; letter-spacing:normal; color: var(--steel); }
+
+  .btn-submit{
+    width:100%; margin-top: 20px;
+    background: var(--red); border:none; color:var(--white);
+    padding:16px; font-family:'Oswald', sans-serif; letter-spacing:0.1em; text-transform:uppercase; font-size:14px;
+    cursor:pointer; transition: background .25s;
+  }
+  .btn-submit:hover{ background: var(--amber); color: var(--black); }
+  .btn-submit:disabled{ opacity:0.4; cursor:not-allowed; }
+
+  .form-msg{
+    font-family:'Oswald', sans-serif; font-size: 12px; letter-spacing:0.05em;
+    color: var(--red); margin-top: 12px; display:none;
+  }
+  .form-msg.show{ display:block; }
+
+  /* ============ CONFIRMATION OVERLAY ============ */
+  .confirm-overlay{
+    position: fixed; inset:0; z-index: 1000;
+    background: rgba(18,15,12,0.7);
+    -webkit-backdrop-filter: blur(10px);
+    backdrop-filter: blur(10px);
+    display:none; align-items:center; justify-content:center; padding: 24px;
+  }
+  .confirm-overlay.show{ display:flex; }
+  .confirm-card{
+    background: rgba(32,27,21,0.65);
+    -webkit-backdrop-filter: blur(20px) saturate(160%);
+    backdrop-filter: blur(20px) saturate(160%);
+    border: 1px solid var(--red);
+    box-shadow: 0 20px 60px rgba(0,0,0,0.5);
+    max-width: 520px; width:100%; padding: 44px 36px; text-align:center;
+    max-height: 88vh; overflow-y:auto;
+  }
+  .confirm-check{
+    width:64px; height:64px; margin:0 auto 22px; border: 2px solid var(--amber);
+    border-radius:50%; display:flex; align-items:center; justify-content:center;
+  }
+  .confirm-check svg{ width:28px; height:28px; stroke: var(--amber); }
+  .confirm-card h2{ font-size: 28px; margin-bottom: 10px; }
+  .confirm-card p{ color: var(--steel); font-size:16px; margin-bottom: 20px; }
+  .confirm-detail{
+    text-align:left; background: var(--black); border: 1px solid #262220; padding: 20px; margin-bottom: 22px;
+  }
+  .confirm-detail .row{ display:flex; justify-content:space-between; padding: 8px 0; border-bottom: 1px solid #262220; font-size:14px; }
+  .confirm-detail .row:last-child{ border-bottom:none; }
+  .confirm-detail .row .k{ font-family:'Oswald', sans-serif; font-size:10px; letter-spacing:0.08em; color:var(--steel); text-transform:uppercase; }
+  .confirm-note{ font-family:'Oswald', sans-serif; font-size:11px; color: var(--steel-dim); letter-spacing:0.04em; line-height:1.7; margin-bottom:24px; text-align:left; }
+  .confirm-close{
+    background: var(--red); border:none; color:var(--white); padding: 14px 30px;
+    font-family:'Oswald', sans-serif; letter-spacing:0.1em; text-transform:uppercase; font-size:13px; cursor:pointer;
+  }
+  .confirm-close:hover{ background: var(--amber); color: var(--black); }
+
+  /* ============ FOOTER (shared) ============ */
+  footer{ padding: 70px 5% 40px; border-top: 1px solid #262220; }
+  .bottom-bar{
+    margin-top: 40px; padding-top: 26px; border-top: 1px solid #262220;
+    display:flex; justify-content:space-between; align-items:center;
+    font-family:'Oswald', sans-serif; font-size: 12px; color: var(--steel-dim); letter-spacing: 0.06em;
+    flex-wrap: wrap; gap:10px;
+  }
+  .footer-links{
+    display:flex; align-items:center; gap: 22px;
+    flex-wrap: wrap;
+  }
+  .footer-links a{
+    color: var(--steel-dim);
+    transition: color .2s;
+  }
+  .footer-links a:hover{ color: var(--red); }
+
+  /* ============ RESPONSIVE ============ */
+  @media (max-width: 980px){
+    nav, .call-pill{ display:none; }
+    .booking-wrap{ grid-template-columns: 1fr; }
+    .side-summary{ position: static; }
+    .f-grid, .f-grid.cols-3{ grid-template-columns: 1fr; }
+    .svc-grid{ grid-template-columns: repeat(2,1fr); }
+    .cal-wrap{ grid-template-columns: 1fr; }
+  }
+  @media (max-width: 560px){
+    .svc-grid{ grid-template-columns: 1fr; }
+  }
+
+  @media (prefers-reduced-motion: reduce){
+    *{ transition: none !important; scroll-behavior: auto !important; }
+  }
+
+
+  /* ============ GLOBAL FIXED BACKGROUND (glass theme) ============ */
+  .site-bg{
+    position: fixed; inset:0; z-index:-2; overflow:hidden;
+  }
+  .site-bg img{
+    position:absolute; inset:0; width:100%; height:100%;
+    object-fit: cover; object-position: center 50%;
+    opacity:0; transition: opacity 2.2s ease;
+    filter: saturate(0.8) brightness(0.55) contrast(1.05);
+  }
+  .site-bg img.active{ opacity:1; }
+
+  .site-overlay{
+    position: fixed; inset:0; z-index:-1; pointer-events:none;
+    background:
+      radial-gradient(circle at 12% 15%, rgba(226,36,27,0.20), transparent 42%),
+      radial-gradient(circle at 88% 78%, rgba(255,177,0,0.16), transparent 42%),
+      linear-gradient(180deg, rgba(16,13,11,0.68) 0%, rgba(16,13,11,0.76) 45%, rgba(16,13,11,0.84) 100%);
+  }
+
+
+  /* ============ BILINGUAL (EN / AR) ============ */
+  body.lang-ar, body.lang-ar input, body.lang-ar textarea, body.lang-ar select, body.lang-ar button{
+    font-family: 'Cairo', sans-serif;
+  }
+  body.lang-ar h1, body.lang-ar h2, body.lang-ar h3, body.lang-ar h4{
+    font-family: 'Cairo', sans-serif; font-weight: 800; letter-spacing: 0; text-transform: none;
+  }
+  body.lang-ar .eyebrow, body.lang-ar .mono, body.lang-ar nav a, body.lang-ar .call-pill,
+  body.lang-ar .logo-sub, body.lang-ar label, body.lang-ar .btn-submit, body.lang-ar .lang-toggle,
+  body.lang-ar .f-sub, body.lang-ar .slot-sub, body.lang-ar .k{
+    font-family: 'Cairo', sans-serif; letter-spacing: 0;
+  }
+
+  .lang-toggle{
+    display:flex; align-items:center; gap:6px;
+    border: 1px solid var(--steel-dim); background: transparent; color: var(--white);
+    font-family:'Oswald', sans-serif; font-size: 12px; letter-spacing: 0.1em; text-transform: uppercase;
+    padding: 9px 16px; cursor:pointer; transition: border-color .2s, color .2s;
+    margin-left: 14px;
+  }
+  .lang-toggle:hover{ border-color: var(--red); color: var(--red); }
+  html[dir="rtl"] .lang-toggle{ margin-left:0; margin-right:14px; }
+
+  html[dir="rtl"] nav a::after{ left:auto; right:0; }
+  html[dir="rtl"] select{
+    background-position: left 12px center;
+  }
+  html[dir="rtl"] .call-pill svg{ transform: scaleX(-1); }
+  html[dir="rtl"] .acc-price{ text-align:left; }
+  html[dir="rtl"] .sum-row .v{ text-align:left; }
+
+
+  /* ============ LOGIN DROPDOWN ============ */
+  .header-actions{ display:flex; align-items:center; gap:14px; }
+
+  .login-wrap{ position:relative; }
+
+  .login-btn{
+    display:flex; align-items:center; gap:8px;
+    background: transparent; border: 1px solid var(--steel-dim); color: var(--white);
+    font-family:'Oswald', sans-serif; font-size:13px; letter-spacing:0.06em; text-transform:uppercase;
+    padding: 9px 18px; cursor:pointer; transition: border-color .2s, color .2s;
+  }
+  .login-btn:hover, .login-btn.active{ border-color: var(--red); color: var(--red); }
+  .login-btn svg{ width:16px; height:16px; }
+
+  .login-dropdown{
+    position:absolute; top: calc(100% + 14px); right:0;
+    width: 320px;
+    background: rgba(12,10,8,0.94);
+    -webkit-backdrop-filter: blur(24px) saturate(150%);
+    backdrop-filter: blur(24px) saturate(150%);
+    border: 1px solid rgba(244,242,236,0.14);
+    box-shadow: 0 20px 60px rgba(0,0,0,0.6);
+    padding: 26px 22px;
+    opacity:0; visibility:hidden; transform: translateY(-10px);
+    transition: opacity .25s ease, transform .25s ease, visibility .25s;
+    z-index: 600;
+  }
+  .login-dropdown.open{ opacity:1; visibility:visible; transform:translateY(0); }
+  html[dir="rtl"] .login-dropdown{ right:auto; left:0; }
+
+  .login-head{ display:flex; align-items:center; justify-content:space-between; margin-bottom:18px; }
+  .login-head h4{ font-size:16px; font-family:'Anton',sans-serif; text-transform:uppercase; letter-spacing:0.02em; margin:0; }
+  .login-close{ background:transparent; border:none; color:var(--steel); font-size:20px; line-height:1; cursor:pointer; padding:0 4px; transition: color .2s; }
+  .login-close:hover{ color: var(--red); }
+
+  .login-field{ margin-bottom:14px; display:flex; flex-direction:column; gap:6px; }
+  .login-field label{ font-family:'Oswald', sans-serif; font-size:10px; letter-spacing:0.1em; color:var(--steel); text-transform:uppercase; }
+  .login-field input{
+    width:100%; height:38px; box-sizing:border-box;
+    background: rgba(6,5,4,0.9); border:1px solid var(--steel-dim); color:var(--white);
+    padding: 0 12px; font-family:'Barlow Condensed', sans-serif; font-size:15px; outline:none;
+    transition: border-color .2s;
+  }
+  .login-field input:focus{ border-color: var(--red); }
+
+  .pw-wrap{ position:relative; }
+  .pw-wrap input{ padding-right:40px; }
+  html[dir="rtl"] .pw-wrap input{ padding-right:12px; padding-left:40px; }
+  .pw-eye{
+    position:absolute; top:50%; right:10px; transform:translateY(-50%);
+    background:transparent; border:none; cursor:pointer; padding:4px; color:var(--steel);
+    display:flex; align-items:center; transition: color .2s;
+  }
+  html[dir="rtl"] .pw-eye{ right:auto; left:10px; }
+  .pw-eye:hover{ color:var(--red); }
+  .pw-eye svg{ width:18px; height:18px; }
+
+  .login-row-between{ display:flex; align-items:center; justify-content:space-between; margin-bottom:18px; font-size:13px; }
+  .remember-me{ display:flex; align-items:center; gap:6px; color:var(--steel); cursor:pointer; }
+  .remember-me input{ accent-color: var(--red); }
+  .forgot-link{ color:var(--steel); text-decoration:underline; transition: color .2s; }
+  .forgot-link:hover{ color: var(--red); }
+
+  .login-submit{
+    width:100%; height:38px; box-sizing:border-box;
+    display:flex; align-items:center; justify-content:center;
+    background: var(--red); border:none; color:var(--white);
+    padding:0; font-family:'Oswald', sans-serif; letter-spacing:0.1em; text-transform:uppercase; font-size:13px;
+    cursor:pointer; transition: background .2s; margin-bottom:18px;
+  }
+  .login-submit:hover{ background: var(--amber); color: var(--black); }
+
+  .login-divider{ display:flex; align-items:center; gap:12px; margin-bottom:16px; color:var(--steel-dim); font-family:'Oswald', sans-serif; font-size:11px; letter-spacing:0.1em; }
+  .login-divider::before, .login-divider::after{ content:""; flex:1; height:1px; background:#262220; }
+
+  .social-btn{
+    width:100%; height:38px; box-sizing:border-box;
+    display:flex; align-items:center; justify-content:center; gap:10px;
+    padding:0 12px; margin-bottom:10px; border:1px solid var(--steel-dim); background: rgba(6,5,4,0.75);
+    color:var(--white); font-family:'Oswald', sans-serif; font-size:12.5px; letter-spacing:0.02em;
+    cursor:pointer; transition: border-color .2s, background .2s;
+  }
+  .social-btn:hover{ border-color: var(--red); }
+  .social-btn svg{ width:18px; height:18px; flex-shrink:0; }
+
+  .login-signup-row{ text-align:center; font-size:13px; color:var(--steel); margin-top:8px; }
+  .login-signup-row a{ color: var(--red); text-decoration:underline; margin-inline-start:4px; }
+
+  @media (max-width: 380px){
+    .login-dropdown{ width: 90vw; right: -60px; }
+    html[dir="rtl"] .login-dropdown{ left: -60px; }
+  }
+
+</style>
+</head>
+<body>
+
+
+<div class="site-bg">
+  <img class="active" alt="" referrerpolicy="no-referrer" src="https://images.unsplash.com/photo-1615906655593-ad0386982a0f?auto=format&fit=crop&w=2200&q=75">
+  <img alt="" referrerpolicy="no-referrer" src="https://images.unsplash.com/photo-1487754180451-c456f719a1fc?auto=format&fit=crop&w=2200&q=75">
+  <img alt="" referrerpolicy="no-referrer" src="https://images.unsplash.com/photo-1596986952526-3be237187071?auto=format&fit=crop&w=2200&q=75">
+  <img alt="" referrerpolicy="no-referrer" src="https://images.unsplash.com/photo-1643700973089-baa86a1ab9ee?auto=format&fit=crop&w=2200&q=75">
+</div>
+<div class="site-overlay"></div>
+
+<header>
+  <a class="logo" href="../index.html" style="display:flex;align-items:center;gap:12px;">
+    <div class="logo-badge">OF</div>
+    <div>
+      <div class="logo-text">ORION<span>FX</span></div>
+      <div class="logo-sub" data-en="YOUR CAR &nbsp;·&nbsp; OUR PASSION" data-ar="سيارتك &nbsp;·&nbsp; شغفنا">YOUR CAR &nbsp;·&nbsp; OUR PASSION</div>
+    </div>
+  </a>
+  <nav>
+    <a href="../index.html" data-en="Home" data-ar="الرئيسية">Home</a>
+    <a href="../index.html#services" data-en="Services" data-ar="الخدمات">Services</a>
+    <a href="../index.html#about" data-en="Why Us" data-ar="لماذا نحن">Why Us</a>
+    <a href="service.html" class="current" data-en="Book A Service" data-ar="احجز خدمة">Book A Service</a>
+    <a href="../index.html#contact" data-en="Contact" data-ar="تواصل معنا">Contact</a>
+  </nav>
+  <div class="header-actions">
+  <button type="button" class="lang-toggle" onclick="setLang(currentLang==='en'?'ar':'en')">AR</button>
+  <a class="call-pill" href="tel:+971000000000">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
+    +971-00-000-0000
+  </a>
+  <div class="login-wrap" id="loginWrap">
+    <button type="button" class="login-btn" id="loginBtn" onclick="toggleLoginBox()">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+      <span data-en="Login" data-ar="تسجيل الدخول">Login</span>
+    </button>
+    <div class="login-dropdown" id="loginDropdown">
+      <div class="login-head">
+        <h4 data-en="Login To Your Account" data-ar="تسجيل الدخول إلى حسابك">Login To Your Account</h4>
+        <button type="button" class="login-close" onclick="toggleLoginBox(false)" aria-label="Close">&times;</button>
+      </div>
+      <form id="loginForm" onsubmit="return false;">
+        <div class="login-field">
+          <label data-en="User Id" data-ar="معرف المستخدم">User Id</label>
+          <input type="text" id="loginUserId" data-en-ph="Enter your User Id" data-ar-ph="أدخل معرف المستخدم" placeholder="Enter your User Id" autocomplete="username">
+        </div>
+        <div class="login-field">
+          <label data-en="Password" data-ar="كلمة المرور">Password</label>
+          <div class="pw-wrap">
+            <input type="password" id="loginPassword" data-en-ph="Enter your password" data-ar-ph="أدخل كلمة المرور" placeholder="Enter your password" autocomplete="current-password">
+            <button type="button" class="pw-eye" onclick="togglePasswordVisibility()" aria-label="Show password">
+              <svg id="eyeIconOpen" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M1 12s4-7 11-7 11 7 11 7-4 7-11 7-11-7-11-7z"/><circle cx="12" cy="12" r="3"/></svg>
+              <svg id="eyeIconClosed" style="display:none" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M17.94 17.94A10.94 10.94 0 0 1 12 19c-7 0-11-7-11-7a21.6 21.6 0 0 1 5.06-5.94M9.9 4.24A10.4 10.4 0 0 1 12 4c7 0 11 7 11 7a21.6 21.6 0 0 1-2.16 3.19m-6.72-1.07a3 3 0 1 1-4.24-4.24"/><path d="M1 1l22 22"/></svg>
+            </button>
+          </div>
+        </div>
+        <div class="login-row-between">
+          <label class="remember-me"><input type="checkbox"><span data-en="Remember me" data-ar="تذكرني">Remember me</span></label>
+          <a href="#" class="forgot-link" data-en="Forgot password?" data-ar="نسيت كلمة المرور؟">Forgot password?</a>
+        </div>
+        <button type="submit" class="login-submit" data-en="Login" data-ar="تسجيل الدخول">Login</button>
+      </form>
+      <div class="login-divider"><span data-en="OR" data-ar="أو">OR</span></div>
+      <button type="button" class="social-btn" id="googleLoginBtn">
+        <svg viewBox="0 0 48 48"><path fill="#FFC107" d="M43.6 20.5H42V20H24v8h11.3C33.7 32.7 29.3 36 24 36c-6.6 0-12-5.4-12-12s5.4-12 12-12c3.1 0 5.8 1.1 8 3l6-6C34.6 5.1 29.6 3 24 3 12.4 3 3 12.4 3 24s9.4 21 21 21 21-9.4 21-21c0-1.2-.1-2.4-.4-3.5z"/><path fill="#FF3D00" d="M6.3 14.7l6.6 4.8C14.5 15.9 18.9 13 24 13c3.1 0 5.8 1.1 8 3l6-6C34.6 6.1 29.6 4 24 4 16.3 4 9.6 8.3 6.3 14.7z"/><path fill="#4CAF50" d="M24 44c5.5 0 10.4-1.9 14.1-5.1l-6.5-5.5C29.5 35.4 26.9 36 24 36c-5.3 0-9.7-3.3-11.3-8l-6.6 5.1C9.5 39.6 16.2 44 24 44z"/><path fill="#1976D2" d="M43.6 20.5H42V20H24v8h11.3c-.8 2.3-2.3 4.3-4.2 5.7l6.5 5.5C41 35.9 44 30.4 44 24c0-1.2-.1-2.4-.4-3.5z"/></svg>
+        <span data-en="Login with Google Account" data-ar="تسجيل الدخول عبر حساب جوجل">Login with Google Account</span>
+      </button>
+      <button type="button" class="social-btn" id="facebookLoginBtn">
+        <svg viewBox="0 0 24 24" fill="#1877F2"><path d="M22 12a10 10 0 1 0-11.6 9.9v-7H7.9V12h2.5V9.8c0-2.5 1.5-3.9 3.8-3.9 1.1 0 2.2.2 2.2.2v2.5h-1.3c-1.2 0-1.6.8-1.6 1.6V12h2.8l-.4 2.9h-2.4v7A10 10 0 0 0 22 12z"/></svg>
+        <span data-en="Login with Facebook Account" data-ar="تسجيل الدخول عبر فيسبوك">Login with Facebook Account</span>
+      </button>
+      <div class="login-signup-row">
+        <span data-en="Don't have an account?" data-ar="ليس لديك حساب؟">Don't have an account?</span><a href="#" data-en="Sign Up" data-ar="إنشاء حساب">Sign Up</a>
+      </div>
+    </div>
+  </div>
+  </div>
+</header>
+
+<section class="page-banner">
+  <div class="glow"></div>
+  <div class="crumb"><a href="../index.html" data-en="Home" data-ar="الرئيسية">Home</a> / <span data-en="Book A Service" data-ar="احجز خدمة">Book A Service</span></div>
+  <h1><span data-en="Book A" data-ar="احجز">Book A</span> <span class="accent" data-en="Service" data-ar="خدمة">Service</span></h1>
+  <p data-en="Fill in your details below and pick a date and time that suits you. Your slot is confirmed the moment you submit — no back-and-forth calls needed." data-ar="أدخل بياناتك أدناه واختر التاريخ والوقت المناسبَين لك. يتم تأكيد موعدك فور الإرسال — دون الحاجة لأي مكالمات إضافية.">Fill in your details below and pick a date and time that suits you. Your slot is confirmed the moment you submit — no back-and-forth calls needed.</p>
+</section>
+
+<div class="booking-wrap">
+  <form id="bookingForm" novalidate>
+
+    <!-- 01 CUSTOMER DETAILS -->
+    <div class="f-section">
+      <div class="f-head">
+        <div class="f-num">01</div>
+        <div>
+          <h2 data-en="Customer Details" data-ar="بيانات العميل">Customer Details</h2>
+          <div class="f-sub" data-en="Who we'll contact about this booking" data-ar="الشخص الذي سنتواصل معه بخصوص هذا الحجز">Who we'll contact about this booking</div>
+        </div>
+      </div>
+      <div class="f-grid">
+        <div class="f-row">
+          <label data-en="Full Name" data-ar="الاسم الكامل"><span data-en="Full Name" data-ar="الاسم الكامل">Full Name</span> <span class="req">*</span></label>
+          <input type="text" id="custName" required data-en-ph="e.g. Ahmed Khan" data-ar-ph="مثال: أحمد خان" placeholder="e.g. Ahmed Khan">
+        </div>
+        <div class="f-row">
+          <label><span data-en="Mobile Number" data-ar="رقم الجوال">Mobile Number</span> <span class="req">*</span></label>
+          <input type="tel" id="custMobile" required placeholder="+971 00 000 0000">
+        </div>
+        <div class="f-row">
+          <label data-en="Email Address" data-ar="البريد الإلكتروني">Email Address</label>
+          <input type="email" id="custEmail" placeholder="you@example.com">
+        </div>
+        <div class="f-row">
+          <label data-en="Preferred Contact Method" data-ar="طريقة التواصل المفضلة">Preferred Contact Method</label>
+          <select id="custContactPref">
+            <option value="Phone Call" data-en="Phone Call" data-ar="مكالمة هاتفية">Phone Call</option>
+            <option value="WhatsApp" data-en="WhatsApp" data-ar="واتساب">WhatsApp</option>
+            <option value="Email" data-en="Email" data-ar="البريد الإلكتروني">Email</option>
+            <option value="SMS" data-en="SMS" data-ar="رسالة نصية">SMS</option>
+          </select>
+        </div>
+      </div>
+    </div>
+
+    <!-- 02 CAR DETAILS -->
+    <div class="f-section">
+      <div class="f-head">
+        <div class="f-num">02</div>
+        <div>
+          <h2 data-en="Car Details" data-ar="بيانات السيارة">Car Details</h2>
+          <div class="f-sub" data-en="Tell us about the vehicle coming in" data-ar="أخبرنا عن السيارة القادمة للصيانة">Tell us about the vehicle coming in</div>
+        </div>
+      </div>
+      <div class="f-grid cols-3">
+        <div class="f-row">
+          <label><span data-en="Make" data-ar="الشركة المصنعة">Make</span> <span class="req">*</span></label>
+          <input type="text" id="carMake" required data-en-ph="e.g. Toyota" data-ar-ph="مثال: تويوتا" placeholder="e.g. Toyota">
+        </div>
+        <div class="f-row">
+          <label><span data-en="Model" data-ar="الطراز">Model</span> <span class="req">*</span></label>
+          <input type="text" id="carModel" required data-en-ph="e.g. Land Cruiser" data-ar-ph="مثال: لاند كروزر" placeholder="e.g. Land Cruiser">
+        </div>
+        <div class="f-row">
+          <label data-en="Year" data-ar="سنة الصنع">Year</label>
+          <input type="number" id="carYear" min="1980" max="2027" data-en-ph="e.g. 2022" data-ar-ph="مثال: 2022" placeholder="e.g. 2022">
+        </div>
+        <div class="f-row">
+          <label><span data-en="Plate Number" data-ar="رقم اللوحة">Plate Number</span> <span class="req">*</span></label>
+          <input type="text" id="carPlate" required data-en-ph="e.g. Sharjah 12345" data-ar-ph="مثال: الشارقة 12345" placeholder="e.g. Sharjah 12345">
+        </div>
+        <div class="f-row">
+          <label data-en="Fuel Type" data-ar="نوع الوقود">Fuel Type</label>
+          <select id="carFuel">
+            <option value="Petrol" data-en="Petrol" data-ar="بنزين">Petrol</option>
+            <option value="Diesel" data-en="Diesel" data-ar="ديزل">Diesel</option>
+            <option value="Hybrid" data-en="Hybrid" data-ar="هجين">Hybrid</option>
+            <option value="Electric" data-en="Electric" data-ar="كهربائي">Electric</option>
+          </select>
+        </div>
+        <div class="f-row">
+          <label data-en="Current Mileage (KM)" data-ar="عداد المسافة الحالي (كم)">Current Mileage (KM)</label>
+          <input type="number" id="carMileage" min="0" data-en-ph="e.g. 45000" data-ar-ph="مثال: 45000" placeholder="e.g. 45000">
+        </div>
+      </div>
+    </div>
+
+    <!-- 03 SERVICES REQUIRED -->
+    <div class="f-section">
+      <div class="f-head">
+        <div class="f-num">03</div>
+        <div>
+          <h2 data-en="Services Required" data-ar="الخدمات المطلوبة">Services Required</h2>
+          <div class="f-sub" data-en="Select all that apply" data-ar="اختر كل ما ينطبق">Select all that apply</div>
+        </div>
+      </div>
+      <div class="svc-grid" id="svcGrid">
+        <!-- injected by JS -->
+      </div>
+      <div class="f-row full" style="margin-top:20px;">
+        <label data-en="Additional Notes / Concerns" data-ar="ملاحظات إضافية / مشاكل">Additional Notes / Concerns</label>
+        <textarea id="svcNotes" data-en-ph="Any noise, warning light, specific request, or parts to bring..." data-ar-ph="أي صوت غريب، ضوء تحذيري، طلب خاص، أو قطع غيار ستحضرها..." placeholder="Any noise, warning light, specific request, or parts to bring..."></textarea>
+      </div>
+    </div>
+
+    <!-- 04 SCHEDULE -->
+    <div class="f-section">
+      <div class="f-head">
+        <div class="f-num">04</div>
+        <div>
+          <h2 data-en="Schedule" data-ar="الموعد">Schedule</h2>
+          <div class="f-sub" data-en="Pick a date and time — Mon to Sat, 8:00 to 18:00. Closed Sundays." data-ar="اختر التاريخ والوقت — من الإثنين إلى السبت، 8:00 إلى 18:00. مغلق أيام الأحد.">Pick a date and time — Mon to Sat, 8:00 to 18:00. Closed Sundays.</div>
+        </div>
+      </div>
+      <div class="cal-wrap">
+        <div class="cal-card">
+          <div class="cal-head">
+            <div class="cal-nav"><button type="button" id="prevMonth" aria-label="Previous month"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M15 6l-6 6 6 6"/></svg></button></div>
+            <div class="cal-month" id="calMonthLabel"></div>
+            <div class="cal-nav"><button type="button" id="nextMonth" aria-label="Next month"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 6l6 6-6 6"/></svg></button></div>
+          </div>
+          <div class="cal-dow">
+            <div data-en="Su" data-ar="أحد">Su</div><div data-en="Mo" data-ar="اثن">Mo</div><div data-en="Tu" data-ar="ثلا">Tu</div><div data-en="We" data-ar="أرب">We</div><div data-en="Th" data-ar="خمي">Th</div><div data-en="Fr" data-ar="جمع">Fr</div><div data-en="Sa" data-ar="سبت">Sa</div>
+          </div>
+          <div class="cal-grid" id="calGrid"></div>
+        </div>
+        <div class="slot-card">
+          <h3 data-en="Available Time Slots" data-ar="الأوقات المتاحة">Available Time Slots</h3>
+          <div class="slot-sub" id="slotDateLabel" data-en="Select a date first" data-ar="اختر التاريخ أولاً">Select a date first</div>
+          <div class="slot-list" id="slotList"></div>
+          <div class="selected-summary" id="scheduleSummary" data-en="No date/time selected yet." data-ar="لم يتم اختيار التاريخ/الوقت بعد.">No date/time selected yet.</div>
+        </div>
+      </div>
+    </div>
+
+  </form>
+
+  <!-- SIDEBAR SUMMARY -->
+  <aside class="side-summary">
+    <h3 data-en="Booking Summary" data-ar="ملخص الحجز">Booking Summary</h3>
+    <div class="sum-row"><div class="k" data-en="Customer" data-ar="العميل">Customer</div><div class="v" id="sumName">—</div></div>
+    <div class="sum-row"><div class="k" data-en="Mobile" data-ar="الجوال">Mobile</div><div class="v" id="sumMobile">—</div></div>
+    <div class="sum-row"><div class="k" data-en="Vehicle" data-ar="السيارة">Vehicle</div><div class="v" id="sumCar">—</div></div>
+    <div class="sum-row"><div class="k" data-en="Services" data-ar="الخدمات">Services</div><div class="v" id="sumServices">—</div></div>
+    <div class="sum-row"><div class="k" data-en="Date &amp; Time" data-ar="التاريخ والوقت">Date &amp; Time</div><div class="v" id="sumSchedule">—</div></div>
+
+    <div class="terms-row">
+      <input type="checkbox" id="termsCheck">
+      <label for="termsCheck" data-en="I agree that this booking is a service request and confirm the details above are correct." data-ar="أوافق على أن هذا الحجز هو طلب خدمة وأؤكد أن التفاصيل أعلاه صحيحة.">I agree that this booking is a service request and confirm the details above are correct.</label>
+    </div>
+
+    <button type="submit" form="bookingForm" class="btn-submit" id="submitBtn" data-en="Confirm Booking" data-ar="تأكيد الحجز">Confirm Booking</button>
+    <div class="form-msg" id="formMsg" data-en="Please complete all required fields, select a service, choose a date &amp; time, and accept the terms." data-ar="يرجى تعبئة جميع الحقول المطلوبة، واختيار خدمة، وتحديد التاريخ والوقت، والموافقة على الشروط.">Please complete all required fields, select a service, choose a date &amp; time, and accept the terms.</div>
+
+    <div class="sum-note" data-en="Your slot is held for this workshop only. A confirmation will be sent to you, and the workshop team is notified instantly once you submit." data-ar="موعدك محجوز لهذه الورشة فقط. سيتم إرسال تأكيد إليك، ويتم إخطار فريق الورشة فورًا بعد الإرسال.">Your slot is held for this workshop only. A confirmation will be sent to you, and the workshop team is notified instantly once you submit.</div>
+  </aside>
+</div>
+
+<!-- CONFIRMATION OVERLAY -->
+<div class="confirm-overlay" id="confirmOverlay">
+  <div class="confirm-card">
+    <div class="confirm-check">
+      <svg viewBox="0 0 24 24" fill="none" stroke-width="2"><path d="M20 6L9 17l-5-5"/></svg>
+    </div>
+    <h2 data-en="Booking Confirmed" data-ar="تم تأكيد الحجز">Booking Confirmed</h2>
+    <p><span data-en="Thanks," data-ar="شكرًا لك،">Thanks,</span> <span id="confName">—</span>. <span data-en="Your service slot has been allotted." data-ar="تم تخصيص موعد الخدمة الخاص بك.">Your service slot has been allotted.</span></p>
+    <div class="confirm-detail" id="confDetail"></div>
+    <div class="confirm-note">
+      <span data-en="A confirmation message has been sent to the customer, and the Orion Fx workshop team has been notified of this new booking." data-ar="تم إرسال رسالة تأكيد إلى العميل، وتم إخطار فريق ورشة أوريون إف إكس بهذا الحجز الجديد.">A confirmation message has been sent to the customer, and the Orion Fx workshop team has been notified of this new booking.</span><br><br>
+      <em data-en="Note for site owner: this page is a front-end template. To actually deliver SMS/email confirmations to the customer and alert the workshop owner, connect this form's submit handler to a backend (e.g. a booking API, EmailJS, or a webhook to your CRM/WhatsApp Business system)." data-ar="ملاحظة لصاحب الموقع: هذه الصفحة نموذج أولي (واجهة أمامية فقط). لإرسال تأكيدات SMS/بريد إلكتروني فعلية للعميل وتنبيه صاحب الورشة، يجب ربط معالج إرسال هذا النموذج بخادم خلفي (مثل واجهة حجز برمجية، أو EmailJS، أو webhook يربط بنظام CRM أو واتساب بزنس).">Note for site owner: this page is a front-end template. To actually deliver SMS/email confirmations to the customer and alert the workshop owner, connect this form's submit handler to a backend (e.g. a booking API, EmailJS, or a webhook to your CRM/WhatsApp Business system).</em>
+    </div>
+    <button class="confirm-close" id="confirmClose" data-en="Done" data-ar="تم">Done</button>
+  </div>
+</div>
+
+<footer id="contact">
+  <div class="bottom-bar">
+    <div data-en="© 2026 Orion Fx. All rights reserved, Sharjah, UAE." data-ar="© 2026 أوريون إف إكس. جميع الحقوق محفوظة، الشارقة، الإمارات.">© 2026 Orion Fx. All rights reserved, Sharjah, UAE.</div>
+    <div class="footer-links">
+      <a href="./policy.html" data-en="Privacy Policy" data-ar="سياسة الخصوصية">Privacy Policy</a>
+      <a href="./terms.html" data-en="Terms of Service" data-ar="شروط الخدمة">Terms of Service</a>
+      <a href="./cookies.html" data-en="Cookie Policy" data-ar="سياسة ملفات تعريف الارتباط">Cookie Policy</a>
+    </div>
+  </div>
+</footer>
+
+<script>
+// global fixed background crossfade (site-wide)
+(function(){
+  const slides = document.querySelectorAll('.site-bg img');
+  if (slides.length < 2) return;
+  let i = 0;
+  setInterval(() => {
+    slides[i].classList.remove('active');
+    i = (i + 1) % slides.length;
+    slides[i].classList.add('active');
+  }, 5000);
+})();
+
+/* ============ SERVICES CHECKLIST ============ */
+const serviceOptions = [
+  { en: "Oil & Filter Change", ar: "تغيير الزيت والفلتر" },
+  { en: "Polishing", ar: "التلميع" },
+  { en: "Body Repair", ar: "إصلاح الهيكل" },
+  { en: "Paint Work", ar: "أعمال الدهان" },
+  { en: "Window Tinting", ar: "تظليل النوافذ" },
+  { en: "Car Wash", ar: "غسيل السيارة" },
+  { en: "Detailing", ar: "تلميع شامل" },
+  { en: "Auto Electrics", ar: "الكهرباء" },
+  { en: "Mechanical Repairs", ar: "الإصلاح الميكانيكي" },
+  { en: "General Inspection", ar: "فحص عام" }
+];
+
+const svcGrid = document.getElementById('svcGrid');
+serviceOptions.forEach((s, i) => {
+  const id = 'svc_' + i;
+  const label = document.createElement('label');
+  label.className = 'svc-check';
+  label.setAttribute('for', id);
+  label.innerHTML = `
+    <input type="checkbox" id="${id}" value="${s.en}" data-en="${s.en}" data-ar="${s.ar}">
+    <span class="box"><svg viewBox="0 0 24 24" fill="none" stroke-width="3"><path d="M20 6L9 17l-5-5"/></svg></span>
+    <span class="label-txt" data-en="${s.en}" data-ar="${s.ar}">${s.en}</span>
+  `;
+  const input = label.querySelector('input');
+  input.addEventListener('change', () => {
+    label.classList.toggle('checked', input.checked);
+    updateSummary();
+  });
+  svcGrid.appendChild(label);
+});
+
+/* ============ CALENDAR ============ */
+const today = new Date();
+today.setHours(0,0,0,0);
+let viewYear = today.getFullYear();
+let viewMonth = today.getMonth();
+let selectedDate = null; // Date object
+let selectedSlot = null; // string e.g. "10:00 AM"
+
+const monthNamesEn = ["January","February","March","April","May","June","July","August","September","October","November","December"];
+const monthNamesAr = ["يناير","فبراير","مارس","أبريل","مايو","يونيو","يوليو","أغسطس","سبتمبر","أكتوبر","نوفمبر","ديسمبر"];
+function t(en, ar){ return (typeof currentLang !== 'undefined' && currentLang === 'ar') ? ar : en; }
+const calMonthLabel = document.getElementById('calMonthLabel');
+const calGrid = document.getElementById('calGrid');
+const prevMonthBtn = document.getElementById('prevMonth');
+const nextMonthBtn = document.getElementById('nextMonth');
+const slotList = document.getElementById('slotList');
+const slotDateLabel = document.getElementById('slotDateLabel');
+const scheduleSummary = document.getElementById('scheduleSummary');
+
+function isPast(y, m, d){
+  const dt = new Date(y, m, d); dt.setHours(0,0,0,0);
+  return dt < today;
+}
+function isSunday(y, m, d){
+  return new Date(y, m, d).getDay() === 0;
+}
+
+function renderCalendar(){
+  const mn = t(monthNamesEn[viewMonth], monthNamesAr[viewMonth]);
+  calMonthLabel.textContent = mn + " " + viewYear;
+  calGrid.innerHTML = '';
+
+  const firstDayIndex = new Date(viewYear, viewMonth, 1).getDay();
+  const daysInMonth = new Date(viewYear, viewMonth + 1, 0).getDate();
+
+  for (let i = 0; i < firstDayIndex; i++){
+    const empty = document.createElement('div');
+    empty.className = 'cal-day empty';
+    calGrid.appendChild(empty);
+  }
+
+  for (let d = 1; d <= daysInMonth; d++){
+    const cell = document.createElement('div');
+    cell.className = 'cal-day';
+    cell.textContent = d;
+
+    const past = isPast(viewYear, viewMonth, d);
+    const sunday = isSunday(viewYear, viewMonth, d);
+    const isToday = (viewYear === today.getFullYear() && viewMonth === today.getMonth() && d === today.getDate());
+
+    if (isToday) cell.classList.add('today');
+
+    if (past || sunday){
+      cell.classList.add('disabled');
+    } else {
+      cell.classList.add('available');
+      cell.addEventListener('click', () => selectDate(viewYear, viewMonth, d, cell));
+    }
+
+    if (selectedDate && selectedDate.getFullYear() === viewYear && selectedDate.getMonth() === viewMonth && selectedDate.getDate() === d){
+      cell.classList.add('selected');
+    }
+
+    calGrid.appendChild(cell);
+  }
+
+  // prevent navigating before current month
+  prevMonthBtn.disabled = (viewYear === today.getFullYear() && viewMonth === today.getMonth());
+}
+
+function selectDate(y, m, d, cell){
+  selectedDate = new Date(y, m, d);
+  selectedSlot = null;
+  renderCalendar();
+  renderSlots();
+  updateSummary();
+}
+
+prevMonthBtn.addEventListener('click', () => {
+  viewMonth--; if (viewMonth < 0){ viewMonth = 11; viewYear--; }
+  renderCalendar();
+});
+nextMonthBtn.addEventListener('click', () => {
+  viewMonth++; if (viewMonth > 11){ viewMonth = 0; viewYear++; }
+  renderCalendar();
+});
+
+const timeSlots = ["08:00 AM","09:00 AM","10:00 AM","11:00 AM","12:00 PM","01:00 PM","02:00 PM","03:00 PM","04:00 PM","05:00 PM"];
+
+function renderSlots(){
+  slotList.innerHTML = '';
+  if (!selectedDate){
+    slotDateLabel.textContent = t("Select a date first", "اختر التاريخ أولاً");
+    return;
+  }
+  slotDateLabel.textContent = selectedDate.toLocaleDateString(t('en-US','ar-EG-u-ca-gregory'), { weekday:'long', day:'numeric', month:'long', year:'numeric' });
+
+  timeSlots.forEach(t => {
+    const btn = document.createElement('button');
+    btn.type = 'button';
+    btn.className = 'slot-btn';
+    btn.textContent = t;
+    if (selectedSlot === t) btn.classList.add('selected');
+    btn.addEventListener('click', () => {
+      selectedSlot = t;
+      renderSlots();
+      updateSummary();
+    });
+    slotList.appendChild(btn);
+  });
+}
+
+/* ============ LIVE SUMMARY ============ */
+function updateSummary(){
+  document.getElementById('sumName').textContent = document.getElementById('custName').value || '—';
+  document.getElementById('sumMobile').textContent = document.getElementById('custMobile').value || '—';
+
+  const make = document.getElementById('carMake').value;
+  const model = document.getElementById('carModel').value;
+  const year = document.getElementById('carYear').value;
+  document.getElementById('sumCar').textContent = (make || model) ? `${year ? year+' ' : ''}${make} ${model}`.trim() : '—';
+
+  const checked = Array.from(document.querySelectorAll('#svcGrid input:checked')).map(i => t(i.getAttribute('data-en'), i.getAttribute('data-ar')));
+  document.getElementById('sumServices').textContent = checked.length ? checked.join('، ') : '—';
+
+  if (selectedDate && selectedSlot){
+    const dLabel = selectedDate.toLocaleDateString(t('en-US','ar-EG-u-ca-gregory'), { day:'numeric', month:'short', year:'numeric' });
+    document.getElementById('sumSchedule').textContent = `${dLabel} · ${selectedSlot}`;
+    scheduleSummary.innerHTML = `${t('Selected:','المحدد:')} <strong>${dLabel} ${t('at','في')} ${selectedSlot}</strong>`;
+  } else {
+    document.getElementById('sumSchedule').textContent = '—';
+    scheduleSummary.textContent = t('No date/time selected yet.','لم يتم اختيار التاريخ/الوقت بعد.');
+  }
+}
+
+['custName','custMobile','carMake','carModel','carYear'].forEach(id => {
+  document.getElementById(id).addEventListener('input', updateSummary);
+});
+
+/* ============ SUBMIT / CONFIRMATION ============ */
+const form = document.getElementById('bookingForm');
+const formMsg = document.getElementById('formMsg');
+
+form.addEventListener('submit', (e) => {
+  e.preventDefault();
+
+  const name = document.getElementById('custName').value.trim();
+  const mobile = document.getElementById('custMobile').value.trim();
+  const make = document.getElementById('carMake').value.trim();
+  const model = document.getElementById('carModel').value.trim();
+  const plate = document.getElementById('carPlate').value.trim();
+  const checked = Array.from(document.querySelectorAll('#svcGrid input:checked')).map(i => i.value);
+  const termsOk = document.getElementById('termsCheck').checked;
+
+  const valid = name && mobile && make && model && plate && checked.length > 0 && selectedDate && selectedSlot && termsOk;
+
+  if (!valid){
+    formMsg.classList.add('show');
+    return;
+  }
+  formMsg.classList.remove('show');
+
+  // populate confirmation overlay
+  document.getElementById('confName').textContent = name;
+  const dLabel = selectedDate.toLocaleDateString(currentLang === 'ar' ? 'ar-EG' : 'en-US', { weekday:'long', day:'numeric', month:'long', year:'numeric' });
+  const checkedLabels = Array.from(document.querySelectorAll('#svcGrid input:checked')).map(i => t(i.getAttribute('data-en'), i.getAttribute('data-ar')));
+  document.getElementById('confDetail').innerHTML = `
+    <div class="row"><div class="k">${t('Vehicle','السيارة')}</div><div class="v">${make} ${model} (${plate})</div></div>
+    <div class="row"><div class="k">${t('Services','الخدمات')}</div><div class="v">${checkedLabels.join(', ')}</div></div>
+    <div class="row"><div class="k">${t('Date','التاريخ')}</div><div class="v">${dLabel}</div></div>
+    <div class="row"><div class="k">${t('Time','الوقت')}</div><div class="v">${selectedSlot}</div></div>
+    <div class="row"><div class="k">${t('Mobile','الجوال')}</div><div class="v">${mobile}</div></div>
+  `;
+
+  document.getElementById('confirmOverlay').classList.add('show');
+});
+
+document.getElementById('confirmClose').addEventListener('click', () => {
+  document.getElementById('confirmOverlay').classList.remove('show');
+});
+
+/* init */
+renderCalendar();
+renderSlots();
+updateSummary();
+
+/* ============ LOGIN DROPDOWN ============ */
+function toggleLoginBox(force){
+  const dd = document.getElementById('loginDropdown');
+  const btn = document.getElementById('loginBtn');
+  if (!dd || !btn) return;
+  const shouldOpen = typeof force === 'boolean' ? force : !dd.classList.contains('open');
+  dd.classList.toggle('open', shouldOpen);
+  btn.classList.toggle('active', shouldOpen);
+}
+document.addEventListener('click', (e) => {
+  const wrap = document.getElementById('loginWrap');
+  if (wrap && !wrap.contains(e.target)) toggleLoginBox(false);
+});
+document.addEventListener('keydown', (e) => {
+  if (e.key === 'Escape') toggleLoginBox(false);
+});
+
+function togglePasswordVisibility(){
+  const pw = document.getElementById('loginPassword');
+  const eyeOpen = document.getElementById('eyeIconOpen');
+  const eyeClosed = document.getElementById('eyeIconClosed');
+  if (!pw) return;
+  const isPassword = pw.type === 'password';
+  pw.type = isPassword ? 'text' : 'password';
+  if (eyeOpen && eyeClosed){
+    eyeOpen.style.display = isPassword ? 'none' : 'block';
+    eyeClosed.style.display = isPassword ? 'block' : 'none';
+  }
+}
+
+const loginFormEl = document.getElementById('loginForm');
+if (loginFormEl){
+  loginFormEl.addEventListener('submit', (e) => {
+    e.preventDefault();
+    const msg = (typeof currentLang !== 'undefined' && currentLang === 'ar')
+      ? 'هذا نموذج دخول تجريبي. قم بربطه بخادم المصادقة الخاص بك لتفعيل تسجيل الدخول الفعلي.'
+      : 'This is a demo login form. Connect it to your authentication backend to enable real sign-in.';
+    alert(msg);
+  });
+}
+
+/* ---- Google Sign-In ----
+   1. Create an OAuth Client ID at https://console.cloud.google.com/apis/credentials
+   2. Add your site's domain under "Authorized JavaScript origins"
+   3. Replace GOOGLE_CLIENT_ID below with your real Client ID */
+const GOOGLE_CLIENT_ID = "YOUR_GOOGLE_CLIENT_ID.apps.googleusercontent.com";
+
+function initGoogleLogin(){
+  if (!window.google || !google.accounts || !google.accounts.id) return;
+  google.accounts.id.initialize({
+    client_id: GOOGLE_CLIENT_ID,
+    callback: handleGoogleCredentialResponse
+  });
+}
+function handleGoogleCredentialResponse(response){
+  // response.credential is a signed Google ID token (JWT).
+  // Decoding it here is for demo display only — in production, send this
+  // token to your backend and verify it server-side before creating a session.
+  try{
+    const payload = JSON.parse(decodeURIComponent(escape(atob(response.credential.split('.')[1].replace(/-/g,'+').replace(/_/g,'/')))));
+    const msg = (typeof currentLang !== 'undefined' && currentLang === 'ar') ? 'مرحبًا، ' : 'Welcome, ';
+    alert(msg + (payload.name || payload.email) + '!');
+    toggleLoginBox(false);
+  }catch(err){
+    console.error('Google login error:', err);
+  }
+}
+const googleBtn = document.getElementById('googleLoginBtn');
+if (googleBtn){
+  googleBtn.addEventListener('click', () => {
+    if (!window.google || !google.accounts || !google.accounts.id || GOOGLE_CLIENT_ID.indexOf('YOUR_GOOGLE_CLIENT_ID') === 0){
+      alert('Set GOOGLE_CLIENT_ID in the code (see comment above) with your own Google OAuth Client ID to enable this button.');
+      return;
+    }
+    google.accounts.id.prompt();
+  });
+}
+window.addEventListener('load', initGoogleLogin);
+
+/* ---- Facebook Login ----
+   1. Create an app at https://developers.facebook.com/apps
+   2. Add your site's domain under Facebook Login > Settings > Valid OAuth Redirect URIs / App Domains
+   3. Replace FACEBOOK_APP_ID below with your real App ID */
+const FACEBOOK_APP_ID = "YOUR_FACEBOOK_APP_ID";
+
+window.fbAsyncInit = function(){
+  if (FACEBOOK_APP_ID.indexOf('YOUR_FACEBOOK_APP_ID') === 0) return;
+  FB.init({ appId: FACEBOOK_APP_ID, cookie: true, xfbml: false, version: 'v19.0' });
+};
+const facebookBtn = document.getElementById('facebookLoginBtn');
+if (facebookBtn){
+  facebookBtn.addEventListener('click', () => {
+    if (!window.FB || FACEBOOK_APP_ID.indexOf('YOUR_FACEBOOK_APP_ID') === 0){
+      alert('Set FACEBOOK_APP_ID in the code (see comment above) with your own Facebook App ID to enable this button.');
+      return;
+    }
+    FB.login((response) => {
+      if (response.authResponse){
+        FB.api('/me', { fields: 'name,email' }, (userInfo) => {
+          const msg = (typeof currentLang !== 'undefined' && currentLang === 'ar') ? 'مرحبًا، ' : 'Welcome, ';
+          alert(msg + userInfo.name + '!');
+          toggleLoginBox(false);
+        });
+      }
+    }, { scope: 'public_profile,email' });
+  });
+}
+
+/* ============ BILINGUAL ENGINE (EN / AR) ============ */
+let currentLang = 'en';
+function applyTranslations(){
+  document.documentElement.lang = currentLang;
+  document.documentElement.dir = currentLang === 'ar' ? 'rtl' : 'ltr';
+  document.body.classList.toggle('lang-ar', currentLang === 'ar');
+  document.querySelectorAll('[data-en]').forEach(el => {
+    const val = currentLang === 'ar' ? el.getAttribute('data-ar') : el.getAttribute('data-en');
+    if (val !== null) el.innerHTML = val;
+  });
+  document.querySelectorAll('[data-en-ph]').forEach(el => {
+    const val = currentLang === 'ar' ? el.getAttribute('data-ar-ph') : el.getAttribute('data-en-ph');
+    if (val !== null) el.setAttribute('placeholder', val);
+  });
+  document.querySelectorAll('.lang-toggle').forEach(btn => {
+    btn.textContent = currentLang === 'ar' ? 'EN' : 'AR';
+  });
+  renderCalendar();
+  renderSlots();
+  updateSummary();
+}
+function setLang(l){ currentLang = l; applyTranslations(); }
+applyTranslations();
+</script>
+
+</body>
+</html>

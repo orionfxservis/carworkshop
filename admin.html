@@ -1,0 +1,866 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Admin Panel — Orion Fx</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Anton&family=Barlow+Condensed:wght@400;500;600;700&family=Oswald:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+
+  :root{
+    --black: #0c0a09;
+    --black-2: #17140f;
+    --panel: rgba(28,24,19,0.6);
+    --red: #e2241b;
+    --steel: #8b8d92;
+    --steel-dim: #4a4c50;
+    --white: #f4f2ec;
+    --amber: #ffb100;
+    --green: #3ecf6e;
+  }
+
+  *{ margin:0; padding:0; box-sizing:border-box; }
+  html{ scroll-behavior: smooth; }
+
+  body{
+    background:
+      radial-gradient(circle at 10% 8%, rgba(226,36,27,0.12), transparent 40%),
+      radial-gradient(circle at 92% 85%, rgba(255,177,0,0.08), transparent 40%),
+      var(--black);
+    color: var(--white);
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 16px;
+    line-height: 1.5;
+    min-height: 100vh;
+  }
+
+  h1,h2,h3,h4{
+    font-family: 'Anton', sans-serif;
+    font-weight: 400;
+    text-transform: uppercase;
+    letter-spacing: 0.02em;
+  }
+  a{ color: inherit; text-decoration: none; }
+  ::selection{ background: var(--red); color: var(--white); }
+
+  /* ============ LOGIN GATE ============ */
+  #adminLogin{
+    min-height: 100vh;
+    display:flex; align-items:center; justify-content:center;
+    padding: 24px;
+  }
+  .login-card{
+    width: 100%; max-width: 380px;
+    background: rgba(20,17,14,0.85);
+    -webkit-backdrop-filter: blur(20px) saturate(150%);
+    backdrop-filter: blur(20px) saturate(150%);
+    border: 1px solid rgba(244,242,236,0.1);
+    box-shadow: 0 20px 60px rgba(0,0,0,0.5);
+    padding: 40px 32px;
+  }
+  .login-card .brand{ display:flex; align-items:center; gap:12px; margin-bottom:30px; }
+  .login-badge{
+    width:44px; height:44px;
+    border: 2px solid var(--red);
+    clip-path: polygon(50% 0%, 100% 25%, 100% 75%, 50% 100%, 0% 75%, 0% 25%);
+    display:flex; align-items:center; justify-content:center;
+    font-family:'Anton', sans-serif; color: var(--red); font-size: 18px; flex-shrink:0;
+  }
+  .login-card .brand-text{ font-family:'Anton', sans-serif; font-size: 22px; line-height:1; }
+  .login-card .brand-text span{ color: var(--red); }
+  .login-card .brand-sub{ font-family:'Oswald', sans-serif; font-size: 10px; letter-spacing:0.24em; color: var(--steel); margin-top:2px; }
+
+  .login-card h2{ font-size: 22px; margin-bottom: 6px; }
+  .login-card .sub{ color: var(--steel); font-size: 15px; margin-bottom: 26px; }
+
+  .a-field{ margin-bottom: 16px; display:flex; flex-direction:column; gap:6px; }
+  .a-field label{ font-family:'Oswald', sans-serif; font-size:10px; letter-spacing:0.1em; color:var(--steel); text-transform:uppercase; }
+  .a-field input{
+    width:100%; height:40px; box-sizing:border-box;
+    background: rgba(6,5,4,0.9); border:1px solid var(--steel-dim); color:var(--white);
+    padding: 0 12px; font-family:'Barlow Condensed', sans-serif; font-size:15px; outline:none;
+    transition: border-color .2s;
+  }
+  .a-field input:focus{ border-color: var(--red); }
+
+  .pw-wrap{ position:relative; }
+  .pw-wrap input{ padding-right:40px; }
+  .pw-eye{
+    position:absolute; top:50%; right:10px; transform:translateY(-50%);
+    background:transparent; border:none; cursor:pointer; padding:4px; color:var(--steel);
+    display:flex; align-items:center; transition: color .2s;
+  }
+  .pw-eye:hover{ color:var(--red); }
+  .pw-eye svg{ width:17px; height:17px; }
+
+  .login-submit{
+    width:100%; height:42px; box-sizing:border-box;
+    display:flex; align-items:center; justify-content:center;
+    background: var(--red); border:none; color:var(--white);
+    font-family:'Oswald', sans-serif; letter-spacing:0.1em; text-transform:uppercase; font-size:13px;
+    cursor:pointer; transition: background .2s; margin-top: 20px;
+  }
+  .login-submit:hover{ background: var(--amber); color: var(--black); }
+
+  .login-note{
+    margin-top:20px; padding-top:16px; border-top:1px dashed rgba(244,242,236,0.12);
+    font-family:'Oswald', sans-serif; font-size:11px; color: var(--steel-dim); letter-spacing:0.03em; line-height:1.7;
+  }
+  .login-error{
+    display:none; color: var(--red); font-family:'Oswald', sans-serif; font-size:12px;
+    letter-spacing:0.04em; margin-top:14px;
+  }
+  .login-error.show{ display:block; }
+  .back-link{
+    display:inline-flex; align-items:center; gap:6px; margin-top:22px;
+    font-family:'Oswald', sans-serif; font-size:12px; letter-spacing:0.08em; text-transform:uppercase;
+    color: var(--steel); transition: color .2s;
+  }
+  .back-link:hover{ color: var(--red); }
+
+  /* ============ APP SHELL ============ */
+  #adminApp{ display:none; min-height:100vh; }
+  #adminApp.active{ display:flex; }
+
+  .sidebar{
+    width: 240px; flex-shrink:0;
+    background: rgba(14,12,10,0.9);
+    border-right: 1px solid rgba(244,242,236,0.08);
+    display:flex; flex-direction:column;
+    position: sticky; top:0; height:100vh;
+  }
+  .sidebar-brand{
+    display:flex; align-items:center; gap:12px;
+    padding: 22px 20px; border-bottom: 1px solid rgba(244,242,236,0.08);
+  }
+  .sidebar-brand .brand-text{ font-family:'Anton', sans-serif; font-size: 20px; line-height:1; }
+  .sidebar-brand .brand-text span{ color: var(--red); }
+  .sidebar-brand .brand-sub{ font-family:'Oswald', sans-serif; font-size: 9px; letter-spacing:0.2em; color: var(--steel); margin-top:2px; }
+
+  .side-nav{ flex:1; padding: 16px 12px; display:flex; flex-direction:column; gap: 4px; }
+  .side-nav button{
+    display:flex; align-items:center; gap:12px;
+    width:100%; text-align:left; background:transparent; border:none; color: var(--steel);
+    font-family:'Oswald', sans-serif; font-size:13px; letter-spacing:0.05em; text-transform:uppercase;
+    padding: 11px 14px; cursor:pointer; border-left: 2px solid transparent;
+    transition: background .2s, color .2s, border-color .2s;
+  }
+  .side-nav button svg{ width:17px; height:17px; flex-shrink:0; }
+  .side-nav button:hover{ background: rgba(244,242,236,0.04); color: var(--white); }
+  .side-nav button.active{ background: rgba(226,36,27,0.1); color: var(--red); border-left-color: var(--red); }
+
+  .sidebar-footer{ padding: 16px 20px; border-top: 1px solid rgba(244,242,236,0.08); }
+  .sidebar-footer a, .sidebar-footer button{
+    display:flex; align-items:center; gap:10px; width:100%;
+    background:transparent; border:none; color: var(--steel);
+    font-family:'Oswald', sans-serif; font-size:12px; letter-spacing:0.06em; text-transform:uppercase;
+    cursor:pointer; padding: 8px 0; transition: color .2s;
+  }
+  .sidebar-footer a:hover, .sidebar-footer button:hover{ color: var(--red); }
+  .sidebar-footer svg{ width:15px; height:15px; }
+
+  .main{ flex:1; min-width:0; display:flex; flex-direction:column; }
+
+  .topbar{
+    display:flex; align-items:center; justify-content:space-between;
+    padding: 18px 30px; border-bottom: 1px solid rgba(244,242,236,0.08);
+    background: rgba(14,12,10,0.7);
+    -webkit-backdrop-filter: blur(14px);
+    backdrop-filter: blur(14px);
+    position: sticky; top:0; z-index: 50;
+  }
+  .topbar h1{ font-size: 22px; }
+  .topbar .who{ display:flex; align-items:center; gap:12px; }
+  .who .avatar{
+    width:34px; height:34px; border-radius:50%; background: var(--red);
+    display:flex; align-items:center; justify-content:center; font-family:'Oswald', sans-serif; font-size:13px;
+  }
+  .who .name{ font-family:'Oswald', sans-serif; font-size:13px; letter-spacing:0.04em; }
+  .who .role{ font-family:'Oswald', sans-serif; font-size:10px; color: var(--steel); letter-spacing:0.08em; text-transform:uppercase; }
+
+  .content{ padding: 28px 30px 60px; }
+  .section{ display:none; }
+  .section.active{ display:block; }
+
+  .demo-banner{
+    display:flex; align-items:center; gap:10px;
+    background: rgba(255,177,0,0.08); border:1px solid rgba(255,177,0,0.25);
+    padding: 12px 16px; margin-bottom: 24px;
+    font-family:'Oswald', sans-serif; font-size:12px; letter-spacing:0.03em; color: var(--amber);
+  }
+  .demo-banner svg{ width:16px; height:16px; flex-shrink:0; }
+
+  /* ============ KPI CARDS ============ */
+  .kpi-grid{ display:grid; grid-template-columns: repeat(4, 1fr); gap: 18px; margin-bottom: 30px; }
+  .kpi-card{
+    background: var(--panel);
+    -webkit-backdrop-filter: blur(16px) saturate(150%);
+    backdrop-filter: blur(16px) saturate(150%);
+    border: 1px solid rgba(244,242,236,0.08);
+    padding: 20px 22px;
+  }
+  .kpi-card .kpi-label{ font-family:'Oswald', sans-serif; font-size:11px; letter-spacing:0.1em; color:var(--steel); text-transform:uppercase; }
+  .kpi-card .kpi-value{ font-family:'Anton', sans-serif; font-size:32px; margin-top:8px; }
+  .kpi-card .kpi-delta{ font-family:'Oswald', sans-serif; font-size:11px; margin-top:6px; color: var(--green); }
+  .kpi-card .kpi-delta.down{ color: var(--red); }
+
+  /* ============ PANELS / TABLES ============ */
+  .panel{
+    background: var(--panel);
+    -webkit-backdrop-filter: blur(16px) saturate(150%);
+    backdrop-filter: blur(16px) saturate(150%);
+    border: 1px solid rgba(244,242,236,0.08);
+    padding: 24px;
+    margin-bottom: 24px;
+  }
+  .panel-head{ display:flex; align-items:center; justify-content:space-between; margin-bottom: 18px; flex-wrap:wrap; gap:10px; }
+  .panel-head h3{ font-size: 17px; }
+  .panel-head .panel-sub{ font-family:'Oswald', sans-serif; font-size:11px; color:var(--steel); letter-spacing:0.05em; margin-top:2px; }
+
+  .search-box{
+    display:flex; align-items:center; gap:8px;
+    background: rgba(6,5,4,0.6); border:1px solid var(--steel-dim);
+    padding: 7px 12px; min-width: 220px;
+  }
+  .search-box svg{ width:14px; height:14px; color:var(--steel); flex-shrink:0; }
+  .search-box input{
+    background:transparent; border:none; outline:none; color:var(--white);
+    font-family:'Barlow Condensed', sans-serif; font-size:14px; width:100%;
+  }
+
+  table{ width:100%; border-collapse: collapse; }
+  thead th{
+    text-align:left; font-family:'Oswald', sans-serif; font-size:10px; letter-spacing:0.08em;
+    color: var(--steel); text-transform:uppercase; padding: 10px 12px; border-bottom: 1px solid rgba(244,242,236,0.1);
+    white-space: nowrap;
+  }
+  tbody td{
+    padding: 12px; border-bottom: 1px solid rgba(244,242,236,0.06); font-size:15px; vertical-align: middle;
+  }
+  tbody tr:hover{ background: rgba(244,242,236,0.02); }
+  tbody tr:last-child td{ border-bottom:none; }
+  .cell-sub{ font-family:'Oswald', sans-serif; font-size:11px; color:var(--steel); margin-top:2px; }
+
+  .badge{
+    display:inline-flex; align-items:center; gap:5px;
+    font-family:'Oswald', sans-serif; font-size:10px; letter-spacing:0.05em; text-transform:uppercase;
+    padding: 4px 10px; border:1px solid transparent;
+  }
+  .badge.confirmed{ color: var(--amber); border-color: rgba(255,177,0,0.4); background: rgba(255,177,0,0.08); }
+  .badge.completed{ color: var(--green); border-color: rgba(62,207,110,0.4); background: rgba(62,207,110,0.08); }
+  .badge.cancelled{ color: var(--red); border-color: rgba(226,36,27,0.4); background: rgba(226,36,27,0.08); }
+  .badge.pending{ color: var(--steel); border-color: rgba(139,141,146,0.4); background: rgba(139,141,146,0.08); }
+
+  .row-actions{ display:flex; gap:8px; }
+  .row-actions button{
+    background:transparent; border:1px solid var(--steel-dim); color: var(--white);
+    font-family:'Oswald', sans-serif; font-size:10px; letter-spacing:0.04em; text-transform:uppercase;
+    padding: 6px 10px; cursor:pointer; transition: border-color .2s, color .2s;
+  }
+  .row-actions button:hover{ border-color: var(--red); color: var(--red); }
+  .row-actions button.primary:hover{ border-color: var(--green); color: var(--green); }
+
+  /* ============ SERVICES / PRICING ============ */
+  .svc-row{
+    display:grid; grid-template-columns: 2fr 1fr 1fr auto; gap: 14px; align-items:center;
+    padding: 12px; border-bottom: 1px solid rgba(244,242,236,0.06);
+  }
+  .svc-row:last-child{ border-bottom:none; }
+  .svc-row .svc-name{ font-size:16px; }
+  .svc-row .svc-tag{ font-family:'Oswald', sans-serif; font-size:11px; color:var(--steel); margin-top:2px; }
+  .svc-row input{
+    height:36px; box-sizing:border-box; background: rgba(6,5,4,0.7); border:1px solid var(--steel-dim); color:var(--white);
+    padding:0 10px; font-family:'Barlow Condensed', sans-serif; font-size:15px; outline:none; width:100%;
+    transition: border-color .2s;
+  }
+  .svc-row input:focus{ border-color: var(--red); }
+  .svc-row select{
+    height:36px; box-sizing:border-box; background: rgba(6,5,4,0.7); border:1px solid var(--steel-dim); color:var(--white);
+    padding:0 10px; font-family:'Barlow Condensed', sans-serif; font-size:15px; outline:none; width:100%;
+  }
+
+  .btn-save{
+    background: var(--red); border:none; color:var(--white);
+    padding: 11px 26px; font-family:'Oswald', sans-serif; letter-spacing:0.08em; text-transform:uppercase; font-size:12px;
+    cursor:pointer; transition: background .2s;
+  }
+  .btn-save:hover{ background: var(--amber); color: var(--black); }
+
+  .toast{
+    position: fixed; bottom: 26px; right: 26px; z-index: 900;
+    background: rgba(20,17,14,0.95); border:1px solid var(--green); color: var(--white);
+    padding: 13px 20px; font-family:'Oswald', sans-serif; font-size:13px; letter-spacing:0.03em;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.4);
+    opacity:0; transform: translateY(10px); pointer-events:none;
+    transition: opacity .25s, transform .25s;
+  }
+  .toast.show{ opacity:1; transform: translateY(0); }
+
+  /* ============ SETTINGS ============ */
+  .settings-grid{ display:grid; grid-template-columns: repeat(2, 1fr); gap: 18px; }
+  .settings-grid .a-field input, .settings-grid .a-field textarea{
+    width:100%; box-sizing:border-box; background: rgba(6,5,4,0.7); border:1px solid var(--steel-dim); color:var(--white);
+    padding: 10px 12px; font-family:'Barlow Condensed', sans-serif; font-size:15px; outline:none;
+    transition: border-color .2s;
+  }
+  .settings-grid .a-field input{ height:40px; }
+  .settings-grid .a-field textarea{ min-height:80px; resize:vertical; }
+  .settings-grid .a-field input:focus, .settings-grid .a-field textarea:focus{ border-color: var(--red); }
+  .settings-grid .full{ grid-column: 1 / -1; }
+
+  @media (max-width: 900px){
+    .kpi-grid{ grid-template-columns: repeat(2,1fr); }
+    .settings-grid{ grid-template-columns: 1fr; }
+    .sidebar{ width: 72px; }
+    .sidebar-brand .brand-text, .sidebar-brand .brand-sub, .side-nav button span, .sidebar-footer span{ display:none; }
+    .side-nav button{ justify-content:center; padding:12px; }
+    .sidebar-footer a, .sidebar-footer button{ justify-content:center; }
+    table{ font-size:13px; }
+  }
+  @media (max-width: 600px){
+    .kpi-grid{ grid-template-columns: 1fr; }
+    .svc-row{ grid-template-columns: 1fr 1fr; }
+    .topbar{ padding: 14px 16px; }
+    .content{ padding: 18px 16px 40px; }
+  }
+
+</style>
+</head>
+<body>
+
+<!-- ============ LOGIN GATE ============ -->
+<div id="adminLogin">
+  <div class="login-card">
+    <div class="brand">
+      <div class="login-badge">OF</div>
+      <div>
+        <div class="brand-text">ORION<span>FX</span></div>
+        <div class="brand-sub">ADMIN PANEL</div>
+      </div>
+    </div>
+    <h2>Welcome Back</h2>
+    <div class="sub">Sign in to manage bookings, quotes &amp; pricing.</div>
+
+    <form id="adminLoginForm" onsubmit="return false;">
+      <div class="a-field">
+        <label>Admin ID</label>
+        <input type="text" id="adminUserId" placeholder="Enter your Admin ID" autocomplete="username">
+      </div>
+      <div class="a-field">
+        <label>Password</label>
+        <div class="pw-wrap">
+          <input type="password" id="adminPassword" placeholder="Enter your password" autocomplete="current-password">
+          <button type="button" class="pw-eye" onclick="toggleAdminPw()" aria-label="Show password">
+            <svg id="aEyeOpen" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M1 12s4-7 11-7 11 7 11 7-4 7-11 7-11-7-11-7z"/><circle cx="12" cy="12" r="3"/></svg>
+            <svg id="aEyeClosed" style="display:none" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M17.94 17.94A10.94 10.94 0 0 1 12 19c-7 0-11-7-11-7a21.6 21.6 0 0 1 5.06-5.94M9.9 4.24A10.4 10.4 0 0 1 12 4c7 0 11 7 11 7a21.6 21.6 0 0 1-2.16 3.19m-6.72-1.07a3 3 0 1 1-4.24-4.24"/><path d="M1 1l22 22"/></svg>
+          </button>
+        </div>
+      </div>
+      <button type="submit" class="login-submit">Sign In</button>
+      <div class="login-error" id="adminLoginError">Please enter both an Admin ID and a password.</div>
+    </form>
+
+    <div class="login-note">
+      <strong style="color:var(--white)">Demo access:</strong> any non-empty Admin ID + password will sign you in. This panel has no backend yet — connect it to a real authentication service and database before using it in production.
+    </div>
+
+    <a class="back-link" href="index.html">
+      <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
+      Back to Website
+    </a>
+  </div>
+</div>
+
+<!-- ============ ADMIN APP SHELL ============ -->
+<div id="adminApp">
+  <aside class="sidebar">
+    <div class="sidebar-brand">
+      <div class="login-badge">OF</div>
+      <div>
+        <div class="brand-text">ORION<span>FX</span></div>
+        <div class="brand-sub">ADMIN PANEL</div>
+      </div>
+    </div>
+    <nav class="side-nav">
+      <button type="button" class="nav-btn active" data-section="dashboard" onclick="showSection('dashboard')">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="3" y="3" width="7" height="9"/><rect x="14" y="3" width="7" height="5"/><rect x="14" y="12" width="7" height="9"/><rect x="3" y="16" width="7" height="5"/></svg>
+        <span>Dashboard</span>
+      </button>
+      <button type="button" class="nav-btn" data-section="bookings" onclick="showSection('bookings')">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="3" y="5" width="18" height="16" rx="2"/><path d="M16 3v4M8 3v4M3 10h18"/></svg>
+        <span>Bookings</span>
+      </button>
+      <button type="button" class="nav-btn" data-section="quotes" onclick="showSection('quotes')">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+        <span>Quote Requests</span>
+      </button>
+      <button type="button" class="nav-btn" data-section="services" onclick="showSection('services')">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M14.7 6.3a4 4 0 0 0-5.4 5.4L3 18l3 3 6.3-6.3a4 4 0 0 0 5.4-5.4l-2.1 2.1-2.6-.9-.9-2.6 2.1-2.1z"/></svg>
+        <span>Services &amp; Pricing</span>
+      </button>
+      <button type="button" class="nav-btn" data-section="customers" onclick="showSection('customers')">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+        <span>Customers</span>
+      </button>
+      <button type="button" class="nav-btn" data-section="settings" onclick="showSection('settings')">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>
+        <span>Settings</span>
+      </button>
+    </nav>
+    <div class="sidebar-footer">
+      <a href="index.html">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M3 9l9-6 9 6"/><path d="M5 10v10h14V10"/></svg>
+        <span>View Website</span>
+      </a>
+      <button type="button" onclick="adminLogout()">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><path d="M16 17l5-5-5-5"/><path d="M21 12H9"/></svg>
+        <span>Logout</span>
+      </button>
+    </div>
+  </aside>
+
+  <div class="main">
+    <div class="topbar">
+      <h1 id="pageTitle">Dashboard</h1>
+      <div class="who">
+        <div>
+          <div class="name" style="text-align:right">Admin</div>
+          <div class="role">Workshop Manager</div>
+        </div>
+        <div class="avatar">A</div>
+      </div>
+    </div>
+
+    <div class="content">
+
+      <div class="demo-banner">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 9v4M12 17h.01"/><circle cx="12" cy="12" r="10"/></svg>
+        This panel is running on sample data only. Connect it to a real backend/database to manage live bookings, quotes and pricing.
+      </div>
+
+      <!-- ================= DASHBOARD ================= -->
+      <section class="section active" id="section-dashboard">
+        <div class="kpi-grid">
+          <div class="kpi-card">
+            <div class="kpi-label">Today's Bookings</div>
+            <div class="kpi-value">6</div>
+            <div class="kpi-delta">+2 vs yesterday</div>
+          </div>
+          <div class="kpi-card">
+            <div class="kpi-label">Pending Quotes</div>
+            <div class="kpi-value">4</div>
+            <div class="kpi-delta down">Needs response</div>
+          </div>
+          <div class="kpi-card">
+            <div class="kpi-label">Total Customers</div>
+            <div class="kpi-value">238</div>
+            <div class="kpi-delta">+11 this month</div>
+          </div>
+          <div class="kpi-card">
+            <div class="kpi-label">Est. Monthly Revenue</div>
+            <div class="kpi-value">AED 41.2k</div>
+            <div class="kpi-delta">+8% vs last month</div>
+          </div>
+        </div>
+
+        <div class="panel">
+          <div class="panel-head">
+            <div>
+              <h3>Recent Bookings</h3>
+              <div class="panel-sub">Latest 5 appointments</div>
+            </div>
+          </div>
+          <table>
+            <thead>
+              <tr><th>Customer</th><th>Vehicle</th><th>Service</th><th>Date &amp; Time</th><th>Status</th></tr>
+            </thead>
+            <tbody id="dashBookingsBody"></tbody>
+          </table>
+        </div>
+
+        <div class="panel">
+          <div class="panel-head">
+            <div>
+              <h3>Recent Quote Requests</h3>
+              <div class="panel-sub">Latest 4 enquiries from the contact form</div>
+            </div>
+          </div>
+          <table>
+            <thead>
+              <tr><th>Name</th><th>Phone</th><th>Service</th><th>Received</th><th>Status</th></tr>
+            </thead>
+            <tbody id="dashQuotesBody"></tbody>
+          </table>
+        </div>
+      </section>
+
+      <!-- ================= BOOKINGS ================= -->
+      <section class="section" id="section-bookings">
+        <div class="panel">
+          <div class="panel-head">
+            <div>
+              <h3>All Bookings</h3>
+              <div class="panel-sub" id="bookingsCount">— appointments</div>
+            </div>
+            <div class="search-box">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="M21 21l-4.3-4.3"/></svg>
+              <input type="text" id="bookingsSearch" placeholder="Search by name, mobile, or plate...">
+            </div>
+          </div>
+          <table>
+            <thead>
+              <tr><th>Customer</th><th>Vehicle</th><th>Services</th><th>Date &amp; Time</th><th>Status</th><th>Actions</th></tr>
+            </thead>
+            <tbody id="bookingsBody"></tbody>
+          </table>
+        </div>
+      </section>
+
+      <!-- ================= QUOTE REQUESTS ================= -->
+      <section class="section" id="section-quotes">
+        <div class="panel">
+          <div class="panel-head">
+            <div>
+              <h3>Quote Requests</h3>
+              <div class="panel-sub" id="quotesCount">— enquiries</div>
+            </div>
+            <div class="search-box">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="M21 21l-4.3-4.3"/></svg>
+              <input type="text" id="quotesSearch" placeholder="Search by name or phone...">
+            </div>
+          </div>
+          <table>
+            <thead>
+              <tr><th>Name</th><th>Phone</th><th>Service</th><th>Message</th><th>Received</th><th>Status</th><th>Actions</th></tr>
+            </thead>
+            <tbody id="quotesBody"></tbody>
+          </table>
+        </div>
+      </section>
+
+      <!-- ================= SERVICES & PRICING ================= -->
+      <section class="section" id="section-services">
+        <div class="panel">
+          <div class="panel-head">
+            <div>
+              <h3>Services &amp; Pricing</h3>
+              <div class="panel-sub">Update the "From" price shown on the website for each service</div>
+            </div>
+            <button type="button" class="btn-save" onclick="saveServicePrices()">Save Changes</button>
+          </div>
+          <div id="servicesList"></div>
+        </div>
+      </section>
+
+      <!-- ================= CUSTOMERS ================= -->
+      <section class="section" id="section-customers">
+        <div class="panel">
+          <div class="panel-head">
+            <div>
+              <h3>Customers</h3>
+              <div class="panel-sub" id="customersCount">— customers</div>
+            </div>
+            <div class="search-box">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="M21 21l-4.3-4.3"/></svg>
+              <input type="text" id="customersSearch" placeholder="Search by name or mobile...">
+            </div>
+          </div>
+          <table>
+            <thead>
+              <tr><th>Name</th><th>Mobile</th><th>Email</th><th>Vehicles</th><th>Last Visit</th><th>Total Spend</th></tr>
+            </thead>
+            <tbody id="customersBody"></tbody>
+          </table>
+        </div>
+      </section>
+
+      <!-- ================= SETTINGS ================= -->
+      <section class="section" id="section-settings">
+        <div class="panel">
+          <div class="panel-head">
+            <div>
+              <h3>Business Settings</h3>
+              <div class="panel-sub">These map to the contact details shown on the public website</div>
+            </div>
+            <button type="button" class="btn-save" onclick="saveSettings()">Save Changes</button>
+          </div>
+          <div class="settings-grid">
+            <div class="a-field">
+              <label>Business Name</label>
+              <input type="text" id="setBusinessName" value="Orion Fx">
+            </div>
+            <div class="a-field">
+              <label>Phone Number</label>
+              <input type="text" id="setPhone" value="+971-00-000-0000">
+            </div>
+            <div class="a-field">
+              <label>Location</label>
+              <input type="text" id="setLocation" value="Orion Fx, Sharjah, UAE">
+            </div>
+            <div class="a-field">
+              <label>Working Hours</label>
+              <input type="text" id="setHours" value="Mon–Sat · 8:00 – 18:00">
+            </div>
+            <div class="a-field full">
+              <label>Promo Banner Text</label>
+              <input type="text" id="setPromo" value="OIL + FILTER CHANGE — FROM AED 110">
+            </div>
+            <div class="a-field full">
+              <label>About / Hero Note</label>
+              <textarea id="setAbout">From oil changes to full respray jobs, Orion Fx handles every corner of your car's life — under one roof, done properly, priced fairly.</textarea>
+            </div>
+          </div>
+        </div>
+      </section>
+
+    </div>
+  </div>
+</div>
+
+<div class="toast" id="toast">Saved</div>
+
+<script>
+/* ============================================================
+   DEMO DATA — replace with real API/database calls in production
+   ============================================================ */
+const servicesData = [
+  { title: "Oil &amp; Filter Change", tag: "Fast, Professional, Affordable", price: 110 },
+  { title: "Polishing", tag: "Bring Back the Shine", price: 220 },
+  { title: "Body Repair", tag: "Dents, Scratches, Perfect Finish", price: 440 },
+  { title: "Paint Work", tag: "Professional Respray", price: 1300 },
+  { title: "Window Tinting", tag: "Premium Film, Heat & UV Protection", price: 550 },
+  { title: "Car Wash", tag: "Inside & Out, Spotless Clean", price: 55 },
+  { title: "Detailing", tag: "Interior & Exterior, VIP Treatment", price: 330 },
+  { title: "Auto Electrics", tag: "Diagnostics, Repairs, Upgrades", price: 170 },
+  { title: "Mechanical Repairs", tag: "Engine, Brakes, Clutch & More", price: 300 },
+  { title: "Garage Rental", tag: "Secure, Clean, 24/7 Access", price: 450 },
+  { title: "Parking Rental", tag: "Safe, Convenient, CCTV", price: 150 },
+];
+
+const bookingsData = [
+  { name:"Ahmed Khan", mobile:"+971 50 111 2233", vehicle:"2022 Toyota Land Cruiser", plate:"Sharjah 45213", services:"Oil & Filter Change, Car Wash", date:"19 Aug 2026", time:"10:00 AM", status:"confirmed" },
+  { name:"Fatima Al Suwaidi", mobile:"+971 55 222 3344", vehicle:"2021 Nissan Patrol", plate:"Sharjah 88120", services:"Mechanical Repairs", date:"19 Aug 2026", time:"02:00 PM", status:"pending" },
+  { name:"Rashid Al Marzooqi", mobile:"+971 52 333 4455", vehicle:"2020 Ford F-150", plate:"Sharjah 10453", services:"Detailing, Polishing", date:"18 Aug 2026", time:"11:00 AM", status:"completed" },
+  { name:"Sara Ibrahim", mobile:"+971 56 444 5566", vehicle:"2023 Hyundai Tucson", plate:"Sharjah 30987", services:"Window Tinting", date:"18 Aug 2026", time:"09:00 AM", status:"completed" },
+  { name:"Mohammed Yusuf", mobile:"+971 50 555 6677", vehicle:"2019 Honda Civic", plate:"Sharjah 22764", services:"Body Repair, Paint Work", date:"17 Aug 2026", time:"03:00 PM", status:"cancelled" },
+  { name:"Layla Hassan", mobile:"+971 54 666 7788", vehicle:"2022 Lexus RX", plate:"Sharjah 60312", services:"Auto Electrics", date:"20 Aug 2026", time:"12:00 PM", status:"confirmed" },
+];
+
+const quotesData = [
+  { name:"Omar Al Zaabi", phone:"+971 50 777 8899", service:"Paint Work", message:"Need a full respray quote for a 2021 Camaro.", received:"19 Aug 2026", status:"pending" },
+  { name:"Noora Al Ali", phone:"+971 55 888 9900", service:"Detailing", message:"Interested in full interior + exterior detailing package pricing.", received:"18 Aug 2026", status:"pending" },
+  { name:"Khalid Ahmed", phone:"+971 52 999 0011", service:"Mechanical Repairs", message:"Engine making a rattling noise, need inspection quote.", received:"18 Aug 2026", status:"responded" },
+  { name:"Aisha Rahman", phone:"+971 56 000 1122", service:"Garage Rental", message:"Looking for monthly garage rental for a workshop.", received:"17 Aug 2026", status:"responded" },
+];
+
+const customersData = [
+  { name:"Ahmed Khan", mobile:"+971 50 111 2233", email:"ahmed.khan@example.com", vehicles:2, lastVisit:"19 Aug 2026", spend:"AED 3,420" },
+  { name:"Fatima Al Suwaidi", mobile:"+971 55 222 3344", email:"fatima.s@example.com", vehicles:1, lastVisit:"19 Aug 2026", spend:"AED 1,180" },
+  { name:"Rashid Al Marzooqi", mobile:"+971 52 333 4455", email:"rashid.m@example.com", vehicles:3, lastVisit:"18 Aug 2026", spend:"AED 6,750" },
+  { name:"Sara Ibrahim", mobile:"+971 56 444 5566", email:"sara.ibrahim@example.com", vehicles:1, lastVisit:"18 Aug 2026", spend:"AED 950" },
+  { name:"Mohammed Yusuf", mobile:"+971 50 555 6677", email:"m.yusuf@example.com", vehicles:1, lastVisit:"17 Aug 2026", spend:"AED 2,100" },
+  { name:"Layla Hassan", mobile:"+971 54 666 7788", email:"layla.h@example.com", vehicles:2, lastVisit:"20 Aug 2026", spend:"AED 4,300" },
+];
+
+function badge(status){
+  const map = {
+    confirmed: "Confirmed", completed: "Completed", cancelled: "Cancelled", pending: "Pending", responded: "Responded"
+  };
+  const cls = status === 'responded' ? 'completed' : status;
+  return `<span class="badge ${cls}">${map[status] || status}</span>`;
+}
+
+/* ---- Dashboard ---- */
+function renderDashboard(){
+  document.getElementById('dashBookingsBody').innerHTML = bookingsData.slice(0,5).map(b => `
+    <tr>
+      <td>${b.name}<div class="cell-sub">${b.mobile}</div></td>
+      <td>${b.vehicle}</td>
+      <td>${b.services}</td>
+      <td>${b.date}<div class="cell-sub">${b.time}</div></td>
+      <td>${badge(b.status)}</td>
+    </tr>`).join('');
+
+  document.getElementById('dashQuotesBody').innerHTML = quotesData.slice(0,4).map(q => `
+    <tr>
+      <td>${q.name}</td>
+      <td>${q.phone}</td>
+      <td>${q.service}</td>
+      <td>${q.received}</td>
+      <td>${badge(q.status)}</td>
+    </tr>`).join('');
+}
+
+/* ---- Bookings ---- */
+function renderBookings(filter){
+  const f = (filter || '').toLowerCase();
+  const rows = bookingsData.filter(b =>
+    !f || b.name.toLowerCase().includes(f) || b.mobile.toLowerCase().includes(f) || b.plate.toLowerCase().includes(f)
+  );
+  document.getElementById('bookingsCount').textContent = rows.length + ' appointments';
+  document.getElementById('bookingsBody').innerHTML = rows.map((b,i) => `
+    <tr>
+      <td>${b.name}<div class="cell-sub">${b.mobile}</div></td>
+      <td>${b.vehicle}<div class="cell-sub">${b.plate}</div></td>
+      <td>${b.services}</td>
+      <td>${b.date}<div class="cell-sub">${b.time}</div></td>
+      <td>${badge(b.status)}</td>
+      <td>
+        <div class="row-actions">
+          <button class="primary" onclick="markBookingStatus(${i}, 'completed')">Complete</button>
+          <button onclick="markBookingStatus(${i}, 'cancelled')">Cancel</button>
+        </div>
+      </td>
+    </tr>`).join('') || `<tr><td colspan="6" style="color:var(--steel)">No bookings match your search.</td></tr>`;
+}
+function markBookingStatus(i, status){
+  bookingsData[i].status = status;
+  renderBookings(document.getElementById('bookingsSearch').value);
+  renderDashboard();
+  showToast('Booking updated (demo only — not saved to a server)');
+}
+
+/* ---- Quotes ---- */
+function renderQuotes(filter){
+  const f = (filter || '').toLowerCase();
+  const rows = quotesData.filter(q => !f || q.name.toLowerCase().includes(f) || q.phone.toLowerCase().includes(f));
+  document.getElementById('quotesCount').textContent = rows.length + ' enquiries';
+  document.getElementById('quotesBody').innerHTML = rows.map((q,i) => `
+    <tr>
+      <td>${q.name}</td>
+      <td>${q.phone}</td>
+      <td>${q.service}</td>
+      <td style="max-width:220px">${q.message}</td>
+      <td>${q.received}</td>
+      <td>${badge(q.status)}</td>
+      <td>
+        <div class="row-actions">
+          <button class="primary" onclick="markQuoteResponded(${i})">Mark Responded</button>
+        </div>
+      </td>
+    </tr>`).join('') || `<tr><td colspan="7" style="color:var(--steel)">No quote requests match your search.</td></tr>`;
+}
+function markQuoteResponded(i){
+  quotesData[i].status = 'responded';
+  renderQuotes(document.getElementById('quotesSearch').value);
+  renderDashboard();
+  showToast('Quote marked as responded (demo only)');
+}
+
+/* ---- Customers ---- */
+function renderCustomers(filter){
+  const f = (filter || '').toLowerCase();
+  const rows = customersData.filter(c => !f || c.name.toLowerCase().includes(f) || c.mobile.toLowerCase().includes(f));
+  document.getElementById('customersCount').textContent = rows.length + ' customers';
+  document.getElementById('customersBody').innerHTML = rows.map(c => `
+    <tr>
+      <td>${c.name}</td>
+      <td>${c.mobile}</td>
+      <td>${c.email}</td>
+      <td>${c.vehicles}</td>
+      <td>${c.lastVisit}</td>
+      <td>${c.spend}</td>
+    </tr>`).join('') || `<tr><td colspan="6" style="color:var(--steel)">No customers match your search.</td></tr>`;
+}
+
+/* ---- Services & Pricing ---- */
+function renderServices(){
+  document.getElementById('servicesList').innerHTML = servicesData.map((s,i) => `
+    <div class="svc-row">
+      <div>
+        <div class="svc-name">${s.title}</div>
+        <div class="svc-tag">${s.tag}</div>
+      </div>
+      <div>
+        <label style="font-family:'Oswald',sans-serif;font-size:10px;color:var(--steel);letter-spacing:0.08em;text-transform:uppercase;">Currency</label>
+        <select disabled><option>AED</option></select>
+      </div>
+      <div>
+        <label style="font-family:'Oswald',sans-serif;font-size:10px;color:var(--steel);letter-spacing:0.08em;text-transform:uppercase;">From Price</label>
+        <input type="number" min="0" value="${s.price}" data-idx="${i}" class="svc-price-input">
+      </div>
+      <div></div>
+    </div>`).join('');
+}
+function saveServicePrices(){
+  document.querySelectorAll('.svc-price-input').forEach(inp => {
+    servicesData[inp.dataset.idx].price = Number(inp.value) || 0;
+  });
+  showToast('Pricing saved (demo only — connect a backend to update the live website)');
+}
+
+function saveSettings(){
+  showToast('Settings saved (demo only — connect a backend to update the live website)');
+}
+
+let toastTimer;
+function showToast(msg){
+  const t = document.getElementById('toast');
+  t.textContent = msg;
+  t.classList.add('show');
+  clearTimeout(toastTimer);
+  toastTimer = setTimeout(() => t.classList.remove('show'), 3200);
+}
+
+/* ---- Section switching ---- */
+function showSection(name){
+  document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
+  document.getElementById('section-' + name).classList.add('active');
+  document.querySelectorAll('.nav-btn').forEach(b => b.classList.toggle('active', b.dataset.section === name));
+  const titles = {
+    dashboard:"Dashboard", bookings:"Bookings", quotes:"Quote Requests",
+    services:"Services & Pricing", customers:"Customers", settings:"Settings"
+  };
+  document.getElementById('pageTitle').textContent = titles[name] || name;
+}
+
+/* ---- Search bindings ---- */
+document.getElementById('bookingsSearch').addEventListener('input', (e) => renderBookings(e.target.value));
+document.getElementById('quotesSearch').addEventListener('input', (e) => renderQuotes(e.target.value));
+document.getElementById('customersSearch').addEventListener('input', (e) => renderCustomers(e.target.value));
+
+/* ---- Password visibility (login gate) ---- */
+function toggleAdminPw(){
+  const pw = document.getElementById('adminPassword');
+  const eyeOpen = document.getElementById('aEyeOpen');
+  const eyeClosed = document.getElementById('aEyeClosed');
+  const isPassword = pw.type === 'password';
+  pw.type = isPassword ? 'text' : 'password';
+  eyeOpen.style.display = isPassword ? 'none' : 'block';
+  eyeClosed.style.display = isPassword ? 'block' : 'none';
+}
+
+/* ---- Login gate (demo only — replace with real auth) ---- */
+document.getElementById('adminLoginForm').addEventListener('submit', (e) => {
+  e.preventDefault();
+  const id = document.getElementById('adminUserId').value.trim();
+  const pw = document.getElementById('adminPassword').value.trim();
+  const err = document.getElementById('adminLoginError');
+  if (!id || !pw){
+    err.classList.add('show');
+    return;
+  }
+  err.classList.remove('show');
+  document.getElementById('adminLogin').style.display = 'none';
+  document.getElementById('adminApp').classList.add('active');
+});
+
+function adminLogout(){
+  document.getElementById('adminApp').classList.remove('active');
+  document.getElementById('adminLogin').style.display = 'flex';
+  document.getElementById('adminUserId').value = '';
+  document.getElementById('adminPassword').value = '';
+}
+
+/* ---- Init ---- */
+renderDashboard();
+renderBookings();
+renderQuotes();
+renderCustomers();
+renderServices();
+</script>
+
+</body>
+</html>

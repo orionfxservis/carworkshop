@@ -1,0 +1,1182 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Orion Fx — Your Car. Our Passion.</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Anton&family=Barlow+Condensed:wght@400;500;600;700&family=Oswald:wght@400;500;600&family=Cairo:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+<script src="https://accounts.google.com/gsi/client" async defer></script>
+<script async defer crossorigin="anonymous" src="https://connect.facebook.net/en_US/sdk.js"></script>
+<style>
+
+  :root{
+    --black: #100d0b;
+    --black-2: #1c1815;
+    --panel: #17140f;
+    --red: #e2241b;
+    --red-dim: #7a130d;
+    --steel: #8b8d92;
+    --steel-dim: #4a4c50;
+    --white: #f4f2ec;
+    --amber: #ffb100;
+    --radius: 2px;
+  }
+
+  *{ margin:0; padding:0; box-sizing:border-box; }
+
+  html{ scroll-behavior: smooth; }
+
+  body{
+    background: var(--black);
+    color: var(--white);
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 18px;
+    line-height: 1.5;
+    overflow-x: hidden;
+  }
+
+  h1,h2,h3,h4{
+    font-family: 'Anton', sans-serif;
+    font-weight: 400;
+    text-transform: uppercase;
+    letter-spacing: 0.02em;
+  }
+
+  .eyebrow, .mono{
+    font-family: 'Oswald', sans-serif;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+  }
+
+  a{ color: inherit; text-decoration: none; }
+
+  ::selection{ background: var(--red); color: var(--white); }
+
+  /* brushed metal texture overlay */
+  body::before{
+    content:"";
+    position: fixed; inset:0;
+    pointer-events: none;
+    z-index: 999;
+    background-image: repeating-linear-gradient(115deg, rgba(255,255,255,0.012) 0px, rgba(255,255,255,0.012) 1px, transparent 1px, transparent 3px);
+    mix-blend-mode: overlay;
+  }
+
+  /* ============ HEADER ============ */
+  header{
+    position: sticky; top:0; z-index: 500;
+    display:flex; align-items:center; justify-content: space-between;
+    padding: 18px 5%;
+    background: rgba(18,15,12,0.55);
+    -webkit-backdrop-filter: blur(18px) saturate(160%);
+    backdrop-filter: blur(18px) saturate(160%);
+    border-bottom: 1px solid rgba(244,242,236,0.08);
+    box-shadow: 0 8px 30px rgba(0,0,0,0.25);
+  }
+
+  .logo{
+    display:flex; align-items:center; gap:12px;
+  }
+  .logo-badge{
+    width:44px; height:44px;
+    border: 2px solid var(--red);
+    clip-path: polygon(50% 0%, 100% 25%, 100% 75%, 50% 100%, 0% 75%, 0% 25%);
+    display:flex; align-items:center; justify-content:center;
+    font-family:'Anton', sans-serif;
+    color: var(--red);
+    font-size: 18px;
+    flex-shrink:0;
+  }
+  .logo-text{
+    font-family:'Anton', sans-serif;
+    font-size: 26px;
+    line-height: 1;
+    letter-spacing: 0.01em;
+  }
+  .logo-text span{ color: var(--red); }
+  .logo-sub{
+    font-family:'Oswald', sans-serif;
+    font-size: 10px;
+    letter-spacing: 0.28em;
+    color: var(--steel);
+    margin-top: 2px;
+  }
+
+  nav{ display:flex; align-items:center; gap: 34px; }
+  nav a{
+    font-family:'Oswald', sans-serif;
+    font-size: 13px;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--white);
+    position: relative;
+    padding-bottom: 4px;
+    transition: color .25s;
+  }
+  nav a::after{
+    content:""; position:absolute; left:0; bottom:0; height:2px; width:0;
+    background: var(--red); transition: width .25s;
+  }
+  nav a:hover{ color: var(--red); }
+  nav a:hover::after{ width:100%; }
+
+  .call-pill{
+    display:flex; align-items:center; gap:10px;
+    border: 1px solid var(--red);
+    padding: 9px 18px;
+    font-family:'Oswald', sans-serif;
+    font-size: 13px;
+    letter-spacing: 0.06em;
+    transition: background .25s, color .25s;
+  }
+  .call-pill:hover{ background: var(--red); }
+  .call-pill svg{ width:16px; height:16px; }
+
+  .nav-toggle{ display:none; }
+
+  /* ============ HERO ============ */
+  .hero{
+    position: relative;
+    display: grid;
+    grid-template-columns: 1fr;
+    align-items: center;
+    min-height: 92vh;
+    padding: 60px 5% 70px;
+    overflow: hidden;
+  }
+
+  .hero::before{
+    content:"";
+    position:absolute; inset:0;
+    background:
+      linear-gradient(100deg, rgba(16,13,11,0.85) 0%, rgba(16,13,11,0.72) 32%, rgba(16,13,11,0.4) 58%, rgba(16,13,11,0.12) 78%, rgba(16,13,11,0.18) 100%),
+      linear-gradient(0deg, rgba(16,13,11,0.7) 0%, rgba(16,13,11,0) 22%, rgba(16,13,11,0) 78%, rgba(16,13,11,0.65) 100%);
+    z-index: 1;
+  }
+
+  .hero-glow{
+    position:absolute; top:-20%; right:-10%;
+    width:60vw; height:60vw;
+    background: radial-gradient(circle, rgba(226,36,27,0.2), transparent 65%);
+    pointer-events:none;
+    z-index: 1;
+  }
+
+  .hero-copy{ position:relative; z-index:2; max-width: 640px; }
+
+  .hero-photo-credit{
+    position: absolute; right: 5%; bottom: 22px; z-index: 2;
+    font-family:'Oswald', sans-serif; font-size: 10px; letter-spacing: 0.1em;
+    color: rgba(244,242,236,0.4); text-transform: uppercase;
+  }
+
+  .hero-eyebrow{
+    display:flex; align-items:center; gap:14px;
+    color: var(--red);
+    font-size: 12px;
+    margin-bottom: 22px;
+  }
+  .hero-eyebrow .line{ width:40px; height:1px; background: var(--red); }
+
+  .hero h1{
+    font-size: clamp(48px, 7vw, 96px);
+    line-height: 0.95;
+    color: var(--white);
+  }
+  .hero h1 .accent{ color: var(--red); }
+
+  .hero p.lead{
+    max-width: 480px;
+    margin-top: 22px;
+    color: #c9c6bf;
+    font-size: 20px;
+  }
+
+  .hero-actions{
+    display:flex; align-items:center; gap:20px;
+    margin-top: 34px;
+    flex-wrap: wrap;
+  }
+
+  .btn-primary{
+    background: var(--red);
+    color: var(--white);
+    padding: 16px 34px;
+    font-family:'Oswald', sans-serif;
+    font-size: 14px;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    border: 1px solid var(--red);
+    transition: background .25s, color .25s;
+    cursor: pointer;
+  }
+  .btn-primary:hover{ background: transparent; color: var(--red); }
+
+  .btn-ghost{
+    display:flex; align-items:center; gap:10px;
+    font-family:'Oswald', sans-serif;
+    font-size: 14px;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--white);
+    padding: 16px 6px;
+    border-bottom: 1px solid var(--steel-dim);
+    transition: border-color .25s, color .25s;
+  }
+  .btn-ghost:hover{ color: var(--amber); border-color: var(--amber); }
+
+  .promo-strip{
+    margin-top: 46px;
+    display:inline-flex; align-items:center; gap:16px;
+    border-left: 3px solid var(--amber);
+    padding: 14px 22px;
+    background: rgba(255,177,0,0.08);
+    -webkit-backdrop-filter: blur(14px) saturate(160%);
+    backdrop-filter: blur(14px) saturate(160%);
+    border-top: 1px solid rgba(255,177,0,0.2);
+    border-right: 1px solid rgba(255,177,0,0.2);
+    border-bottom: 1px solid rgba(255,177,0,0.2);
+    box-shadow: 0 8px 24px rgba(0,0,0,0.3);
+  }
+  .promo-strip .p-title{
+    font-family:'Anton', sans-serif;
+    font-size: 15px;
+    color: var(--amber);
+    letter-spacing: 0.02em;
+  }
+  .promo-strip .p-sub{
+    font-family:'Oswald', sans-serif;
+    font-size: 11px;
+    color: var(--steel);
+    letter-spacing: 0.1em;
+    margin-top: 2px;
+  }
+
+  /* hero visual: abstract car-silhouette / speed graphic */
+  .hero-visual{
+    position: relative; z-index:1;
+    height: 100%;
+    min-height: 480px;
+    display:flex; align-items:center; justify-content:center;
+  }
+  .hero-visual svg{ width:100%; height:auto; max-width: 560px; }
+
+  /* ============ TRUST STRIP ============ */
+  .trust-strip{
+    display:grid; grid-template-columns: repeat(4,1fr);
+    margin: 0 5%;
+    background: rgba(32,27,21,0.45);
+    -webkit-backdrop-filter: blur(16px) saturate(160%);
+    backdrop-filter: blur(16px) saturate(160%);
+    border: 1px solid rgba(244,242,236,0.08);
+    box-shadow: 0 8px 30px rgba(0,0,0,0.3);
+  }
+  .trust-item{
+    display:flex; align-items:center; gap:14px;
+    padding: 26px 20px;
+    border-right: 1px solid rgba(244,242,236,0.08);
+  }
+  .trust-item:last-child{ border-right:none; }
+  .trust-item svg{ width:28px; height:28px; stroke: var(--red); flex-shrink:0; }
+  .trust-item .t-title{
+    font-family:'Oswald', sans-serif;
+    font-size: 13px;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+  }
+  .trust-item .t-sub{
+    font-size: 14px;
+    color: var(--steel);
+  }
+
+  /* ============ SERVICES ============ */
+  .services{
+    position: relative;
+    padding: 110px 5% 100px;
+    overflow: hidden;
+  }
+  .services::before{
+    content:"";
+    position:absolute; top:-10%; left:60%;
+    width:45vw; height:45vw;
+    background: radial-gradient(circle, rgba(226,36,27,0.14), transparent 65%);
+    pointer-events:none; z-index:0;
+  }
+  .services::after{
+    content:"";
+    position:absolute; bottom:-15%; left:-10%;
+    width:35vw; height:35vw;
+    background: radial-gradient(circle, rgba(255,177,0,0.08), transparent 65%);
+    pointer-events:none; z-index:0;
+  }
+  .section-head, .accordion{ position: relative; z-index: 1; }
+
+  .section-head{
+    display:flex; align-items:flex-end; justify-content: space-between;
+    margin-bottom: 56px;
+    flex-wrap: wrap;
+    gap: 20px;
+  }
+  .section-head .eyebrow{ color: var(--red); font-size: 12px; margin-bottom: 14px; }
+  .section-head h2{ font-size: clamp(34px, 4.6vw, 58px); }
+  .section-head .desc{ max-width: 380px; color: var(--steel); font-size: 17px; }
+
+  .accordion{
+    display:flex; flex-direction: column;
+    border-top: 1px solid #262220;
+  }
+
+  .acc-item{
+    position: relative;
+    display:grid;
+    grid-template-columns: 80px 1fr;
+    border-bottom: 1px solid #262220;
+    max-height: 96px;
+    overflow: hidden;
+    transition: max-height .55s cubic-bezier(.6,0,.2,1), background .4s;
+    cursor: pointer;
+  }
+  .acc-item.active{
+    max-height: 340px;
+    background: rgba(32,27,21,0.5);
+    -webkit-backdrop-filter: blur(14px) saturate(160%);
+    backdrop-filter: blur(14px) saturate(160%);
+  }
+
+  .acc-num{
+    display:flex; align-items:flex-start; justify-content:center;
+    padding-top: 34px;
+    font-family:'Oswald', sans-serif;
+    font-size: 13px;
+    color: var(--steel-dim);
+    border-right: 1px solid #262220;
+  }
+
+  .acc-body{ padding: 26px 28px 26px 30px; }
+
+  .acc-top{
+    display:flex; align-items:center; gap:20px;
+  }
+
+  .acc-icon{
+    width:52px; height:52px; flex-shrink:0;
+    background: var(--red);
+    display:flex; align-items:center; justify-content:center;
+    transition: background .35s, transform .35s;
+  }
+  .acc-item.active .acc-icon{ background: var(--amber); transform: rotate(-6deg); }
+  .acc-icon svg{ width:26px; height:26px; stroke: var(--white); fill:none; stroke-width:1.6; }
+
+  .acc-titles h3{
+    font-size: 24px;
+    color: var(--white);
+  }
+  .acc-titles .tag{
+    font-family:'Oswald', sans-serif;
+    font-size: 12px;
+    letter-spacing: 0.1em;
+    color: var(--red);
+    text-transform: uppercase;
+    margin-top: 2px;
+  }
+
+  .acc-arrow{
+    margin-left: auto;
+    width: 34px; height:34px;
+    border: 1px solid var(--steel-dim);
+    display:flex; align-items:center; justify-content:center;
+    transition: transform .4s, border-color .4s;
+    flex-shrink:0;
+  }
+  .acc-item.active .acc-arrow{ transform: rotate(90deg); border-color: var(--red); }
+  .acc-arrow svg{ width:14px; height:14px; stroke: var(--white); }
+
+  .acc-detail{
+    display:grid; grid-template-columns: 1fr auto;
+    align-items:end;
+    gap: 20px;
+    margin-top: 20px;
+    padding-top: 20px;
+    border-top: 1px solid #262220;
+    opacity: 0;
+    transform: translateY(8px);
+    transition: opacity .4s ease .1s, transform .4s ease .1s;
+  }
+  .acc-item.active .acc-detail{ opacity:1; transform: translateY(0); }
+
+  .acc-detail p{ color: #c9c6bf; max-width: 560px; font-size: 16px; }
+  .acc-price{
+    text-align:right; white-space:nowrap;
+  }
+  .acc-price .from{
+    font-family:'Oswald', sans-serif; font-size:11px; color:var(--steel); letter-spacing:0.1em;
+  }
+  .acc-price .amt{
+    font-family:'Anton', sans-serif; font-size: 30px; color: var(--amber);
+  }
+
+  /* ============ WHY / STATS BAND ============ */
+  .band{
+    background: var(--red);
+    padding: 70px 5%;
+    display:grid; grid-template-columns: 1fr 1fr;
+    gap: 40px;
+    align-items:center;
+  }
+  .band h2{ color:var(--white); font-size: clamp(30px,4vw,46px); line-height:1.05; }
+  .band-stats{
+    display:grid; grid-template-columns: repeat(3,1fr); gap: 20px;
+    background: rgba(255,255,255,0.08);
+    -webkit-backdrop-filter: blur(12px) saturate(140%);
+    backdrop-filter: blur(12px) saturate(140%);
+    border: 1px solid rgba(255,255,255,0.18);
+    padding: 26px 20px;
+    box-shadow: 0 8px 30px rgba(0,0,0,0.15);
+  }
+  .band-stat .n{ font-family:'Anton', sans-serif; font-size: 44px; color: var(--white); }
+  .band-stat .l{ font-family:'Oswald', sans-serif; font-size: 11px; letter-spacing:0.1em; color: rgba(255,255,255,0.85); text-transform:uppercase; margin-top:4px; }
+
+  /* ============ CONTACT / FOOTER ============ */
+  footer{
+    position: relative;
+    padding: 90px 5% 40px;
+    display:grid; grid-template-columns: 1.1fr 0.9fr;
+    gap: 60px;
+    overflow: hidden;
+  }
+  footer::before{
+    content:"";
+    position:absolute; top:-10%; right:5%;
+    width:40vw; height:40vw;
+    background: radial-gradient(circle, rgba(226,36,27,0.1), transparent 65%);
+    pointer-events:none; z-index:0;
+  }
+  footer > div, footer > .form-panel, .bottom-bar{ position:relative; z-index:1; }
+
+  footer h2{ font-size: clamp(30px,4vw,50px); margin-bottom: 20px; }
+  footer .lead{ color: var(--steel); max-width: 420px; margin-bottom: 34px; }
+
+  .info-row{
+    display:flex; gap:16px; align-items:flex-start;
+    padding: 18px 0;
+    border-top: 1px solid #262220;
+  }
+  .info-row svg{ width:20px; height:20px; stroke: var(--red); flex-shrink:0; margin-top:2px; }
+  .info-row .k{ font-family:'Oswald', sans-serif; font-size:11px; letter-spacing:0.1em; color:var(--steel); text-transform:uppercase; }
+  .info-row .v{ font-size: 18px; margin-top: 2px; }
+
+  .form-panel{
+    background: rgba(32,27,21,0.5);
+    -webkit-backdrop-filter: blur(16px) saturate(160%);
+    backdrop-filter: blur(16px) saturate(160%);
+    border: 1px solid rgba(244,242,236,0.09);
+    box-shadow: 0 8px 32px rgba(0,0,0,0.35);
+    padding: 36px;
+  }
+  .form-panel h3{ font-size: 22px; margin-bottom: 22px; }
+  .form-row{ margin-bottom: 18px; }
+  .form-row label{
+    display:block; font-family:'Oswald', sans-serif; font-size: 11px; letter-spacing:0.1em; color:var(--steel); text-transform:uppercase; margin-bottom:8px;
+  }
+  .form-row input, .form-row select, .form-row textarea{
+    width:100%; background: transparent; border: 1px solid var(--steel-dim);
+    color: var(--white); padding: 12px 14px; font-family:'Barlow Condensed', sans-serif; font-size:16px;
+    outline:none; transition: border-color .25s;
+  }
+  .form-row input:focus, .form-row select:focus, .form-row textarea:focus{ border-color: var(--red); }
+  .form-row textarea{ resize: vertical; min-height: 80px; }
+  .form-submit{
+    width:100%; background: var(--red); border:none; color:var(--white);
+    padding:15px; font-family:'Oswald', sans-serif; letter-spacing:0.1em; text-transform:uppercase; font-size:14px;
+    cursor:pointer; transition: background .25s;
+  }
+  .form-submit:hover{ background: var(--amber); color: var(--black); }
+
+  .bottom-bar{
+    margin-top: 60px;
+    padding-top: 26px;
+    border-top: 1px solid #262220;
+    display:flex; justify-content:space-between; align-items:center;
+    grid-column: 1 / -1;
+    flex-wrap: wrap;
+    gap: 14px;
+    font-family:'Oswald', sans-serif; font-size: 12px; color: var(--steel-dim);
+    letter-spacing: 0.06em;
+  }
+  .footer-links{
+    display:flex; align-items:center; gap: 22px;
+    flex-wrap: wrap;
+  }
+  .footer-links a{
+    color: var(--steel-dim);
+    transition: color .2s;
+  }
+  .footer-links a:hover{ color: var(--red); }
+
+  /* ============ RESPONSIVE ============ */
+  @media (max-width: 900px){
+    nav, .call-pill{ display:none; }
+    .hero{ min-height: 78vh; padding-top: 40px; background-position: 65% center; }
+    .hero-copy{ max-width: 100%; }
+    .trust-strip{ grid-template-columns: repeat(2,1fr); }
+    .trust-item:nth-child(2){ border-right:none; }
+    .band{ grid-template-columns:1fr; }
+    footer{ grid-template-columns:1fr; }
+    .acc-item{ grid-template-columns: 60px 1fr; }
+    .acc-detail{ grid-template-columns: 1fr; }
+    .acc-price{ text-align:left; }
+  }
+
+  @media (prefers-reduced-motion: reduce){
+    *{ transition: none !important; scroll-behavior: auto !important; }
+  }
+
+
+  /* ============ GLOBAL FIXED BACKGROUND (glass theme) ============ */
+  .site-bg{
+    position: fixed; inset:0; z-index:-2; overflow:hidden;
+  }
+  .site-bg img{
+    position:absolute; inset:0; width:100%; height:100%;
+    object-fit: cover; object-position: center 50%;
+    opacity:0; transition: opacity 2.2s ease;
+    filter: saturate(0.8) brightness(0.55) contrast(1.05);
+  }
+  .site-bg img.active{ opacity:1; }
+
+  .site-overlay{
+    position: fixed; inset:0; z-index:-1; pointer-events:none;
+    background:
+      radial-gradient(circle at 12% 15%, rgba(226,36,27,0.20), transparent 42%),
+      radial-gradient(circle at 88% 78%, rgba(255,177,0,0.16), transparent 42%),
+      linear-gradient(180deg, rgba(16,13,11,0.68) 0%, rgba(16,13,11,0.76) 45%, rgba(16,13,11,0.84) 100%);
+  }
+
+
+  /* ============ BILINGUAL (EN / AR) ============ */
+  body.lang-ar, body.lang-ar input, body.lang-ar textarea, body.lang-ar select, body.lang-ar button{
+    font-family: 'Cairo', sans-serif;
+  }
+  body.lang-ar h1, body.lang-ar h2, body.lang-ar h3, body.lang-ar h4{
+    font-family: 'Cairo', sans-serif; font-weight: 800; letter-spacing: 0; text-transform: none;
+  }
+  body.lang-ar .eyebrow, body.lang-ar .mono, body.lang-ar nav a, body.lang-ar .btn-primary,
+  body.lang-ar .btn-ghost, body.lang-ar .call-pill, body.lang-ar .logo-sub, body.lang-ar .acc-titles .tag,
+  body.lang-ar .form-submit, body.lang-ar label, body.lang-ar .lang-toggle{
+    font-family: 'Cairo', sans-serif; letter-spacing: 0;
+  }
+
+  .lang-toggle{
+    display:flex; align-items:center; gap:6px;
+    border: 1px solid var(--steel-dim); background: transparent; color: var(--white);
+    font-family:'Oswald', sans-serif; font-size: 12px; letter-spacing: 0.1em; text-transform: uppercase;
+    padding: 9px 16px; cursor:pointer; transition: border-color .2s, color .2s;
+    margin-left: 14px;
+  }
+  .lang-toggle:hover{ border-color: var(--red); color: var(--red); }
+  html[dir="rtl"] .lang-toggle{ margin-left:0; margin-right:14px; }
+
+  html[dir="rtl"] .promo-strip{ border-left:none; border-right: 3px solid var(--amber); }
+  html[dir="rtl"] .acc-num{ border-right:none; border-left: 1px solid #262220; }
+  html[dir="rtl"] .acc-price{ text-align:left; }
+  html[dir="rtl"] nav a::after{ left:auto; right:0; }
+  html[dir="rtl"] .trust-item{ border-right:none; border-left: 1px solid rgba(244,242,236,0.08); }
+  html[dir="rtl"] .trust-item:last-child{ border-left:none; }
+  html[dir="rtl"] .btn-ghost svg{ transform: scaleX(-1); }
+  html[dir="rtl"] .call-pill svg{ transform: scaleX(-1); }
+
+
+  /* ============ LOGIN DROPDOWN ============ */
+  .header-actions{ display:flex; align-items:center; gap:14px; }
+
+  .login-wrap{ position:relative; }
+
+  .login-btn{
+    display:flex; align-items:center; gap:8px;
+    background: transparent; border: 1px solid var(--steel-dim); color: var(--white);
+    font-family:'Oswald', sans-serif; font-size:13px; letter-spacing:0.06em; text-transform:uppercase;
+    padding: 9px 18px; cursor:pointer; transition: border-color .2s, color .2s;
+  }
+  .login-btn:hover, .login-btn.active{ border-color: var(--red); color: var(--red); }
+  .login-btn svg{ width:16px; height:16px; }
+
+  .login-dropdown{
+    position:absolute; top: calc(100% + 14px); right:0;
+    width: 320px;
+    background: rgba(12,10,8,0.94);
+    -webkit-backdrop-filter: blur(24px) saturate(150%);
+    backdrop-filter: blur(24px) saturate(150%);
+    border: 1px solid rgba(244,242,236,0.14);
+    box-shadow: 0 20px 60px rgba(0,0,0,0.6);
+    padding: 26px 22px;
+    opacity:0; visibility:hidden; transform: translateY(-10px);
+    transition: opacity .25s ease, transform .25s ease, visibility .25s;
+    z-index: 600;
+  }
+  .login-dropdown.open{ opacity:1; visibility:visible; transform:translateY(0); }
+  html[dir="rtl"] .login-dropdown{ right:auto; left:0; }
+
+  .login-head{ display:flex; align-items:center; justify-content:space-between; margin-bottom:18px; }
+  .login-head h4{ font-size:16px; font-family:'Anton',sans-serif; text-transform:uppercase; letter-spacing:0.02em; margin:0; }
+  .login-close{ background:transparent; border:none; color:var(--steel); font-size:20px; line-height:1; cursor:pointer; padding:0 4px; transition: color .2s; }
+  .login-close:hover{ color: var(--red); }
+
+  .login-field{ margin-bottom:14px; display:flex; flex-direction:column; gap:6px; }
+  .login-field label{ font-family:'Oswald', sans-serif; font-size:10px; letter-spacing:0.1em; color:var(--steel); text-transform:uppercase; }
+  .login-field input{
+    width:100%; height:38px; box-sizing:border-box;
+    background: rgba(6,5,4,0.9); border:1px solid var(--steel-dim); color:var(--white);
+    padding: 0 12px; font-family:'Barlow Condensed', sans-serif; font-size:15px; outline:none;
+    transition: border-color .2s;
+  }
+  .login-field input:focus{ border-color: var(--red); }
+
+  .pw-wrap{ position:relative; }
+  .pw-wrap input{ padding-right:40px; }
+  html[dir="rtl"] .pw-wrap input{ padding-right:12px; padding-left:40px; }
+  .pw-eye{
+    position:absolute; top:50%; right:10px; transform:translateY(-50%);
+    background:transparent; border:none; cursor:pointer; padding:4px; color:var(--steel);
+    display:flex; align-items:center; transition: color .2s;
+  }
+  html[dir="rtl"] .pw-eye{ right:auto; left:10px; }
+  .pw-eye:hover{ color:var(--red); }
+  .pw-eye svg{ width:18px; height:18px; }
+
+  .login-row-between{ display:flex; align-items:center; justify-content:space-between; margin-bottom:18px; font-size:13px; }
+  .remember-me{ display:flex; align-items:center; gap:6px; color:var(--steel); cursor:pointer; }
+  .remember-me input{ accent-color: var(--red); }
+  .forgot-link{ color:var(--steel); text-decoration:underline; transition: color .2s; }
+  .forgot-link:hover{ color: var(--red); }
+
+  .login-submit{
+    width:100%; height:38px; box-sizing:border-box;
+    display:flex; align-items:center; justify-content:center;
+    background: var(--red); border:none; color:var(--white);
+    padding:0; font-family:'Oswald', sans-serif; letter-spacing:0.1em; text-transform:uppercase; font-size:13px;
+    cursor:pointer; transition: background .2s; margin-bottom:18px;
+  }
+  .login-submit:hover{ background: var(--amber); color: var(--black); }
+
+  .login-divider{ display:flex; align-items:center; gap:12px; margin-bottom:16px; color:var(--steel-dim); font-family:'Oswald', sans-serif; font-size:11px; letter-spacing:0.1em; }
+  .login-divider::before, .login-divider::after{ content:""; flex:1; height:1px; background:#262220; }
+
+  .social-btn{
+    width:100%; height:38px; box-sizing:border-box;
+    display:flex; align-items:center; justify-content:center; gap:10px;
+    padding:0 12px; margin-bottom:10px; border:1px solid var(--steel-dim); background: rgba(6,5,4,0.75);
+    color:var(--white); font-family:'Oswald', sans-serif; font-size:12.5px; letter-spacing:0.02em;
+    cursor:pointer; transition: border-color .2s, background .2s;
+  }
+  .social-btn:hover{ border-color: var(--red); }
+  .social-btn svg{ width:18px; height:18px; flex-shrink:0; }
+
+  .login-signup-row{ text-align:center; font-size:13px; color:var(--steel); margin-top:8px; }
+  .login-signup-row a{ color: var(--red); text-decoration:underline; margin-inline-start:4px; }
+
+  @media (max-width: 380px){
+    .login-dropdown{ width: 90vw; right: -60px; }
+    html[dir="rtl"] .login-dropdown{ left: -60px; }
+  }
+
+</style>
+</head>
+<body>
+
+
+<div class="site-bg">
+  <img class="active" alt="" referrerpolicy="no-referrer" src="https://images.unsplash.com/photo-1615906655593-ad0386982a0f?auto=format&fit=crop&w=2200&q=75">
+  <img alt="" referrerpolicy="no-referrer" src="https://images.unsplash.com/photo-1487754180451-c456f719a1fc?auto=format&fit=crop&w=2200&q=75">
+  <img alt="" referrerpolicy="no-referrer" src="https://images.unsplash.com/photo-1596986952526-3be237187071?auto=format&fit=crop&w=2200&q=75">
+  <img alt="" referrerpolicy="no-referrer" src="https://images.unsplash.com/photo-1643700973089-baa86a1ab9ee?auto=format&fit=crop&w=2200&q=75">
+</div>
+<div class="site-overlay"></div>
+
+<header>
+  <div class="logo">
+    <div class="logo-badge">OF</div>
+    <div>
+      <div class="logo-text">ORION<span>FX</span></div>
+      <div class="logo-sub" data-en="YOUR CAR &nbsp;·&nbsp; OUR PASSION" data-ar="سيارتك &nbsp;·&nbsp; شغفنا">YOUR CAR &nbsp;·&nbsp; OUR PASSION</div>
+    </div>
+  </div>
+  <nav>
+    <a href="#home" data-en="Home" data-ar="الرئيسية">Home</a>
+    <a href="#services" data-en="Services" data-ar="الخدمات">Services</a>
+    <a href="#about" data-en="Why Us" data-ar="لماذا نحن">Why Us</a>
+    <a href="pages/service.html" data-en="Book A Service" data-ar="احجز خدمة">Book A Service</a>
+    <a href="#contact" data-en="Contact" data-ar="تواصل معنا">Contact</a>
+  </nav>
+  <div class="header-actions">
+  <button type="button" class="lang-toggle" onclick="setLang(currentLang==='en'?'ar':'en')">AR</button>
+  <a class="call-pill" href="tel:+971000000000">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
+    +971-00-000-0000
+  </a>
+  <div class="login-wrap" id="loginWrap">
+    <button type="button" class="login-btn" id="loginBtn" onclick="toggleLoginBox()">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+      <span data-en="Login" data-ar="تسجيل الدخول">Login</span>
+    </button>
+    <div class="login-dropdown" id="loginDropdown">
+      <div class="login-head">
+        <h4 data-en="Login To Your Account" data-ar="تسجيل الدخول إلى حسابك">Login To Your Account</h4>
+        <button type="button" class="login-close" onclick="toggleLoginBox(false)" aria-label="Close">&times;</button>
+      </div>
+      <form id="loginForm" onsubmit="return false;">
+        <div class="login-field">
+          <label data-en="User Id" data-ar="معرف المستخدم">User Id</label>
+          <input type="text" id="loginUserId" data-en-ph="Enter your User Id" data-ar-ph="أدخل معرف المستخدم" placeholder="Enter your User Id" autocomplete="username">
+        </div>
+        <div class="login-field">
+          <label data-en="Password" data-ar="كلمة المرور">Password</label>
+          <div class="pw-wrap">
+            <input type="password" id="loginPassword" data-en-ph="Enter your password" data-ar-ph="أدخل كلمة المرور" placeholder="Enter your password" autocomplete="current-password">
+            <button type="button" class="pw-eye" onclick="togglePasswordVisibility()" aria-label="Show password">
+              <svg id="eyeIconOpen" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M1 12s4-7 11-7 11 7 11 7-4 7-11 7-11-7-11-7z"/><circle cx="12" cy="12" r="3"/></svg>
+              <svg id="eyeIconClosed" style="display:none" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M17.94 17.94A10.94 10.94 0 0 1 12 19c-7 0-11-7-11-7a21.6 21.6 0 0 1 5.06-5.94M9.9 4.24A10.4 10.4 0 0 1 12 4c7 0 11 7 11 7a21.6 21.6 0 0 1-2.16 3.19m-6.72-1.07a3 3 0 1 1-4.24-4.24"/><path d="M1 1l22 22"/></svg>
+            </button>
+          </div>
+        </div>
+        <div class="login-row-between">
+          <label class="remember-me"><input type="checkbox"><span data-en="Remember me" data-ar="تذكرني">Remember me</span></label>
+          <a href="#" class="forgot-link" data-en="Forgot password?" data-ar="نسيت كلمة المرور؟">Forgot password?</a>
+        </div>
+        <button type="submit" class="login-submit" data-en="Login" data-ar="تسجيل الدخول">Login</button>
+      </form>
+      <div class="login-divider"><span data-en="OR" data-ar="أو">OR</span></div>
+      <button type="button" class="social-btn" id="googleLoginBtn">
+        <svg viewBox="0 0 48 48"><path fill="#FFC107" d="M43.6 20.5H42V20H24v8h11.3C33.7 32.7 29.3 36 24 36c-6.6 0-12-5.4-12-12s5.4-12 12-12c3.1 0 5.8 1.1 8 3l6-6C34.6 5.1 29.6 3 24 3 12.4 3 3 12.4 3 24s9.4 21 21 21 21-9.4 21-21c0-1.2-.1-2.4-.4-3.5z"/><path fill="#FF3D00" d="M6.3 14.7l6.6 4.8C14.5 15.9 18.9 13 24 13c3.1 0 5.8 1.1 8 3l6-6C34.6 6.1 29.6 4 24 4 16.3 4 9.6 8.3 6.3 14.7z"/><path fill="#4CAF50" d="M24 44c5.5 0 10.4-1.9 14.1-5.1l-6.5-5.5C29.5 35.4 26.9 36 24 36c-5.3 0-9.7-3.3-11.3-8l-6.6 5.1C9.5 39.6 16.2 44 24 44z"/><path fill="#1976D2" d="M43.6 20.5H42V20H24v8h11.3c-.8 2.3-2.3 4.3-4.2 5.7l6.5 5.5C41 35.9 44 30.4 44 24c0-1.2-.1-2.4-.4-3.5z"/></svg>
+        <span data-en="Login with Google Account" data-ar="تسجيل الدخول عبر حساب جوجل">Login with Google Account</span>
+      </button>
+      <button type="button" class="social-btn" id="facebookLoginBtn">
+        <svg viewBox="0 0 24 24" fill="#1877F2"><path d="M22 12a10 10 0 1 0-11.6 9.9v-7H7.9V12h2.5V9.8c0-2.5 1.5-3.9 3.8-3.9 1.1 0 2.2.2 2.2.2v2.5h-1.3c-1.2 0-1.6.8-1.6 1.6V12h2.8l-.4 2.9h-2.4v7A10 10 0 0 0 22 12z"/></svg>
+        <span data-en="Login with Facebook Account" data-ar="تسجيل الدخول عبر فيسبوك">Login with Facebook Account</span>
+      </button>
+      <div class="login-signup-row">
+        <span data-en="Don't have an account?" data-ar="ليس لديك حساب؟">Don't have an account?</span><a href="#" data-en="Sign Up" data-ar="إنشاء حساب">Sign Up</a>
+      </div>
+    </div>
+  </div>
+  </div>
+</header>
+
+<section class="hero" id="home">
+  <div class="hero-glow"></div>
+  <div class="hero-copy">
+    <div class="hero-eyebrow"><span class="line"></span> <span data-en="SHARJAH, U-A-E &mdash; SALES &middot; SERVICE &middot; MAINTENANCE" data-ar="الشارقة، الإمارات &mdash; مبيعات &middot; خدمة &middot; صيانة">SHARJAH, U-A-E &mdash; SALES &middot; SERVICE &middot; MAINTENANCE</span></div>
+    <h1><span data-en="ONE PLACE." data-ar="مكان واحد.">ONE PLACE.</span><br><span data-en="ALL" data-ar="كل">ALL</span> <span class="accent" data-en="SERVICES." data-ar="الخدمات.">SERVICES.</span></h1>
+    <p class="lead" data-en="From oil changes to full respray jobs, Orion Fx handles every corner of your car's life — under one roof, done properly, priced fairly." data-ar="من تغيير الزيت إلى إعادة الطلاء الكاملة، تهتم أوريون إف إكس بكل جانب من جوانب سيارتك — تحت سقف واحد، بعمل متقن وأسعار عادلة.">From oil changes to full respray jobs, Orion Fx handles every corner of your car's life — under one roof, done properly, priced fairly.</p>
+    <div class="hero-actions">
+      <a class="btn-primary" href="pages/service.html" style="display:inline-block;" data-en="Book a Service" data-ar="احجز خدمة">Book a Service</a>
+      <a class="btn-ghost" href="#services">
+        <span data-en="View All Services" data-ar="عرض جميع الخدمات">View All Services</span>
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+      </a>
+    </div>
+    <div class="promo-strip">
+      <div>
+        <div class="p-title" data-en="OIL + FILTER CHANGE — FROM AED 110" data-ar="تغيير الزيت والفلتر — يبدأ من 110 درهم">OIL + FILTER CHANGE — FROM AED 110</div>
+        <div class="p-sub" data-en="FAST · PROFESSIONAL · AFFORDABLE" data-ar="سريع · احترافي · بأسعار مناسبة">FAST · PROFESSIONAL · AFFORDABLE</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="hero-photo-credit" data-en="Photo — Unsplash" data-ar="صورة — Unsplash">Photo — Unsplash</div>
+</section>
+
+<div class="trust-strip" id="about">
+  <div class="trust-item">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M12 2l8 4v6c0 5-3.5 8.5-8 10-4.5-1.5-8-5-8-10V6l8-4z"/></svg>
+    <div><div class="t-title" data-en="Professional Team" data-ar="فريق محترف">Professional Team</div><div class="t-sub" data-en="Certified mechanics" data-ar="ميكانيكيون معتمدون">Certified mechanics</div></div>
+  </div>
+  <div class="trust-item">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><circle cx="12" cy="8" r="6"/><path d="M8.5 13.5L6 22l6-3 6 3-2.5-8.5"/></svg>
+    <div><div class="t-title" data-en="Premium Quality" data-ar="جودة ممتازة">Premium Quality</div><div class="t-sub" data-en="OEM-grade parts" data-ar="قطع غيار أصلية">OEM-grade parts</div></div>
+  </div>
+  <div class="trust-item">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 3"/></svg>
+    <div><div class="t-title" data-en="Fast &amp; Reliable" data-ar="سريع وموثوق">Fast &amp; Reliable</div><div class="t-sub" data-en="Same-day service" data-ar="خدمة في نفس اليوم">Same-day service</div></div>
+  </div>
+  <div class="trust-item">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M7 11l3 3 7-7"/><path d="M21 12a9 9 0 11-6.219-8.56"/></svg>
+    <div><div class="t-title" data-en="Customer Satisfaction" data-ar="رضا العملاء">Customer Satisfaction</div><div class="t-sub" data-en="5-star rated" data-ar="تقييم 5 نجوم">5-star rated</div></div>
+  </div>
+</div>
+
+<section class="services" id="services">
+  <div class="section-head">
+    <div>
+      <div class="eyebrow" data-en="What We Do" data-ar="ماذا نقدم">What We Do</div>
+      <h2 data-en="Full-Service Garage" data-ar="ورشة خدمات متكاملة">Full-Service Garage</h2>
+    </div>
+    <div class="desc" data-en="Hover or tap a service to see full details, pricing and what's included — everything your car needs, in one list." data-ar="مرّر المؤشر أو اضغط على أي خدمة لعرض التفاصيل الكاملة والأسعار وما تشمله — كل ما تحتاجه سيارتك في قائمة واحدة.">Hover or tap a service to see full details, pricing and what's included — everything your car needs, in one list.</div>
+  </div>
+
+  <div class="accordion" id="accordion">
+    <!-- items injected by JS -->
+  </div>
+</section>
+
+<section class="band">
+  <h2 data-en="Quality you can trust,<br>on every job we take on." data-ar="جودة يمكنك الوثوق بها،<br>في كل عمل نقوم به.">Quality you can trust,<br>on every job we take on.</h2>
+  <div class="band-stats">
+    <div class="band-stat"><div class="n">12+</div><div class="l" data-en="Years Trading" data-ar="سنوات الخبرة">Years Trading</div></div>
+    <div class="band-stat"><div class="n">9.4k</div><div class="l" data-en="Cars Serviced" data-ar="سيارة تمت خدمتها">Cars Serviced</div></div>
+    <div class="band-stat"><div class="n">4.9★</div><div class="l" data-en="Average Rating" data-ar="متوسط التقييم">Average Rating</div></div>
+  </div>
+</section>
+
+<footer id="contact">
+  <div>
+    <h2 data-en="Get In Touch" data-ar="تواصل معنا">Get In Touch</h2>
+    <p class="lead" data-en="Drop by, call ahead, or send a message — we'll get your car booked in fast." data-ar="مرّ بنا، اتصل مسبقًا، أو أرسل رسالة — وسنقوم بحجز موعد لسيارتك بسرعة.">Drop by, call ahead, or send a message — we'll get your car booked in fast.</p>
+
+    <div class="info-row">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
+      <div><div class="k" data-en="Phone" data-ar="الهاتف">Phone</div><div class="v">+971-00-000-0000</div></div>
+    </div>
+    <div class="info-row">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><path d="M21 10c0 6-9 12-9 12s-9-6-9-12a9 9 0 1 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
+      <div><div class="k" data-en="Location" data-ar="الموقع">Location</div><div class="v" data-en="Orion Fx, Sharjah, UAE" data-ar="أوريون إف إكس، الشارقة، الإمارات">Orion Fx, Sharjah, UAE</div></div>
+    </div>
+    <div class="info-row">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 3"/></svg>
+      <div><div class="k" data-en="Hours" data-ar="ساعات العمل">Hours</div><div class="v" data-en="Mon–Sat · 8:00 – 18:00" data-ar="الإثنين–السبت · 8:00 – 18:00">Mon–Sat · 8:00 – 18:00</div></div>
+    </div>
+  </div>
+
+  <div class="form-panel">
+    <h3 data-en="Request a Quote" data-ar="اطلب عرض سعر">Request a Quote</h3>
+    <form onsubmit="return false;">
+      <div class="form-row">
+        <label data-en="Name" data-ar="الاسم">Name</label>
+        <input type="text" data-en-ph="Your name" data-ar-ph="اسمك" placeholder="Your name">
+      </div>
+      <div class="form-row">
+        <label data-en="Phone" data-ar="الهاتف">Phone</label>
+        <input type="tel" placeholder="+971 00 000 0000">
+      </div>
+      <div class="form-row">
+        <label data-en="Service" data-ar="الخدمة">Service</label>
+        <select>
+          <option data-en="Select a service" data-ar="اختر خدمة">Select a service</option>
+        </select>
+      </div>
+      <div class="form-row">
+        <label data-en="Message" data-ar="الرسالة">Message</label>
+        <textarea data-en-ph="Tell us about your car and what it needs" data-ar-ph="أخبرنا عن سيارتك وما تحتاجه" placeholder="Tell us about your car and what it needs"></textarea>
+      </div>
+      <button class="form-submit" type="submit" data-en="Send Request" data-ar="إرسال الطلب">Send Request</button>
+    </form>
+  </div>
+
+  <div class="bottom-bar">
+    <div data-en="© 2026 Orion Fx. All rights reserved, Sharjah, UAE." data-ar="© 2026 أوريون إف إكس. جميع الحقوق محفوظة، الشارقة، الإمارات.">© 2026 Orion Fx. All rights reserved, Sharjah, UAE.</div>
+    <div class="footer-links">
+      <a href="./pages/policy.html" data-en="Privacy Policy" data-ar="سياسة الخصوصية">Privacy Policy</a>
+      <a href="./pages/terms.html" data-en="Terms of Service" data-ar="شروط الخدمة">Terms of Service</a>
+      <a href="./pages/cookies.html" data-en="Cookie Policy" data-ar="سياسة ملفات تعريف الارتباط">Cookie Policy</a>
+    </div>
+  </div>
+</footer>
+
+<script>
+// global fixed background crossfade (site-wide)
+(function(){
+  const slides = document.querySelectorAll('.site-bg img');
+  if (slides.length < 2) return;
+  let i = 0;
+  setInterval(() => {
+    slides[i].classList.remove('active');
+    i = (i + 1) % slides.length;
+    slides[i].classList.add('active');
+  }, 5000);
+})();
+
+const services = [
+  {
+    title_en: "Car Sales", title_ar: "بيع السيارات",
+    tag_en: "Quality Used Cars", tag_ar: "سيارات مستعملة بجودة عالية",
+    icon: '<path d="M3 12l1.5-4.5A2 2 0 0 1 6.4 6h11.2a2 2 0 0 1 1.9 1.5L21 12"/><rect x="2.5" y="12" width="19" height="6" rx="1.5"/><circle cx="7.5" cy="18.5" r="1.6"/><circle cx="16.5" cy="18.5" r="1.6"/>',
+    desc_en: "Hand-picked used cars, fully inspected and reconditioned before they reach the forecourt. Every vehicle comes with a full history check and workshop report.",
+    desc_ar: "سيارات مستعملة مختارة بعناية، مفحوصة بالكامل ومُجهزة قبل عرضها للبيع. كل سيارة تأتي مع تقرير فحص كامل وسجل من الورشة.",
+    price: "AED 32,000"
+  },
+  {
+    title_en: "Polishing", title_ar: "التلميع",
+    tag_en: "Bring Back the Shine", tag_ar: "استعادة البريق",
+    icon: '<circle cx="12" cy="12" r="4"/><path d="M12 2v3M12 19v3M2 12h3M19 12h3M4.9 4.9l2.1 2.1M17 17l2.1 2.1M4.9 19.1L7 17M17 7l2.1-2.1"/>',
+    desc_en: "Machine polishing to remove swirl marks, light scratches and oxidation — restoring depth and gloss to your paintwork like it just left the showroom.",
+    desc_ar: "تلميع بالماكينة لإزالة آثار الخدوش الخفيفة والأكسدة — لاستعادة عمق ولمعان الطلاء كأنها خرجت للتو من المعرض.",
+    price: "AED 220"
+  },
+  {
+    title_en: "Body Repair", title_ar: "إصلاح الهيكل",
+    tag_en: "Dents, Scratches, Perfect Finish", tag_ar: "انبعاجات وخدوش بلمسة نهائية مثالية",
+    icon: '<path d="M4 16l2-7a2 2 0 0 1 2-1.5h8a2 2 0 0 1 2 1.5l2 7"/><rect x="3" y="16" width="18" height="4" rx="1"/><circle cx="7.5" cy="20" r="1"/><circle cx="16.5" cy="20" r="1"/>',
+    desc_en: "Panel beating, dent removal and structural repair carried out to manufacturer standard, using colour-matched materials for a seamless finish.",
+    desc_ar: "تصليح الألواح وإزالة الانبعاجات وإصلاح الهيكل وفق معايير الشركة المصنعة، باستخدام مواد مطابقة للون لنتيجة سلسة.",
+    price: "AED 440"
+  },
+  {
+    title_en: "Paint Work", title_ar: "أعمال الدهان",
+    tag_en: "Professional Respray", tag_ar: "إعادة طلاء احترافية",
+    icon: '<path d="M12 3l7 4v6c0 5-3 8-7 8s-7-3-7-8V7l7-4z"/><path d="M9 12l2 2 4-4"/>',
+    desc_en: "Full or partial resprays in booth-cured, factory-matched paint. Single panels or complete colour changes, finished with a protective clear coat.",
+    desc_ar: "إعادة طلاء كاملة أو جزئية بطلاء مطابق للمصنع ومعالج في كبينة خاصة، مع طبقة حماية شفافة نهائية.",
+    price: "AED 1,300"
+  },
+  {
+    title_en: "Window Tinting", title_ar: "تظليل النوافذ",
+    tag_en: "Premium Film, Heat & UV Protection", tag_ar: "فيلم ممتاز، حماية من الحرارة والأشعة فوق البنفسجية",
+    icon: '<rect x="3" y="5" width="18" height="14" rx="2"/><path d="M3 9h18M8 5v14"/>',
+    desc_en: "High-grade film application that cuts glare and heat while blocking up to 99% of UV rays — legal shades available for every window.",
+    desc_ar: "تركيب فيلم عالي الجودة يقلل الوهج والحرارة ويحجب حتى 99% من الأشعة فوق البنفسجية — بدرجات قانونية لكل نافذة.",
+    price: "AED 550"
+  },
+  {
+    title_en: "Car Wash", title_ar: "غسيل السيارات",
+    tag_en: "Inside & Out, Spotless Clean", tag_ar: "من الداخل والخارج، نظافة تامة",
+    icon: '<path d="M3 16h18M5 16l2-6h10l2 6"/><circle cx="7.5" cy="19" r="1.4"/><circle cx="16.5" cy="19" r="1.4"/><path d="M9 6c0-1.5 1-2 1-3M13 6c0-1.5 1-2 1-3"/>',
+    desc_en: "Hand wash and vacuum, wheel and arch clean, glass and mirror finish. A quick, thorough clean that leaves your car looking its best.",
+    desc_ar: "غسيل يدوي وتنظيف بالمكنسة، وتنظيف الإطارات والأقواس، ولمعان للزجاج والمرايا. تنظيف سريع وشامل يترك سيارتك بأفضل حال.",
+    price: "AED 55"
+  },
+  {
+    title_en: "Detailing", title_ar: "تلميع شامل",
+    tag_en: "Interior & Exterior, VIP Treatment", tag_ar: "داخلي وخارجي، عناية VIP",
+    icon: '<path d="M6 3h12l-1 6H7L6 3z"/><path d="M5 9h14l-1 12H6L5 9z"/>',
+    desc_en: "Deep interior shampoo, leather conditioning, engine bay clean and full exterior decontamination — the complete VIP treatment for your car.",
+    desc_ar: "غسيل عميق للمقصورة الداخلية، وترطيب الجلد، وتنظيف حجرة المحرك، وتعقيم كامل للخارج — عناية VIP متكاملة لسيارتك.",
+    price: "AED 330"
+  },
+  {
+    title_en: "Auto Electrics", title_ar: "الكهرباء",
+    tag_en: "Diagnostics, Repairs, Upgrades", tag_ar: "تشخيص، إصلاح، وتحديثات",
+    icon: '<path d="M13 2L4 14h6l-1 8 9-12h-6l1-8z"/>',
+    desc_en: "Computer diagnostics, fault-finding, battery and alternator checks, plus wiring repairs and electrical upgrades carried out by certified techs.",
+    desc_ar: "تشخيص بالكمبيوتر واكتشاف الأعطال، وفحص البطارية والدينامو، بالإضافة إلى إصلاحات الأسلاك والتحديثات الكهربائية على يد فنيين معتمدين.",
+    price: "AED 170"
+  },
+  {
+    title_en: "Mechanical Repairs", title_ar: "الإصلاح الميكانيكي",
+    tag_en: "Engine, Brakes, Clutch & More", tag_ar: "المحرك، الفرامل، القابض والمزيد",
+    icon: '<path d="M14.7 6.3a4 4 0 0 0-5.4 5.4L3 18l3 3 6.3-6.3a4 4 0 0 0 5.4-5.4l-2.1 2.1-2.6-.9-.9-2.6 2.1-2.1z"/>',
+    desc_en: "Engine, brake, clutch and suspension work handled with full diagnostic backup — from routine servicing to major mechanical rebuilds.",
+    desc_ar: "أعمال المحرك والفرامل والقابض والتعليق مع دعم تشخيصي كامل — من الصيانة الدورية إلى إعادة البناء الميكانيكي الكبرى.",
+    price: "AED 300"
+  },
+  {
+    title_en: "Garage Rental", title_ar: "تأجير المرآب",
+    tag_en: "Secure, Clean, 24/7 Access", tag_ar: "آمن، نظيف، دخول على مدار الساعة",
+    icon: '<path d="M3 10l9-6 9 6"/><path d="M5 10v10h14V10"/><path d="M9 20v-6h6v6"/>',
+    desc_en: "Private, secure garage units available for storage or workshop use — clean, dry, and accessible around the clock with CCTV monitoring.",
+    desc_ar: "وحدات مرآب خاصة وآمنة متاحة للتخزين أو الاستخدام كورشة — نظيفة وجافة ويمكن الوصول إليها في أي وقت مع مراقبة بالكاميرات.",
+    price: "AED 450/mo"
+  },
+  {
+    title_en: "Parking Rental", title_ar: "تأجير مواقف",
+    tag_en: "Safe, Convenient, CCTV", tag_ar: "آمن، مريح، مراقب بالكاميرات",
+    icon: '<rect x="3" y="4" width="18" height="16" rx="2"/><path d="M9 8h3.5a2.5 2.5 0 0 1 0 5H9V8zM9 13v4"/>',
+    desc_en: "Short or long-term parking in a secured, monitored yard — an easy, affordable option for city-centre drivers who need peace of mind.",
+    desc_ar: "مواقف قصيرة أو طويلة الأجل في ساحة آمنة ومراقبة — خيار سهل وبأسعار مناسبة لسائقي وسط المدينة الباحثين عن راحة البال.",
+    price: "AED 150/mo"
+  },
+];
+
+const acc = document.getElementById('accordion');
+
+services.forEach((s, i) => {
+  const item = document.createElement('div');
+  item.className = 'acc-item';
+  item.innerHTML = `
+    <div class="acc-num">${String(i+1).padStart(2,'0')}</div>
+    <div class="acc-body">
+      <div class="acc-top">
+        <div class="acc-icon"><svg viewBox="0 0 24 24">${s.icon}</svg></div>
+        <div class="acc-titles">
+          <h3 data-en="${s.title_en}" data-ar="${s.title_ar}">${s.title_en}</h3>
+          <div class="tag" data-en="${s.tag_en}" data-ar="${s.tag_ar}">${s.tag_en}</div>
+        </div>
+        <div class="acc-arrow"><svg viewBox="0 0 24 24" fill="none" stroke-width="2"><path d="M9 6l6 6-6 6"/></svg></div>
+      </div>
+      <div class="acc-detail">
+        <p data-en="${s.desc_en}" data-ar="${s.desc_ar}">${s.desc_en}</p>
+        <div class="acc-price"><div class="from" data-en="FROM" data-ar="يبدأ من">FROM</div><div class="amt">${s.price}</div></div>
+      </div>
+    </div>
+  `;
+  acc.appendChild(item);
+});
+
+const items = Array.from(acc.querySelectorAll('.acc-item'));
+const supportsHover = window.matchMedia('(hover: hover)').matches;
+
+function setActive(el){
+  items.forEach(it => it.classList.toggle('active', it === el));
+}
+function clearActive(){
+  items.forEach(it => it.classList.remove('active'));
+}
+
+if (supportsHover){
+  items.forEach(item => {
+    item.addEventListener('mouseenter', () => setActive(item));
+  });
+  acc.addEventListener('mouseleave', clearActive);
+} else {
+  items.forEach(item => {
+    item.addEventListener('click', () => {
+      const isActive = item.classList.contains('active');
+      clearActive();
+      if (!isActive) item.classList.add('active');
+    });
+  });
+}
+
+// populate the service <select> in the contact form
+const select = document.querySelector('.form-row select');
+services.forEach(s => {
+  const opt = document.createElement('option');
+  opt.setAttribute('data-en', s.title_en);
+  opt.setAttribute('data-ar', s.title_ar);
+  opt.textContent = s.title_en;
+  select.appendChild(opt);
+});
+
+/* ============ BILINGUAL ENGINE (EN / AR) ============ */
+
+/* ============ LOGIN DROPDOWN ============ */
+function toggleLoginBox(force){
+  const dd = document.getElementById('loginDropdown');
+  const btn = document.getElementById('loginBtn');
+  if (!dd || !btn) return;
+  const shouldOpen = typeof force === 'boolean' ? force : !dd.classList.contains('open');
+  dd.classList.toggle('open', shouldOpen);
+  btn.classList.toggle('active', shouldOpen);
+}
+document.addEventListener('click', (e) => {
+  const wrap = document.getElementById('loginWrap');
+  if (wrap && !wrap.contains(e.target)) toggleLoginBox(false);
+});
+document.addEventListener('keydown', (e) => {
+  if (e.key === 'Escape') toggleLoginBox(false);
+});
+
+function togglePasswordVisibility(){
+  const pw = document.getElementById('loginPassword');
+  const eyeOpen = document.getElementById('eyeIconOpen');
+  const eyeClosed = document.getElementById('eyeIconClosed');
+  if (!pw) return;
+  const isPassword = pw.type === 'password';
+  pw.type = isPassword ? 'text' : 'password';
+  if (eyeOpen && eyeClosed){
+    eyeOpen.style.display = isPassword ? 'none' : 'block';
+    eyeClosed.style.display = isPassword ? 'block' : 'none';
+  }
+}
+
+const loginFormEl = document.getElementById('loginForm');
+if (loginFormEl){
+  loginFormEl.addEventListener('submit', (e) => {
+    e.preventDefault();
+    const msg = (typeof currentLang !== 'undefined' && currentLang === 'ar')
+      ? 'هذا نموذج دخول تجريبي. قم بربطه بخادم المصادقة الخاص بك لتفعيل تسجيل الدخول الفعلي.'
+      : 'This is a demo login form. Connect it to your authentication backend to enable real sign-in.';
+    alert(msg);
+  });
+}
+
+/* ---- Google Sign-In ----
+   1. Create an OAuth Client ID at https://console.cloud.google.com/apis/credentials
+   2. Add your site's domain under "Authorized JavaScript origins"
+   3. Replace GOOGLE_CLIENT_ID below with your real Client ID */
+const GOOGLE_CLIENT_ID = "YOUR_GOOGLE_CLIENT_ID.apps.googleusercontent.com";
+
+function initGoogleLogin(){
+  if (!window.google || !google.accounts || !google.accounts.id) return;
+  google.accounts.id.initialize({
+    client_id: GOOGLE_CLIENT_ID,
+    callback: handleGoogleCredentialResponse
+  });
+}
+function handleGoogleCredentialResponse(response){
+  // response.credential is a signed Google ID token (JWT).
+  // Decoding it here is for demo display only — in production, send this
+  // token to your backend and verify it server-side before creating a session.
+  try{
+    const payload = JSON.parse(decodeURIComponent(escape(atob(response.credential.split('.')[1].replace(/-/g,'+').replace(/_/g,'/')))));
+    const msg = (typeof currentLang !== 'undefined' && currentLang === 'ar') ? 'مرحبًا، ' : 'Welcome, ';
+    alert(msg + (payload.name || payload.email) + '!');
+    toggleLoginBox(false);
+  }catch(err){
+    console.error('Google login error:', err);
+  }
+}
+const googleBtn = document.getElementById('googleLoginBtn');
+if (googleBtn){
+  googleBtn.addEventListener('click', () => {
+    if (!window.google || !google.accounts || !google.accounts.id || GOOGLE_CLIENT_ID.indexOf('YOUR_GOOGLE_CLIENT_ID') === 0){
+      alert('Set GOOGLE_CLIENT_ID in the code (see comment above) with your own Google OAuth Client ID to enable this button.');
+      return;
+    }
+    google.accounts.id.prompt();
+  });
+}
+window.addEventListener('load', initGoogleLogin);
+
+/* ---- Facebook Login ----
+   1. Create an app at https://developers.facebook.com/apps
+   2. Add your site's domain under Facebook Login > Settings > Valid OAuth Redirect URIs / App Domains
+   3. Replace FACEBOOK_APP_ID below with your real App ID */
+const FACEBOOK_APP_ID = "YOUR_FACEBOOK_APP_ID";
+
+window.fbAsyncInit = function(){
+  if (FACEBOOK_APP_ID.indexOf('YOUR_FACEBOOK_APP_ID') === 0) return;
+  FB.init({ appId: FACEBOOK_APP_ID, cookie: true, xfbml: false, version: 'v19.0' });
+};
+const facebookBtn = document.getElementById('facebookLoginBtn');
+if (facebookBtn){
+  facebookBtn.addEventListener('click', () => {
+    if (!window.FB || FACEBOOK_APP_ID.indexOf('YOUR_FACEBOOK_APP_ID') === 0){
+      alert('Set FACEBOOK_APP_ID in the code (see comment above) with your own Facebook App ID to enable this button.');
+      return;
+    }
+    FB.login((response) => {
+      if (response.authResponse){
+        FB.api('/me', { fields: 'name,email' }, (userInfo) => {
+          const msg = (typeof currentLang !== 'undefined' && currentLang === 'ar') ? 'مرحبًا، ' : 'Welcome, ';
+          alert(msg + userInfo.name + '!');
+          toggleLoginBox(false);
+        });
+      }
+    }, { scope: 'public_profile,email' });
+  });
+}
+
+let currentLang = 'en';
+function applyTranslations(){
+  document.documentElement.lang = currentLang;
+  document.documentElement.dir = currentLang === 'ar' ? 'rtl' : 'ltr';
+  document.body.classList.toggle('lang-ar', currentLang === 'ar');
+  document.querySelectorAll('[data-en]').forEach(el => {
+    const val = currentLang === 'ar' ? el.getAttribute('data-ar') : el.getAttribute('data-en');
+    if (val !== null) el.innerHTML = val;
+  });
+  document.querySelectorAll('[data-en-ph]').forEach(el => {
+    const val = currentLang === 'ar' ? el.getAttribute('data-ar-ph') : el.getAttribute('data-en-ph');
+    if (val !== null) el.setAttribute('placeholder', val);
+  });
+  document.querySelectorAll('.lang-toggle').forEach(btn => {
+    btn.textContent = currentLang === 'ar' ? 'EN' : 'AR';
+  });
+}
+function setLang(l){ currentLang = l; applyTranslations(); }
+applyTranslations();
+</script>
+
+</body>
+</html>
