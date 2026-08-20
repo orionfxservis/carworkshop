@@ -271,15 +271,32 @@
     padding: 24px;
   }
   .slot-card h3{ font-size: 16px; margin-bottom:4px; }
+  .slot-capacity-note{
+    display:inline-block; font-family:'Oswald', sans-serif; font-size:10px; letter-spacing:0.06em;
+    color: var(--amber); text-transform:uppercase; background: rgba(255,177,0,0.08);
+    border: 1px solid rgba(255,177,0,0.25); padding: 4px 10px; margin-bottom: 12px;
+  }
   .slot-card .slot-sub{ font-family:'Oswald', sans-serif; font-size:11px; color:var(--steel); letter-spacing:0.08em; text-transform:uppercase; margin-bottom:16px; }
   .slot-list{ display:flex; flex-direction:column; gap:8px; max-height: 320px; overflow-y:auto; padding-right:4px; }
   .slot-btn{
+    display:flex; align-items:center; justify-content:space-between; gap:10px;
     background: var(--black); border: 1px solid var(--steel-dim); color: var(--white);
     padding: 10px 12px; font-family:'Oswald', sans-serif; font-size:13px; letter-spacing:0.04em;
     cursor:pointer; text-align:left; transition: border-color .2s, background .2s, color .2s;
   }
   .slot-btn:hover{ border-color: var(--red); }
   .slot-btn.selected{ background: var(--red); border-color: var(--red); color: var(--white); }
+  .slot-btn .slot-time{ flex-shrink:0; }
+  .slot-btn .slot-avail{
+    font-size:10px; letter-spacing:0.05em; color: var(--green, #3ecf6e); text-transform:uppercase;
+  }
+  .slot-btn.selected .slot-avail{ color: rgba(255,255,255,0.85); }
+  .slot-btn.full{
+    background: rgba(139,141,146,0.05); border-color: var(--steel-dim); color: var(--steel-dim);
+    cursor: not-allowed;
+  }
+  .slot-btn.full:hover{ border-color: var(--steel-dim); }
+  .slot-btn.full .slot-avail{ color: var(--red); }
   .slot-empty{ font-family:'Oswald', sans-serif; font-size:12px; color: var(--steel-dim); letter-spacing:0.05em; }
 
   .selected-summary{
@@ -756,6 +773,7 @@
         </div>
         <div class="slot-card">
           <h3 data-en="Available Time Slots" data-ar="الأوقات المتاحة">Available Time Slots</h3>
+          <div class="slot-capacity-note" data-en="Three Time Slots Available Per Booking" data-ar="تتوفر ثلاث فترات حجز في كل وقت">Three Time Slots Available Per Booking</div>
           <div class="slot-sub" id="slotDateLabel" data-en="Select a date first" data-ar="اختر التاريخ أولاً">Select a date first</div>
           <div class="slot-list" id="slotList"></div>
           <div class="selected-summary" id="scheduleSummary" data-en="No date/time selected yet." data-ar="لم يتم اختيار التاريخ/الوقت بعد.">No date/time selected yet.</div>
@@ -815,6 +833,8 @@
 </footer>
 
 <script>
+let currentLang = 'en';
+
 // global fixed background crossfade (site-wide)
 (function(){
   const slides = document.querySelectorAll('.site-bg img');
@@ -947,7 +967,19 @@ nextMonthBtn.addEventListener('click', () => {
   renderCalendar();
 });
 
-const timeSlots = ["08:00 AM","09:00 AM","10:00 AM","11:00 AM","12:00 PM","01:00 PM","02:00 PM","03:00 PM","04:00 PM","05:00 PM"];
+const SLOT_CAPACITY = 3;
+const timeSlots = [
+  { time:"08:00 AM", booked:1 },
+  { time:"09:00 AM", booked:3 },
+  { time:"10:00 AM", booked:2 },
+  { time:"11:00 AM", booked:0 },
+  { time:"12:00 PM", booked:3 },
+  { time:"01:00 PM", booked:0 },
+  { time:"02:00 PM", booked:1 },
+  { time:"03:00 PM", booked:3 },
+  { time:"04:00 PM", booked:0 },
+  { time:"05:00 PM", booked:2 },
+];
 
 function renderSlots(){
   slotList.innerHTML = '';
@@ -957,17 +989,28 @@ function renderSlots(){
   }
   slotDateLabel.textContent = selectedDate.toLocaleDateString(t('en-US','ar-EG-u-ca-gregory'), { weekday:'long', day:'numeric', month:'long', year:'numeric' });
 
-  timeSlots.forEach(t => {
+  timeSlots.forEach(slot => {
+    const remaining = SLOT_CAPACITY - slot.booked;
+    const isFull = remaining <= 0;
+
     const btn = document.createElement('button');
     btn.type = 'button';
-    btn.className = 'slot-btn';
-    btn.textContent = t;
-    if (selectedSlot === t) btn.classList.add('selected');
-    btn.addEventListener('click', () => {
-      selectedSlot = t;
-      renderSlots();
-      updateSummary();
-    });
+    btn.className = 'slot-btn' + (isFull ? ' full' : '') + (selectedSlot === slot.time ? ' selected' : '');
+    btn.disabled = isFull;
+
+    const availText = isFull
+      ? t('Slots Booked', 'المواعيد محجوزة')
+      : (remaining === 1 ? t('1 Slot Available', 'موعد واحد متاح') : t(remaining + ' Slots Available', remaining + ' مواعيد متاحة'));
+
+    btn.innerHTML = `<span class="slot-time">${slot.time}</span><span class="slot-avail">${availText}</span>`;
+
+    if (!isFull){
+      btn.addEventListener('click', () => {
+        selectedSlot = slot.time;
+        renderSlots();
+        updateSummary();
+      });
+    }
     slotList.appendChild(btn);
   });
 }
@@ -1022,6 +1065,10 @@ form.addEventListener('submit', (e) => {
   }
   formMsg.classList.remove('show');
 
+  // mark this time slot as booked (demo only — a real backend should confirm availability atomically)
+  const bookedSlot = timeSlots.find(s => s.time === selectedSlot);
+  if (bookedSlot && bookedSlot.booked < SLOT_CAPACITY) bookedSlot.booked++;
+
   // populate confirmation overlay
   document.getElementById('confName').textContent = name;
   const dLabel = selectedDate.toLocaleDateString(currentLang === 'ar' ? 'ar-EG' : 'en-US', { weekday:'long', day:'numeric', month:'long', year:'numeric' });
@@ -1035,6 +1082,7 @@ form.addEventListener('submit', (e) => {
   `;
 
   document.getElementById('confirmOverlay').classList.add('show');
+  renderSlots();
 });
 
 document.getElementById('confirmClose').addEventListener('click', () => {
@@ -1155,7 +1203,6 @@ if (facebookBtn){
 }
 
 /* ============ BILINGUAL ENGINE (EN / AR) ============ */
-let currentLang = 'en';
 function applyTranslations(){
   document.documentElement.lang = currentLang;
   document.documentElement.dir = currentLang === 'ar' ? 'rtl' : 'ltr';

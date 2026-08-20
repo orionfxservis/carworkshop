@@ -29,7 +29,10 @@
   html{ scroll-behavior: smooth; }
 
   body{
-    background: var(--black);
+    background:
+      radial-gradient(circle at 15% 10%, rgba(226,36,27,0.10), transparent 40%),
+      radial-gradient(circle at 90% 85%, rgba(255,177,0,0.08), transparent 40%),
+      var(--black);
     color: var(--white);
     font-family: 'Barlow Condensed', sans-serif;
     font-size: 18px;
@@ -542,7 +545,7 @@
     position:absolute; inset:0; width:100%; height:100%;
     object-fit: cover; object-position: center 50%;
     opacity:0; transition: opacity 2.2s ease;
-    filter: saturate(0.8) brightness(0.55) contrast(1.05);
+    filter: saturate(1.05) brightness(0.85) contrast(1.08);
   }
   .site-bg img.active{ opacity:1; }
 
@@ -551,7 +554,7 @@
     background:
       radial-gradient(circle at 12% 15%, rgba(226,36,27,0.20), transparent 42%),
       radial-gradient(circle at 88% 78%, rgba(255,177,0,0.16), transparent 42%),
-      linear-gradient(180deg, rgba(16,13,11,0.68) 0%, rgba(16,13,11,0.76) 45%, rgba(16,13,11,0.84) 100%);
+      linear-gradient(180deg, rgba(16,13,11,0.45) 0%, rgba(16,13,11,0.52) 45%, rgba(16,13,11,0.6) 100%);
   }
 
 
@@ -686,11 +689,11 @@
 <body>
 
 
-<div class="site-bg">
-  <img class="active" alt="" referrerpolicy="no-referrer" src="https://images.unsplash.com/photo-1615906655593-ad0386982a0f?auto=format&fit=crop&w=2200&q=75">
-  <img alt="" referrerpolicy="no-referrer" src="https://images.unsplash.com/photo-1487754180451-c456f719a1fc?auto=format&fit=crop&w=2200&q=75">
-  <img alt="" referrerpolicy="no-referrer" src="https://images.unsplash.com/photo-1596986952526-3be237187071?auto=format&fit=crop&w=2200&q=75">
-  <img alt="" referrerpolicy="no-referrer" src="https://images.unsplash.com/photo-1643700973089-baa86a1ab9ee?auto=format&fit=crop&w=2200&q=75">
+<div class="site-bg" id="siteBg">
+  <img class="active" alt="" referrerpolicy="no-referrer" onerror="this.style.display='none'" src="https://images.unsplash.com/photo-1615906655593-ad0386982a0f?auto=format&fit=crop&w=2200&q=75">
+  <img alt="" referrerpolicy="no-referrer" onerror="this.style.display='none'" src="https://images.unsplash.com/photo-1487754180451-c456f719a1fc?auto=format&fit=crop&w=2200&q=75">
+  <img alt="" referrerpolicy="no-referrer" onerror="this.style.display='none'" src="https://images.unsplash.com/photo-1596986952526-3be237187071?auto=format&fit=crop&w=2200&q=75">
+  <img alt="" referrerpolicy="no-referrer" onerror="this.style.display='none'" src="https://images.unsplash.com/photo-1643700973089-baa86a1ab9ee?auto=format&fit=crop&w=2200&q=75">
 </div>
 <div class="site-overlay"></div>
 
