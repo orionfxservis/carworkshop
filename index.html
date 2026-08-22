@@ -189,6 +189,16 @@
     color: var(--white);
   }
   .hero h1 .accent{ color: var(--red); }
+  .hero h1 .hero-line1{
+    display:block;
+    white-space: nowrap;
+    font-size: clamp(24px, 5.6vw, 76px);
+  }
+  .hero h1 .hero-line2{
+    display:block;
+    font-size: clamp(48px, 7vw, 96px);
+    margin-top: 4px;
+  }
 
   .hero p.lead{
     max-width: 480px;
@@ -197,8 +207,19 @@
     font-size: 20px;
   }
 
+  .hero-tagline{
+    max-width: 540px;
+    margin-top: 22px;
+    color: #c9c6bf;
+    font-size: 19px;
+    font-family: Arial, Helvetica, sans-serif;
+    font-style: italic;
+    font-weight: 400;
+    line-height: 1.5;
+  }
+
   .hero-actions{
-    display:flex; align-items:center; gap:20px;
+    display:flex; align-items:center; gap:16px;
     margin-top: 34px;
     flex-wrap: wrap;
   }
@@ -206,7 +227,7 @@
   .btn-primary{
     background: var(--red);
     color: var(--white);
-    padding: 16px 34px;
+    padding: 16px 30px;
     font-family:'Oswald', sans-serif;
     font-size: 14px;
     letter-spacing: 0.1em;
@@ -216,6 +237,24 @@
     cursor: pointer;
   }
   .btn-primary:hover{ background: transparent; color: var(--red); }
+
+  .btn-outline{
+    display:flex; align-items:center; gap:10px;
+    background: transparent;
+    color: var(--white);
+    padding: 15px 28px;
+    font-family:'Oswald', sans-serif;
+    font-size: 14px;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    border: 1px solid rgba(244,242,236,0.35);
+    transition: border-color .25s, background .25s, color .25s;
+    cursor: pointer;
+  }
+  .btn-outline svg{ width:16px; height:16px; flex-shrink:0; }
+  .btn-outline:hover{ border-color: var(--red); color: var(--red); }
+  .btn-outline.btn-call{ border-color: rgba(255,177,0,0.5); color: var(--amber); }
+  .btn-outline.btn-call:hover{ background: var(--amber); border-color: var(--amber); color: var(--black); }
 
   .btn-ghost{
     display:flex; align-items:center; gap:10px;
@@ -230,8 +269,19 @@
   }
   .btn-ghost:hover{ color: var(--amber); border-color: var(--amber); }
 
+  .hero-trust{
+    display:flex; flex-wrap:wrap; row-gap:10px; column-gap: 24px;
+    margin-top: 30px;
+    font-family:'Oswald', sans-serif;
+    font-size: 13px;
+    letter-spacing: 0.03em;
+    color: #d8d5cd;
+  }
+  .hero-trust span{ display:inline-flex; align-items:center; gap:8px; white-space:nowrap; }
+  .hero-trust .check{ color:#3ecf6e; font-weight:700; font-size:15px; }
+
   .promo-strip{
-    margin-top: 46px;
+    margin-top: 30px;
     display:inline-flex; align-items:center; gap:16px;
     border-left: 3px solid var(--amber);
     padding: 14px 22px;
@@ -294,6 +344,136 @@
     color: var(--steel);
   }
 
+  /* ============ HOW IT WORKS ============ */
+  .how-it-works{
+    position: relative;
+    padding: 90px 5% 80px;
+    overflow: hidden;
+  }
+  .how-it-works::before{
+    content:"";
+    position:absolute; top:-10%; left:-5%;
+    width:45vw; height:45vw;
+    background: radial-gradient(circle, rgba(226,36,27,0.09), transparent 65%);
+    pointer-events:none; z-index:0;
+  }
+  .how-it-works .section-head, .how-it-works .steps-row, .how-it-works .steps-cta{
+    position:relative; z-index:1;
+  }
+
+  .steps-row{
+    position: relative;
+    display:grid; grid-template-columns: repeat(5, 1fr);
+    gap: 18px;
+  }
+  .steps-row::before{
+    content:"";
+    position:absolute; top:34px; left:10%; right:10%;
+    height:1px;
+    background: linear-gradient(90deg, transparent, #2c2723 8%, #2c2723 92%, transparent);
+    z-index:0;
+  }
+
+  .step-item{
+    position:relative; z-index:1;
+    display:flex; flex-direction:column; align-items:center; text-align:center;
+    gap: 14px;
+  }
+  .step-num{
+    width:68px; height:68px; flex-shrink:0; border-radius:50%;
+    background: rgba(28,24,19,0.7);
+    -webkit-backdrop-filter: blur(10px);
+    backdrop-filter: blur(10px);
+    border: 2px solid var(--red);
+    display:flex; align-items:center; justify-content:center;
+    font-family:'Anton', sans-serif; font-size: 22px; color: var(--red);
+  }
+  .step-item h3{ font-size: 20px; color: var(--white); }
+  .step-item p{ font-size: 14px; color: var(--steel); max-width: 220px; line-height:1.5; }
+
+  .step-final .step-num{ border-color: var(--amber); color: var(--amber); }
+  .step-final .step-num svg{ width:26px; height:26px; }
+  .step-final h3{ color: var(--amber); }
+
+  .steps-cta{ display:flex; justify-content:center; margin-top: 46px; }
+
+  @media (max-width: 900px){
+    .steps-row{ grid-template-columns: 1fr; gap: 34px; }
+    .steps-row::before{ display:none; }
+    .step-item p{ max-width: 320px; }
+  }
+
+  /* ============ DIAGNOSE / CHOOSE YOUR SERVICE ============ */
+  .diagnose{
+    position: relative;
+    padding: 90px 5% 90px;
+    overflow: hidden;
+  }
+  .diagnose::before{
+    content:"";
+    position:absolute; top:-10%; left:50%; transform: translateX(-50%);
+    width:50vw; height:50vw;
+    background: radial-gradient(circle, rgba(226,36,27,0.10), transparent 65%);
+    pointer-events:none; z-index:0;
+  }
+  .diagnose .section-head, .diagnose .symptom-grid, .diagnose .symptom-result{ position:relative; z-index:1; }
+
+  .symptom-grid{
+    display:grid; grid-template-columns: repeat(4, 1fr); gap: 16px;
+    margin-bottom: 26px;
+  }
+  .symptom-card{
+    display:flex; flex-direction:column; align-items:center; gap:10px; text-align:center;
+    background: rgba(28,24,19,0.5);
+    -webkit-backdrop-filter: blur(14px) saturate(150%);
+    backdrop-filter: blur(14px) saturate(150%);
+    border: 1px solid rgba(244,242,236,0.09);
+    padding: 26px 16px;
+    cursor: pointer;
+    transition: border-color .25s, background .25s, transform .25s;
+  }
+  .symptom-card:hover{ border-color: rgba(226,36,27,0.5); transform: translateY(-3px); }
+  .symptom-card.active{ border-color: var(--red); background: rgba(226,36,27,0.1); }
+  .symptom-card .sc-emoji{ font-size: 30px; line-height:1; }
+  .symptom-card .sc-label{
+    font-family:'Oswald', sans-serif; font-size: 12.5px; letter-spacing: 0.04em;
+    text-transform: uppercase; color: var(--white);
+  }
+
+  .symptom-result{
+    display: none;
+    grid-template-columns: auto 1fr;
+    gap: 22px;
+    align-items:flex-start;
+    background: rgba(28,24,19,0.55);
+    -webkit-backdrop-filter: blur(18px) saturate(160%);
+    backdrop-filter: blur(18px) saturate(160%);
+    border: 1px solid var(--red);
+    box-shadow: 0 12px 40px rgba(0,0,0,0.35);
+    padding: 30px 32px;
+  }
+  .symptom-result.show{ display:grid; }
+  .sr-icon{
+    width:60px; height:60px; flex-shrink:0;
+    background: var(--red);
+    display:flex; align-items:center; justify-content:center;
+    font-size: 28px;
+  }
+  .sr-label{
+    font-family:'Oswald', sans-serif; font-size: 11px; letter-spacing:0.1em;
+    color: var(--amber); text-transform: uppercase; margin-bottom: 4px;
+  }
+  .sr-body h3{ font-size: 24px; color: var(--white); margin-bottom: 10px; }
+  .sr-body p{ color: #c9c6bf; font-size: 16px; max-width: 620px; margin-bottom: 20px; }
+  .sr-actions{ display:flex; align-items:center; gap:14px; flex-wrap: wrap; }
+  .sr-actions .btn-primary, .sr-actions .btn-outline{ padding: 13px 26px; font-size:13px; }
+
+  @media (max-width: 900px){
+    .symptom-grid{ grid-template-columns: repeat(2, 1fr); }
+    .symptom-result{ grid-template-columns: 1fr; }
+    .sr-icon{ width:48px; height:48px; font-size:22px; }
+  }
+
   /* ============ SERVICES ============ */
   .services{
     position: relative;
@@ -336,16 +516,17 @@
     display:grid;
     grid-template-columns: 80px 1fr;
     border-bottom: 1px solid #262220;
-    max-height: 96px;
+    max-height: 104px;
     overflow: hidden;
     transition: max-height .55s cubic-bezier(.6,0,.2,1), background .4s;
     cursor: pointer;
   }
   .acc-item.active{
-    max-height: 340px;
+    max-height: 640px;
     background: rgba(32,27,21,0.5);
     -webkit-backdrop-filter: blur(14px) saturate(160%);
     backdrop-filter: blur(14px) saturate(160%);
+    overflow-y: auto;
   }
 
   .acc-num{
@@ -357,7 +538,7 @@
     border-right: 1px solid #262220;
   }
 
-  .acc-body{ padding: 26px 28px 26px 30px; }
+  .acc-body{ padding: 26px 28px 30px 30px; }
 
   .acc-top{
     display:flex; align-items:center; gap:20px;
@@ -385,8 +566,13 @@
     margin-top: 2px;
   }
 
+  .acc-count{
+    margin-left: auto; margin-right: 16px;
+    font-family:'Oswald', sans-serif; font-size: 11px; letter-spacing:0.08em;
+    color: var(--steel); text-transform: uppercase; white-space:nowrap; flex-shrink:0;
+  }
+
   .acc-arrow{
-    margin-left: auto;
     width: 34px; height:34px;
     border: 1px solid var(--steel-dim);
     display:flex; align-items:center; justify-content:center;
@@ -397,9 +583,6 @@
   .acc-arrow svg{ width:14px; height:14px; stroke: var(--white); }
 
   .acc-detail{
-    display:grid; grid-template-columns: 1fr auto;
-    align-items:end;
-    gap: 20px;
     margin-top: 20px;
     padding-top: 20px;
     border-top: 1px solid #262220;
@@ -409,16 +592,31 @@
   }
   .acc-item.active .acc-detail{ opacity:1; transform: translateY(0); }
 
-  .acc-detail p{ color: #c9c6bf; max-width: 560px; font-size: 16px; }
-  .acc-price{
-    text-align:right; white-space:nowrap;
+  .acc-detail p{ color: #c9c6bf; max-width: 620px; font-size: 16px; margin-bottom: 20px; }
+
+  .acc-subgrid{
+    display:grid; grid-template-columns: repeat(2, 1fr); gap: 10px;
+    margin-bottom: 24px;
   }
-  .acc-price .from{
-    font-family:'Oswald', sans-serif; font-size:11px; color:var(--steel); letter-spacing:0.1em;
+  .acc-subitem{
+    display:flex; align-items:center; gap:10px;
+    background: rgba(6,5,4,0.35);
+    border: 1px solid rgba(244,242,236,0.08);
+    padding: 11px 14px;
+    font-size: 15px;
+    color: var(--white);
+    transition: border-color .2s, background .2s;
   }
-  .acc-price .amt{
-    font-family:'Anton', sans-serif; font-size: 30px; color: var(--amber);
+  .acc-subitem:hover{ border-color: rgba(226,36,27,0.4); background: rgba(226,36,27,0.06); }
+  .acc-subitem svg{ width:15px; height:15px; stroke: var(--amber); flex-shrink:0; }
+
+  .acc-cta{
+    display:inline-flex; align-items:center; gap:10px;
+    background: var(--red); color: var(--white); border: 1px solid var(--red);
+    padding: 13px 28px; font-family:'Oswald', sans-serif; font-size:13px; letter-spacing:0.08em; text-transform:uppercase;
+    cursor:pointer; transition: background .25s, color .25s;
   }
+  .acc-cta:hover{ background: transparent; color: var(--red); }
 
   /* ============ WHY / STATS BAND ============ */
   .band{
@@ -440,6 +638,73 @@
   }
   .band-stat .n{ font-family:'Anton', sans-serif; font-size: 44px; color: var(--white); }
   .band-stat .l{ font-family:'Oswald', sans-serif; font-size: 11px; letter-spacing:0.1em; color: rgba(255,255,255,0.85); text-transform:uppercase; margin-top:4px; }
+
+  /* ============ TRANSPARENT PRICING ============ */
+  .pricing{
+    position: relative;
+    padding: 90px 5% 100px;
+    overflow: hidden;
+  }
+  .pricing::before{
+    content:"";
+    position:absolute; top:-10%; right:0;
+    width:45vw; height:45vw;
+    background: radial-gradient(circle, rgba(255,177,0,0.10), transparent 65%);
+    pointer-events:none; z-index:0;
+  }
+  .pricing .section-head, .pricing .currency-switch, .pricing .pricing-table-wrap, .pricing .pricing-note{
+    position:relative; z-index:1;
+  }
+
+  .currency-switch{
+    display:flex; gap: 12px; margin-bottom: 32px; flex-wrap: wrap;
+  }
+  .currency-btn{
+    display:flex; align-items:center; gap:8px;
+    background: rgba(28,24,19,0.5);
+    -webkit-backdrop-filter: blur(12px);
+    backdrop-filter: blur(12px);
+    border: 1px solid rgba(244,242,236,0.12);
+    color: var(--white);
+    padding: 10px 20px;
+    font-family:'Oswald', sans-serif; font-size: 13px; letter-spacing:0.06em; text-transform:uppercase;
+    cursor:pointer; transition: border-color .2s, background .2s, color .2s;
+  }
+  .currency-btn:hover{ border-color: rgba(226,36,27,0.5); }
+  .currency-btn.active{ border-color: var(--red); background: rgba(226,36,27,0.12); color: var(--white); }
+
+  .pricing-table-wrap{
+    background: rgba(28,24,19,0.5);
+    -webkit-backdrop-filter: blur(16px) saturate(150%);
+    backdrop-filter: blur(16px) saturate(150%);
+    border: 1px solid rgba(244,242,236,0.09);
+    box-shadow: 0 12px 40px rgba(0,0,0,0.3);
+    overflow: hidden;
+  }
+  .pricing-table{ width:100%; border-collapse: collapse; }
+  .pricing-table thead th{
+    text-align:left; padding: 18px 28px;
+    font-family:'Oswald', sans-serif; font-size: 11px; letter-spacing:0.1em; text-transform:uppercase;
+    color: var(--steel); border-bottom: 1px solid rgba(244,242,236,0.1);
+  }
+  .pricing-table thead th:last-child{ text-align:right; }
+  .pricing-table tbody td{
+    padding: 18px 28px; border-bottom: 1px solid rgba(244,242,236,0.06);
+    font-size: 18px; color: var(--white);
+  }
+  .pricing-table tbody tr:last-child td{ border-bottom:none; }
+  .pricing-table tbody tr:hover{ background: rgba(244,242,236,0.02); }
+  .pricing-table td.price-cell{ text-align:right; font-family:'Anton', sans-serif; font-size: 20px; color: var(--amber); white-space:nowrap; }
+
+  .pricing-note{
+    margin-top: 20px; max-width: 720px;
+    font-family:'Oswald', sans-serif; font-size: 12px; color: var(--steel-dim); letter-spacing:0.03em; line-height:1.7;
+  }
+
+  @media (max-width: 640px){
+    .pricing-table thead th, .pricing-table tbody td{ padding: 14px 16px; font-size:15px; }
+    .pricing-table td.price-cell{ font-size: 17px; }
+  }
 
   /* ============ CONTACT / FOOTER ============ */
   footer{
@@ -528,8 +793,9 @@
     .band{ grid-template-columns:1fr; }
     footer{ grid-template-columns:1fr; }
     .acc-item{ grid-template-columns: 60px 1fr; }
-    .acc-detail{ grid-template-columns: 1fr; }
-    .acc-price{ text-align:left; }
+    .acc-item.active{ max-height: 720px; }
+    .acc-subgrid{ grid-template-columns: 1fr; }
+    .acc-count{ display:none; }
   }
 
   @media (prefers-reduced-motion: reduce){
@@ -566,9 +832,14 @@
     font-family: 'Cairo', sans-serif; font-weight: 800; letter-spacing: 0; text-transform: none;
   }
   body.lang-ar .eyebrow, body.lang-ar .mono, body.lang-ar nav a, body.lang-ar .btn-primary,
-  body.lang-ar .btn-ghost, body.lang-ar .call-pill, body.lang-ar .logo-sub, body.lang-ar .acc-titles .tag,
-  body.lang-ar .form-submit, body.lang-ar label, body.lang-ar .lang-toggle{
+  body.lang-ar .btn-ghost, body.lang-ar .btn-outline, body.lang-ar .call-pill, body.lang-ar .logo-sub, body.lang-ar .acc-titles .tag,
+  body.lang-ar .form-submit, body.lang-ar label, body.lang-ar .lang-toggle, body.lang-ar .hero-trust,
+  body.lang-ar .symptom-card .sc-label, body.lang-ar .sr-label,
+  body.lang-ar .currency-btn, body.lang-ar .pricing-table th, body.lang-ar .pricing-note, body.lang-ar .acc-count{
     font-family: 'Cairo', sans-serif; letter-spacing: 0;
+  }
+  body.lang-ar .hero-tagline{
+    font-family: 'Cairo', sans-serif; font-style: normal; font-weight: 400;
   }
 
   .lang-toggle{
@@ -583,11 +854,15 @@
 
   html[dir="rtl"] .promo-strip{ border-left:none; border-right: 3px solid var(--amber); }
   html[dir="rtl"] .acc-num{ border-right:none; border-left: 1px solid #262220; }
-  html[dir="rtl"] .acc-price{ text-align:left; }
+  html[dir="rtl"] .acc-count{ margin-left:16px; margin-right:auto; }
+  html[dir="rtl"] .pricing-table thead th{ text-align:right; }
+  html[dir="rtl"] .pricing-table thead th:last-child{ text-align:left; }
+  html[dir="rtl"] .pricing-table td.price-cell{ text-align:left; }
   html[dir="rtl"] nav a::after{ left:auto; right:0; }
   html[dir="rtl"] .trust-item{ border-right:none; border-left: 1px solid rgba(244,242,236,0.08); }
   html[dir="rtl"] .trust-item:last-child{ border-left:none; }
   html[dir="rtl"] .btn-ghost svg{ transform: scaleX(-1); }
+  html[dir="rtl"] .btn-outline svg{ transform: scaleX(-1); }
   html[dir="rtl"] .call-pill svg{ transform: scaleX(-1); }
 
 
@@ -770,14 +1045,23 @@
   <div class="hero-glow"></div>
   <div class="hero-copy">
     <div class="hero-eyebrow"><span class="line"></span> <span data-en="SHARJAH, U-A-E &mdash; SALES &middot; SERVICE &middot; MAINTENANCE" data-ar="الشارقة، الإمارات &mdash; مبيعات &middot; خدمة &middot; صيانة">SHARJAH, U-A-E &mdash; SALES &middot; SERVICE &middot; MAINTENANCE</span></div>
-    <h1><span data-en="ONE PLACE." data-ar="مكان واحد.">ONE PLACE.</span><br><span data-en="ALL" data-ar="كل">ALL</span> <span class="accent" data-en="SERVICES." data-ar="الخدمات.">SERVICES.</span></h1>
-    <p class="lead" data-en="From oil changes to full respray jobs, Orion Fx handles every corner of your car's life — under one roof, done properly, priced fairly." data-ar="من تغيير الزيت إلى إعادة الطلاء الكاملة، تهتم أوريون إف إكس بكل جانب من جوانب سيارتك — تحت سقف واحد، بعمل متقن وأسعار عادلة.">From oil changes to full respray jobs, Orion Fx handles every corner of your car's life — under one roof, done properly, priced fairly.</p>
+    <h1><span class="hero-line1"><span data-en="Your Car." data-ar="سيارتك.">Your Car.</span> <span data-en="Expert Care." data-ar="عناية احترافية.">Expert Care.</span></span><span class="hero-line2 accent" data-en="Zero Surprises." data-ar="بلا مفاجآت.">Zero Surprises.</span></h1>
+    <p class="hero-tagline" data-en="Professional auto repair, maintenance &amp; diagnostics — performed by certified technicians with transparent estimates and quality parts." data-ar="إصلاح وصيانة وتشخيص احترافي للسيارات — ينفذه فنيون معتمدون بأسعار تقديرية شفافة وقطع غيار عالية الجودة.">Professional auto repair, maintenance &amp; diagnostics — performed by certified technicians with transparent estimates and quality parts.</p>
     <div class="hero-actions">
-      <a class="btn-primary" href="pages/service.html" style="display:inline-block;" data-en="Book a Service" data-ar="احجز خدمة">Book a Service</a>
-      <a class="btn-ghost" href="#services">
-        <span data-en="View All Services" data-ar="عرض جميع الخدمات">View All Services</span>
-        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+      <a class="btn-primary" href="pages/service.html" style="display:inline-block;" data-en="Book an Appointment" data-ar="احجز موعدًا">Book an Appointment</a>
+      <a class="btn-outline" href="#contact">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+        <span data-en="Get a Free Quote" data-ar="احصل على عرض سعر مجاني">Get a Free Quote</span>
       </a>
+      <a class="btn-outline btn-call" href="tel:+971000000000">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
+        <span data-en="Call Now" data-ar="اتصل الآن">Call Now</span>
+      </a>
+    </div>
+    <div class="hero-trust">
+      <span><span class="check">&#10003;</span><span data-en="Certified Technicians" data-ar="فنيون معتمدون">Certified Technicians</span></span>
+      <span><span class="check">&#10003;</span><span data-en="Transparent Estimates" data-ar="أسعار تقديرية شفافة">Transparent Estimates</span></span>
+      <span><span class="check">&#10003;</span><span data-en="Warranty-Backed Work" data-ar="عمل مضمون بكفالة">Warranty-Backed Work</span></span>
     </div>
     <div class="promo-strip">
       <div>
@@ -809,13 +1093,82 @@
   </div>
 </div>
 
+<section class="how-it-works" id="how-it-works">
+  <div class="section-head">
+    <div>
+      <div class="eyebrow" data-en="Our Process" data-ar="آلية العمل">Our Process</div>
+      <h2 data-en="How It Works" data-ar="كيف نعمل">How It Works</h2>
+    </div>
+    <div class="desc" data-en="From booking to drive-away — every step of your car's visit is visible, approved by you, and done properly." data-ar="من الحجز إلى الانطلاق — كل خطوة في زيارة سيارتك واضحة، وبموافقتك، ومنفذة بإتقان.">From booking to drive-away — every step of your car's visit is visible, approved by you, and done properly.</div>
+  </div>
+
+  <div class="steps-row">
+    <div class="step-item">
+      <div class="step-num">01</div>
+      <h3 data-en="Book" data-ar="احجز">Book</h3>
+      <p data-en="Choose your service and preferred appointment time." data-ar="اختر خدمتك ووقت الموعد المفضل لديك.">Choose your service and preferred appointment time.</p>
+    </div>
+    <div class="step-item">
+      <div class="step-num">02</div>
+      <h3 data-en="Inspect" data-ar="افحص">Inspect</h3>
+      <p data-en="Our technician performs a professional inspection and diagnosis." data-ar="يقوم فنينا بإجراء فحص وتشخيص احترافي.">Our technician performs a professional inspection and diagnosis.</p>
+    </div>
+    <div class="step-item">
+      <div class="step-num">03</div>
+      <h3 data-en="Approve" data-ar="وافق">Approve</h3>
+      <p data-en="Receive a clear, itemized estimate before work begins." data-ar="احصل على تقدير واضح ومفصّل قبل بدء العمل.">Receive a clear, itemized estimate before work begins.</p>
+    </div>
+    <div class="step-item">
+      <div class="step-num">04</div>
+      <h3 data-en="Repair" data-ar="أصلح">Repair</h3>
+      <p data-en="Our technicians complete the approved work." data-ar="يقوم فنيونا بإنجاز العمل المعتمد.">Our technicians complete the approved work.</p>
+    </div>
+    <div class="step-item step-final">
+      <div class="step-num">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M20 6L9 17l-5-5"/></svg>
+      </div>
+      <h3 data-en="Drive Away" data-ar="انطلق">Drive Away</h3>
+      <p data-en="Vehicle is tested and returned ready for the road." data-ar="يتم اختبار السيارة وتسليمها جاهزة للطريق.">Vehicle is tested and returned ready for the road.</p>
+    </div>
+  </div>
+
+  <div class="steps-cta">
+    <a class="btn-primary" href="pages/service.html" data-en="Start With Step One" data-ar="ابدأ بالخطوة الأولى">Start With Step One</a>
+  </div>
+</section>
+
+<section class="diagnose" id="diagnose">
+  <div class="section-head">
+    <div>
+      <div class="eyebrow" data-en="Choose Your Service" data-ar="اختر خدمتك">Choose Your Service</div>
+      <h2 data-en="What's Wrong With Your Vehicle?" data-ar="ما هي مشكلة سيارتك؟">What's Wrong With Your Vehicle?</h2>
+    </div>
+    <div class="desc" data-en="Tell us what your car is experiencing and we'll point you straight to the right service — no guesswork needed." data-ar="أخبرنا بما تعاني منه سيارتك وسنوجهك مباشرة إلى الخدمة المناسبة — دون أي تخمين.">Tell us what your car is experiencing and we'll point you straight to the right service — no guesswork needed.</div>
+  </div>
+
+  <div class="symptom-grid" id="symptomGrid"></div>
+
+  <div class="symptom-result" id="symptomResult">
+    <div class="sr-icon" id="srIcon">🔧</div>
+    <div class="sr-body">
+      <div class="sr-label" data-en="Recommended Service" data-ar="الخدمة المقترحة">Recommended Service</div>
+      <h3 id="srService">—</h3>
+      <p id="srMessage">—</p>
+      <div class="sr-actions">
+        <button type="button" class="btn-primary" id="srViewBtn" data-en="View This Service" data-ar="عرض هذه الخدمة">View This Service</button>
+        <a class="btn-outline" href="pages/service.html" data-en="Book This Service" data-ar="احجز هذه الخدمة">Book This Service</a>
+      </div>
+    </div>
+  </div>
+</section>
+
 <section class="services" id="services">
   <div class="section-head">
     <div>
       <div class="eyebrow" data-en="What We Do" data-ar="ماذا نقدم">What We Do</div>
       <h2 data-en="Full-Service Garage" data-ar="ورشة خدمات متكاملة">Full-Service Garage</h2>
     </div>
-    <div class="desc" data-en="Hover or tap a service to see full details, pricing and what's included — everything your car needs, in one list." data-ar="مرّر المؤشر أو اضغط على أي خدمة لعرض التفاصيل الكاملة والأسعار وما تشمله — كل ما تحتاجه سيارتك في قائمة واحدة.">Hover or tap a service to see full details, pricing and what's included — everything your car needs, in one list.</div>
+    <div class="desc" data-en="Hover or tap a category to explore everything we offer — organized the way a professional workshop should be." data-ar="مرّر المؤشر أو اضغط على أي فئة لاستكشاف كل ما نقدمه — منظّمة بالطريقة التي تليق بورشة احترافية.">Hover or tap a category to explore everything we offer — organized the way a professional workshop should be.</div>
   </div>
 
   <div class="accordion" id="accordion">
@@ -830,6 +1183,36 @@
     <div class="band-stat"><div class="n">9.4k</div><div class="l" data-en="Cars Serviced" data-ar="سيارة تمت خدمتها">Cars Serviced</div></div>
     <div class="band-stat"><div class="n">4.9★</div><div class="l" data-en="Average Rating" data-ar="متوسط التقييم">Average Rating</div></div>
   </div>
+</section>
+
+<section class="pricing" id="pricing">
+  <div class="section-head">
+    <div>
+      <div class="eyebrow" data-en="Transparent Pricing" data-ar="أسعار شفافة">Transparent Pricing</div>
+      <h2 data-en="No Guesswork. No Hidden Fees." data-ar="بلا تخمين. بلا رسوم خفية.">No Guesswork. No Hidden Fees.</h2>
+    </div>
+    <div class="desc" data-en="Real starting prices for our most-requested services — see exactly what to expect before you book." data-ar="أسعار حقيقية لأكثر خدماتنا طلبًا — اعرف بالضبط ما تتوقعه قبل الحجز.">Real starting prices for our most-requested services — see exactly what to expect before you book.</div>
+  </div>
+
+  <div class="currency-switch" id="currencySwitch">
+    <button type="button" class="currency-btn active" data-currency="AED">🇦🇪 <span data-en="UAE" data-ar="الإمارات">UAE</span></button>
+    <button type="button" class="currency-btn" data-currency="USD">🇺🇸 <span data-en="USA" data-ar="الولايات المتحدة">USA</span></button>
+    <button type="button" class="currency-btn" data-currency="CAD">🇨🇦 <span data-en="Canada" data-ar="كندا">Canada</span></button>
+  </div>
+
+  <div class="pricing-table-wrap">
+    <table class="pricing-table">
+      <thead>
+        <tr>
+          <th data-en="Service" data-ar="الخدمة">Service</th>
+          <th data-en="Starting From" data-ar="يبدأ من">Starting From</th>
+        </tr>
+      </thead>
+      <tbody id="pricingTableBody"></tbody>
+    </table>
+  </div>
+
+  <div class="pricing-note" data-en="Prices shown are approximate starting estimates converted from AED at current exchange rates. Final pricing is always confirmed after inspection, before any work begins." data-ar="الأسعار المعروضة هي تقديرات أولية تقريبية محوّلة من الدرهم الإماراتي وفق أسعار الصرف الحالية. يتم دائمًا تأكيد السعر النهائي بعد الفحص وقبل بدء أي عمل.">Prices shown are approximate starting estimates converted from AED at current exchange rates. Final pricing is always confirmed after inspection, before any work begins.</div>
 </section>
 
 <footer id="contact">
@@ -899,116 +1282,107 @@
   }, 5000);
 })();
 
-const services = [
+const serviceCategories = [
   {
-    title_en: "Car Sales", title_ar: "بيع السيارات",
-    tag_en: "Quality Used Cars", tag_ar: "سيارات مستعملة بجودة عالية",
-    icon: '<path d="M3 12l1.5-4.5A2 2 0 0 1 6.4 6h11.2a2 2 0 0 1 1.9 1.5L21 12"/><rect x="2.5" y="12" width="19" height="6" rx="1.5"/><circle cx="7.5" cy="18.5" r="1.6"/><circle cx="16.5" cy="18.5" r="1.6"/>',
-    desc_en: "Hand-picked used cars, fully inspected and reconditioned before they reach the forecourt. Every vehicle comes with a full history check and workshop report.",
-    desc_ar: "سيارات مستعملة مختارة بعناية، مفحوصة بالكامل ومُجهزة قبل عرضها للبيع. كل سيارة تأتي مع تقرير فحص كامل وسجل من الورشة.",
-    price: "AED 32,000"
-  },
-  {
-    title_en: "Polishing", title_ar: "التلميع",
-    tag_en: "Bring Back the Shine", tag_ar: "استعادة البريق",
-    icon: '<circle cx="12" cy="12" r="4"/><path d="M12 2v3M12 19v3M2 12h3M19 12h3M4.9 4.9l2.1 2.1M17 17l2.1 2.1M4.9 19.1L7 17M17 7l2.1-2.1"/>',
-    desc_en: "Machine polishing to remove swirl marks, light scratches and oxidation — restoring depth and gloss to your paintwork like it just left the showroom.",
-    desc_ar: "تلميع بالماكينة لإزالة آثار الخدوش الخفيفة والأكسدة — لاستعادة عمق ولمعان الطلاء كأنها خرجت للتو من المعرض.",
-    price: "AED 220"
-  },
-  {
-    title_en: "Body Repair", title_ar: "إصلاح الهيكل",
-    tag_en: "Dents, Scratches, Perfect Finish", tag_ar: "انبعاجات وخدوش بلمسة نهائية مثالية",
-    icon: '<path d="M4 16l2-7a2 2 0 0 1 2-1.5h8a2 2 0 0 1 2 1.5l2 7"/><rect x="3" y="16" width="18" height="4" rx="1"/><circle cx="7.5" cy="20" r="1"/><circle cx="16.5" cy="20" r="1"/>',
-    desc_en: "Panel beating, dent removal and structural repair carried out to manufacturer standard, using colour-matched materials for a seamless finish.",
-    desc_ar: "تصليح الألواح وإزالة الانبعاجات وإصلاح الهيكل وفق معايير الشركة المصنعة، باستخدام مواد مطابقة للون لنتيجة سلسة.",
-    price: "AED 440"
-  },
-  {
-    title_en: "Paint Work", title_ar: "أعمال الدهان",
-    tag_en: "Professional Respray", tag_ar: "إعادة طلاء احترافية",
-    icon: '<path d="M12 3l7 4v6c0 5-3 8-7 8s-7-3-7-8V7l7-4z"/><path d="M9 12l2 2 4-4"/>',
-    desc_en: "Full or partial resprays in booth-cured, factory-matched paint. Single panels or complete colour changes, finished with a protective clear coat.",
-    desc_ar: "إعادة طلاء كاملة أو جزئية بطلاء مطابق للمصنع ومعالج في كبينة خاصة، مع طبقة حماية شفافة نهائية.",
-    price: "AED 1,300"
-  },
-  {
-    title_en: "Window Tinting", title_ar: "تظليل النوافذ",
-    tag_en: "Premium Film, Heat & UV Protection", tag_ar: "فيلم ممتاز، حماية من الحرارة والأشعة فوق البنفسجية",
-    icon: '<rect x="3" y="5" width="18" height="14" rx="2"/><path d="M3 9h18M8 5v14"/>',
-    desc_en: "High-grade film application that cuts glare and heat while blocking up to 99% of UV rays — legal shades available for every window.",
-    desc_ar: "تركيب فيلم عالي الجودة يقلل الوهج والحرارة ويحجب حتى 99% من الأشعة فوق البنفسجية — بدرجات قانونية لكل نافذة.",
-    price: "AED 550"
-  },
-  {
-    title_en: "Car Wash", title_ar: "غسيل السيارات",
-    tag_en: "Inside & Out, Spotless Clean", tag_ar: "من الداخل والخارج، نظافة تامة",
-    icon: '<path d="M3 16h18M5 16l2-6h10l2 6"/><circle cx="7.5" cy="19" r="1.4"/><circle cx="16.5" cy="19" r="1.4"/><path d="M9 6c0-1.5 1-2 1-3M13 6c0-1.5 1-2 1-3"/>',
-    desc_en: "Hand wash and vacuum, wheel and arch clean, glass and mirror finish. A quick, thorough clean that leaves your car looking its best.",
-    desc_ar: "غسيل يدوي وتنظيف بالمكنسة، وتنظيف الإطارات والأقواس، ولمعان للزجاج والمرايا. تنظيف سريع وشامل يترك سيارتك بأفضل حال.",
-    price: "AED 55"
-  },
-  {
-    title_en: "Detailing", title_ar: "تلميع شامل",
-    tag_en: "Interior & Exterior, VIP Treatment", tag_ar: "داخلي وخارجي، عناية VIP",
-    icon: '<path d="M6 3h12l-1 6H7L6 3z"/><path d="M5 9h14l-1 12H6L5 9z"/>',
-    desc_en: "Deep interior shampoo, leather conditioning, engine bay clean and full exterior decontamination — the complete VIP treatment for your car.",
-    desc_ar: "غسيل عميق للمقصورة الداخلية، وترطيب الجلد، وتنظيف حجرة المحرك، وتعقيم كامل للخارج — عناية VIP متكاملة لسيارتك.",
-    price: "AED 330"
-  },
-  {
-    title_en: "Auto Electrics", title_ar: "الكهرباء",
-    tag_en: "Diagnostics, Repairs, Upgrades", tag_ar: "تشخيص، إصلاح، وتحديثات",
-    icon: '<path d="M13 2L4 14h6l-1 8 9-12h-6l1-8z"/>',
-    desc_en: "Computer diagnostics, fault-finding, battery and alternator checks, plus wiring repairs and electrical upgrades carried out by certified techs.",
-    desc_ar: "تشخيص بالكمبيوتر واكتشاف الأعطال، وفحص البطارية والدينامو، بالإضافة إلى إصلاحات الأسلاك والتحديثات الكهربائية على يد فنيين معتمدين.",
-    price: "AED 170"
-  },
-  {
-    title_en: "Mechanical Repairs", title_ar: "الإصلاح الميكانيكي",
-    tag_en: "Engine, Brakes, Clutch & More", tag_ar: "المحرك، الفرامل، القابض والمزيد",
+    title_en: "Maintenance", title_ar: "الصيانة",
+    tag_en: "Routine Care & Upkeep", tag_ar: "العناية والصيانة الدورية",
     icon: '<path d="M14.7 6.3a4 4 0 0 0-5.4 5.4L3 18l3 3 6.3-6.3a4 4 0 0 0 5.4-5.4l-2.1 2.1-2.6-.9-.9-2.6 2.1-2.1z"/>',
-    desc_en: "Engine, brake, clutch and suspension work handled with full diagnostic backup — from routine servicing to major mechanical rebuilds.",
-    desc_ar: "أعمال المحرك والفرامل والقابض والتعليق مع دعم تشخيصي كامل — من الصيانة الدورية إلى إعادة البناء الميكانيكي الكبرى.",
-    price: "AED 300"
+    desc_en: "Keep your car running smoothly with the regular care every vehicle needs — from oil and filters to tyres, alignment and fluids.",
+    desc_ar: "حافظ على سيارتك تعمل بسلاسة مع العناية الدورية التي تحتاجها كل سيارة — من الزيت والفلاتر إلى الإطارات والزوايا والسوائل.",
+    items: [
+      { en: "Oil &amp; Filter Change", ar: "تغيير الزيت والفلتر" },
+      { en: "Brake Service", ar: "خدمة الفرامل" },
+      { en: "Battery Replacement", ar: "استبدال البطارية" },
+      { en: "Tire Service", ar: "خدمة الإطارات" },
+      { en: "Wheel Alignment", ar: "ضبط زوايا العجلات" },
+      { en: "Fluid Service", ar: "خدمة السوائل" },
+    ]
   },
   {
-    title_en: "Garage Rental", title_ar: "تأجير المرآب",
-    tag_en: "Secure, Clean, 24/7 Access", tag_ar: "آمن، نظيف، دخول على مدار الساعة",
-    icon: '<path d="M3 10l9-6 9 6"/><path d="M5 10v10h14V10"/><path d="M9 20v-6h6v6"/>',
-    desc_en: "Private, secure garage units available for storage or workshop use — clean, dry, and accessible around the clock with CCTV monitoring.",
-    desc_ar: "وحدات مرآب خاصة وآمنة متاحة للتخزين أو الاستخدام كورشة — نظيفة وجافة ويمكن الوصول إليها في أي وقت مع مراقبة بالكاميرات.",
-    price: "AED 450/mo"
+    title_en: "Diagnostics", title_ar: "التشخيص",
+    tag_en: "Find The Problem, Fast", tag_ar: "تحديد المشكلة بسرعة",
+    icon: '<rect x="4" y="4" width="16" height="16" rx="2"/><path d="M9 9h6v6H9z"/><path d="M9 1v3M15 1v3M9 20v3M15 20v3M1 9h3M1 15h3M20 9h3M20 15h3"/>',
+    desc_en: "Modern cars are computers on wheels — our diagnostic tools pinpoint the exact fault before any work is quoted or carried out.",
+    desc_ar: "السيارات الحديثة أشبه بحواسيب على عجلات — أدوات التشخيص لدينا تحدد العطل بدقة قبل تقديم أي عرض سعر أو بدء العمل.",
+    items: [
+      { en: "Computer Diagnostics", ar: "تشخيص بالكمبيوتر" },
+      { en: "Check Engine", ar: "فحص ضوء المحرك" },
+      { en: "Electrical Diagnostics", ar: "تشخيص كهربائي" },
+      { en: "AC Diagnostics", ar: "تشخيص التكييف" },
+      { en: "Transmission Diagnostics", ar: "تشخيص ناقل الحركة" },
+    ]
   },
   {
-    title_en: "Parking Rental", title_ar: "تأجير مواقف",
-    tag_en: "Safe, Convenient, CCTV", tag_ar: "آمن، مريح، مراقب بالكاميرات",
-    icon: '<rect x="3" y="4" width="18" height="16" rx="2"/><path d="M9 8h3.5a2.5 2.5 0 0 1 0 5H9V8zM9 13v4"/>',
-    desc_en: "Short or long-term parking in a secured, monitored yard — an easy, affordable option for city-centre drivers who need peace of mind.",
-    desc_ar: "مواقف قصيرة أو طويلة الأجل في ساحة آمنة ومراقبة — خيار سهل وبأسعار مناسبة لسائقي وسط المدينة الباحثين عن راحة البال.",
-    price: "AED 150/mo"
+    title_en: "Mechanical", title_ar: "الإصلاح الميكانيكي",
+    tag_en: "Engine, Drivetrain &amp; More", tag_ar: "المحرك، نظام الدفع والمزيد",
+    icon: '<circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/>',
+    desc_en: "Major mechanical work handled by certified technicians — from engine rebuilds to suspension and steering, done to manufacturer standard.",
+    desc_ar: "أعمال ميكانيكية كبرى ينفذها فنيون معتمدون — من إعادة بناء المحرك إلى التعليق والتوجيه، وفق معايير الشركة المصنعة.",
+    items: [
+      { en: "Engine Repair", ar: "إصلاح المحرك" },
+      { en: "Transmission Repair", ar: "إصلاح ناقل الحركة" },
+      { en: "Suspension", ar: "نظام التعليق" },
+      { en: "Steering", ar: "نظام التوجيه" },
+      { en: "Cooling System", ar: "نظام التبريد" },
+    ]
+  },
+  {
+    title_en: "Body &amp; Cosmetic", title_ar: "الهيكل والتجميل",
+    tag_en: "Dents, Paint &amp; Finish", tag_ar: "الانبعاجات والدهان واللمسة النهائية",
+    icon: '<path d="M4 16l2-7a2 2 0 0 1 2-1.5h8a2 2 0 0 1 2 1.5l2 7"/><rect x="3" y="16" width="18" height="4" rx="1"/><circle cx="7.5" cy="20" r="1"/><circle cx="16.5" cy="20" r="1"/>',
+    desc_en: "From a single dent to a full respray, our body shop restores your car's finish using colour-matched materials and a careful eye for detail.",
+    desc_ar: "من انبعاج واحد إلى إعادة طلاء كاملة، تعيد ورشة الهيكل لدينا مظهر سيارتك باستخدام مواد مطابقة للون واهتمام دقيق بالتفاصيل.",
+    items: [
+      { en: "Dent Repair", ar: "إصلاح الانبعاجات" },
+      { en: "Paint / Respray", ar: "دهان / إعادة طلاء" },
+      { en: "Scratch Removal", ar: "إزالة الخدوش" },
+      { en: "Detailing", ar: "تلميع شامل" },
+      { en: "Ceramic Coating", ar: "طلاء سيراميك" },
+    ]
+  },
+  {
+    title_en: "Specialized", title_ar: "خدمات متخصصة",
+    tag_en: "Hybrid, EV &amp; Premium Brands", tag_ar: "هجينة، كهربائية وماركات فاخرة",
+    icon: '<path d="M12 2l3.09 6.26L22 9.27l-5 4.87L18.18 21 12 17.77 5.82 21 7 14.14 2 9.27l6.91-1.01L12 2z"/>',
+    desc_en: "Specialist knowledge for the vehicles that need it most — hybrid and EV systems, European and luxury marques, 4x4s and fleet vehicles.",
+    desc_ar: "خبرة متخصصة للسيارات التي تحتاجها أكثر — أنظمة الهجين والكهرباء، الماركات الأوروبية والفاخرة، سيارات الدفع الرباعي وأساطيل الشركات.",
+    items: [
+      { en: "Hybrid &amp; EV", ar: "هجينة وكهربائية" },
+      { en: "European Cars", ar: "سيارات أوروبية" },
+      { en: "Luxury Cars", ar: "سيارات فاخرة" },
+      { en: "4&times;4 / SUV", ar: "دفع رباعي / SUV" },
+      { en: "Fleet Maintenance", ar: "صيانة الأساطيل" },
+    ]
   },
 ];
 
 const acc = document.getElementById('accordion');
 
-services.forEach((s, i) => {
+serviceCategories.forEach((cat, i) => {
   const item = document.createElement('div');
   item.className = 'acc-item';
+  const subItemsHtml = cat.items.map(it => `
+    <div class="acc-subitem">
+      <svg viewBox="0 0 24 24" fill="none" stroke-width="2"><path d="M20 6L9 17l-5-5"/></svg>
+      <span data-en="${it.en}" data-ar="${it.ar}">${it.en}</span>
+    </div>`).join('');
+
   item.innerHTML = `
     <div class="acc-num">${String(i+1).padStart(2,'0')}</div>
     <div class="acc-body">
       <div class="acc-top">
-        <div class="acc-icon"><svg viewBox="0 0 24 24">${s.icon}</svg></div>
+        <div class="acc-icon"><svg viewBox="0 0 24 24">${cat.icon}</svg></div>
         <div class="acc-titles">
-          <h3 data-en="${s.title_en}" data-ar="${s.title_ar}">${s.title_en}</h3>
-          <div class="tag" data-en="${s.tag_en}" data-ar="${s.tag_ar}">${s.tag_en}</div>
+          <h3 data-en="${cat.title_en}" data-ar="${cat.title_ar}">${cat.title_en}</h3>
+          <div class="tag" data-en="${cat.tag_en}" data-ar="${cat.tag_ar}">${cat.tag_en}</div>
         </div>
+        <div class="acc-count">${cat.items.length} <span data-en="Services" data-ar="خدمات">Services</span></div>
         <div class="acc-arrow"><svg viewBox="0 0 24 24" fill="none" stroke-width="2"><path d="M9 6l6 6-6 6"/></svg></div>
       </div>
       <div class="acc-detail">
-        <p data-en="${s.desc_en}" data-ar="${s.desc_ar}">${s.desc_en}</p>
-        <div class="acc-price"><div class="from" data-en="FROM" data-ar="يبدأ من">FROM</div><div class="amt">${s.price}</div></div>
+        <p data-en="${cat.desc_en}" data-ar="${cat.desc_ar}">${cat.desc_en}</p>
+        <div class="acc-subgrid">${subItemsHtml}</div>
+        <a class="acc-cta" href="pages/service.html" data-en="Book a ${cat.title_en} Service" data-ar="احجز خدمة ${cat.title_ar}">Book a ${cat.title_en} Service</a>
       </div>
     </div>
   `;
@@ -1040,15 +1414,164 @@ if (supportsHover){
   });
 }
 
-// populate the service <select> in the contact form
-const select = document.querySelector('.form-row select');
-services.forEach(s => {
-  const opt = document.createElement('option');
-  opt.setAttribute('data-en', s.title_en);
-  opt.setAttribute('data-ar', s.title_ar);
-  opt.textContent = s.title_en;
-  select.appendChild(opt);
+/* ============ CHOOSE YOUR SERVICE (SYMPTOM PICKER) ============ */
+const symptoms = [
+  {
+    emoji: "🔧", label_en: "Check Engine Light", label_ar: "ضوء فحص المحرك",
+    service_en: "Diagnostics", service_ar: "التشخيص",
+    message_en: "A check engine light usually points to an electrical or sensor fault. Our technicians run a full diagnostic scan to pinpoint the issue before any work begins.",
+    message_ar: "ضوء فحص المحرك غالبًا ما يشير إلى عطل كهربائي أو في أحد الحساسات. يقوم فنيونا بإجراء فحص تشخيصي كامل لتحديد المشكلة قبل البدء بأي عمل."
+  },
+  {
+    emoji: "🛞", label_en: "Brake Problems", label_ar: "مشاكل الفرامل",
+    service_en: "Maintenance", service_ar: "الصيانة",
+    message_en: "Squealing, grinding, or a soft brake pedal are signs your brakes need attention — we'll inspect pads, discs and fluid as part of our mechanical repair service.",
+    message_ar: "الصرير أو الاحتكاك أو دواسة الفرامل اللينة كلها علامات تحتاج فرامل سيارتك للفحص — سنقوم بفحص الفحمات والأقراص والسائل ضمن خدمة الإصلاح الميكانيكي."
+  },
+  {
+    emoji: "❄️", label_en: "AC Not Cooling", label_ar: "التكييف لا يبرد",
+    service_en: "Diagnostics", service_ar: "التشخيص",
+    message_en: "Weak or warm airflow is often a refrigerant, compressor or blower issue — our mechanical team can diagnose and fix your AC system.",
+    message_ar: "ضعف أو دفء الهواء غالبًا ما يكون بسبب مشكلة في الفريون أو الكمبروسر أو المروحة — يمكن لفريقنا الميكانيكي تشخيص وإصلاح نظام التكييف."
+  },
+  {
+    emoji: "🔋", label_en: "Battery Problems", label_ar: "مشاكل البطارية",
+    service_en: "Maintenance", service_ar: "الصيانة",
+    message_en: "Slow starts or a dead battery point to a charging or electrical fault. We'll test your battery, alternator and wiring.",
+    message_ar: "بطء التشغيل أو نفاذ البطارية يشير إلى عطل في الشحن أو النظام الكهربائي. سنقوم بفحص البطارية والدينامو والأسلاك."
+  },
+  {
+    emoji: "🚗", label_en: "Oil Change Due", label_ar: "حان موعد تغيير الزيت",
+    service_en: "Maintenance", service_ar: "الصيانة",
+    message_en: "Overdue for an oil change? Fresh oil and a new filter protect your engine — ask about our Oil + Filter Change offer from AED 110.",
+    message_ar: "تأخر موعد تغيير الزيت؟ الزيت الجديد والفلتر الجديد يحميان محركك — اسأل عن عرض تغيير الزيت والفلتر ابتداءً من 110 درهم."
+  },
+  {
+    emoji: "⚙️", label_en: "Transmission Problems", label_ar: "مشاكل ناقل الحركة",
+    service_en: "Diagnostics", service_ar: "التشخيص",
+    message_en: "Slipping gears, delayed shifting or unusual jerks are signs your transmission needs a professional look.",
+    message_ar: "انزلاق التروس أو تأخر التبديل أو الاهتزاز غير المعتاد كلها علامات تحتاج فيها ناقل الحركة لفحص احترافي."
+  },
+  {
+    emoji: "🔊", label_en: "Strange Noise", label_ar: "صوت غريب",
+    service_en: "Diagnostics", service_ar: "التشخيص",
+    message_en: "Knocking, squealing or rattling noises can point to several issues — our team will inspect and diagnose the source.",
+    message_ar: "أصوات الطرق أو الصرير أو الخشخشة قد تشير إلى عدة مشاكل — سيقوم فريقنا بفحص وتشخيص مصدر الصوت."
+  },
+  {
+    emoji: "🚨", label_en: "Warning Light", label_ar: "ضوء تحذير",
+    service_en: "Diagnostics", service_ar: "التشخيص",
+    message_en: "Any dashboard warning light deserves a proper diagnostic scan before it becomes a bigger — and pricier — problem.",
+    message_ar: "أي ضوء تحذير في لوحة القيادة يستحق فحصًا تشخيصيًا مناسبًا قبل أن يتحول إلى مشكلة أكبر — وأغلى."
+  },
+];
+
+const symptomGrid = document.getElementById('symptomGrid');
+const symptomResult = document.getElementById('symptomResult');
+const symptomCards = [];
+
+symptoms.forEach((sym, i) => {
+  const card = document.createElement('button');
+  card.type = 'button';
+  card.className = 'symptom-card';
+  card.innerHTML = `
+    <span class="sc-emoji">${sym.emoji}</span>
+    <span class="sc-label" data-en="${sym.label_en}" data-ar="${sym.label_ar}">${sym.label_en}</span>
+  `;
+  card.addEventListener('click', () => selectSymptom(i, card));
+  symptomGrid.appendChild(card);
+  symptomCards.push(card);
 });
+
+function selectSymptom(i, card){
+  const sym = symptoms[i];
+  symptomCards.forEach(c => c.classList.remove('active'));
+  card.classList.add('active');
+
+  const isAr = document.documentElement.lang === 'ar';
+  document.getElementById('srIcon').textContent = sym.emoji;
+  document.getElementById('srService').textContent = isAr ? sym.service_ar : sym.service_en;
+  document.getElementById('srMessage').textContent = isAr ? sym.message_ar : sym.message_en;
+  symptomResult.classList.add('show');
+  symptomResult.dataset.serviceTitle = sym.service_en;
+
+  symptomResult.scrollIntoView({ behavior: 'smooth', block: 'center' });
+}
+
+document.getElementById('srViewBtn').addEventListener('click', () => {
+  const targetTitle = symptomResult.dataset.serviceTitle;
+  const targetIndex = serviceCategories.findIndex(s => s.title_en === targetTitle);
+  if (targetIndex === -1) return;
+
+  document.getElementById('services').scrollIntoView({ behavior: 'smooth', block: 'start' });
+  setTimeout(() => {
+    setActive(items[targetIndex]);
+    items[targetIndex].classList.add('active');
+  }, 450);
+});
+
+// populate the service <select> in the contact form with every sub-service, grouped by category
+function decodeEntities(str){
+  return str.replace(/&amp;/g, '&').replace(/&times;/g, '×');
+}
+const select = document.querySelector('.form-row select');
+serviceCategories.forEach(cat => {
+  const catEn = decodeEntities(cat.title_en);
+  const catAr = decodeEntities(cat.title_ar);
+  cat.items.forEach(it => {
+    const opt = document.createElement('option');
+    const enText = `${catEn} — ${it.en}`;
+    const arText = `${catAr} — ${it.ar}`;
+    opt.setAttribute('data-en', enText);
+    opt.setAttribute('data-ar', arText);
+    opt.textContent = enText;
+    select.appendChild(opt);
+  });
+});
+
+/* ============ TRANSPARENT PRICING ============ */
+// Base prices in AED. Conversion rates are approximate and should be reviewed periodically —
+// for live, accurate rates, connect this to a currency-exchange API from a backend.
+const pricingRates = { AED: 1, USD: 0.272, CAD: 0.373 };
+const pricingSymbols = { AED: 'AED', USD: 'US$', CAD: 'CA$' };
+let currentPricingCurrency = 'AED';
+
+const pricingData = [
+  { en: "Oil Change", ar: "تغيير الزيت", aed: 110 },
+  { en: "Computer Diagnostics", ar: "تشخيص بالكمبيوتر", aed: 150 },
+  { en: "Brake Inspection", ar: "فحص الفرامل", aed: 99 },
+  { en: "AC Inspection", ar: "فحص التكييف", aed: 149 },
+  { en: "Battery Replacement", ar: "استبدال البطارية", aed: 220 },
+  { en: "Wheel Alignment", ar: "ضبط زوايا العجلات", aed: 180 },
+];
+
+function convertPrice(aed, currency){
+  const converted = aed * pricingRates[currency];
+  const rounded = currency === 'AED' ? converted : Math.round(converted);
+  return `${pricingSymbols[currency]} ${rounded.toLocaleString('en-US')}`;
+}
+
+function renderPricingTable(){
+  const isAr = document.documentElement.lang === 'ar';
+  const fromLabel = isAr ? 'يبدأ من' : 'From';
+  document.getElementById('pricingTableBody').innerHTML = pricingData.map(row => `
+    <tr>
+      <td>${isAr ? row.ar : row.en}</td>
+      <td class="price-cell">${fromLabel} ${convertPrice(row.aed, currentPricingCurrency)}</td>
+    </tr>
+  `).join('');
+}
+
+document.querySelectorAll('.currency-btn').forEach(btn => {
+  btn.addEventListener('click', () => {
+    document.querySelectorAll('.currency-btn').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    currentPricingCurrency = btn.dataset.currency;
+    renderPricingTable();
+  });
+});
+
+renderPricingTable();
 
 /* ============ BILINGUAL ENGINE (EN / AR) ============ */
 
@@ -1176,6 +1699,7 @@ function applyTranslations(){
   document.querySelectorAll('.lang-toggle').forEach(btn => {
     btn.textContent = currentLang === 'ar' ? 'EN' : 'AR';
   });
+  if (typeof renderPricingTable === 'function') renderPricingTable();
 }
 function setLang(l){ currentLang = l; applyTranslations(); }
 applyTranslations();
