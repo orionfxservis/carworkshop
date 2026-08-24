@@ -1,0 +1,31 @@
+{
+  "name": "Orion Fx — Car Garage Service",
+  "short_name": "Orion Fx",
+  "description": "Book car servicing, track repairs, and get transparent pricing from Orion Fx — Sharjah, UAE.",
+  "start_url": "index.html",
+  "scope": "./",
+  "display": "standalone",
+  "orientation": "portrait-primary",
+  "background_color": "#100d0b",
+  "theme_color": "#e2241b",
+  "icons": [
+    {
+      "src": "assets/icons/icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "assets/icons/icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "assets/icons/icon-maskable-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "maskable"
+    }
+  ]
+}

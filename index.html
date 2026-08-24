@@ -9,6 +9,15 @@
 <link href="https://fonts.googleapis.com/css2?family=Anton&family=Barlow+Condensed:wght@400;500;600;700&family=Oswald:wght@400;500;600&family=Cairo:wght@400;600;700;800;900&display=swap" rel="stylesheet">
 <script src="https://accounts.google.com/gsi/client" async defer></script>
 <script async defer crossorigin="anonymous" src="https://connect.facebook.net/en_US/sdk.js"></script>
+<link rel="manifest" href="manifest.json">
+<meta name="theme-color" content="#e2241b">
+<link rel="icon" href="assets/icons/icon-192.png">
+<link rel="apple-touch-icon" href="assets/icons/icon-192.png">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="Orion Fx">
+<script>window.ORION_SW_PATH = "sw.js";</script>
+<script src="assets/pwa.js" defer></script>
 <style>
 
   :root{
@@ -403,6 +412,136 @@
     .step-item p{ max-width: 320px; }
   }
 
+  /* ============ DIGITAL VEHICLE INSPECTION ============ */
+  .dvi{
+    position: relative;
+    padding: 90px 5% 90px;
+    overflow: hidden;
+  }
+  .dvi::before{
+    content:"";
+    position:absolute; top:-15%; right:-5%;
+    width:45vw; height:45vw;
+    background: radial-gradient(circle, rgba(255,177,0,0.09), transparent 65%);
+    pointer-events:none; z-index:0;
+  }
+  .dvi .section-head, .dvi .dvi-card{ position:relative; z-index:1; }
+
+  .dvi-card{
+    max-width: 620px;
+    background: rgba(28,24,19,0.55);
+    -webkit-backdrop-filter: blur(18px) saturate(160%);
+    backdrop-filter: blur(18px) saturate(160%);
+    border: 1px solid rgba(244,242,236,0.1);
+    box-shadow: 0 12px 40px rgba(0,0,0,0.35);
+    padding: 28px 30px 30px;
+  }
+  .dvi-card-head{
+    display:flex; align-items:flex-start; justify-content:space-between; gap:16px;
+    margin-bottom: 22px; padding-bottom: 18px; border-bottom: 1px solid rgba(244,242,236,0.1);
+  }
+  .dvi-vehicle{ font-family:'Anton', sans-serif; font-size: 19px; color: var(--white); }
+  .dvi-sub{ font-family:'Oswald', sans-serif; font-size: 11px; letter-spacing:0.08em; color: var(--steel); text-transform:uppercase; margin-top:4px; }
+  .dvi-date{ font-family:'Oswald', sans-serif; font-size: 12px; color: var(--steel); white-space:nowrap; }
+
+  .dvi-checklist{ display:flex; flex-direction:column; gap: 10px; margin-bottom: 24px; }
+  .dvi-row{
+    display:flex; align-items:center; justify-content:space-between; gap:12px;
+    padding: 12px 14px;
+    background: rgba(6,5,4,0.35);
+    border: 1px solid rgba(244,242,236,0.07);
+  }
+  .dvi-row .dvi-item-name{ font-size: 16px; color: var(--white); }
+  .dvi-status{
+    display:inline-flex; align-items:center; gap:7px;
+    font-family:'Oswald', sans-serif; font-size: 11.5px; letter-spacing:0.05em; text-transform:uppercase;
+    padding: 5px 11px;
+  }
+  .dvi-status.good{ color:#3ecf6e; background: rgba(62,207,110,0.08); border:1px solid rgba(62,207,110,0.3); }
+  .dvi-status.warn{ color: var(--amber); background: rgba(255,177,0,0.08); border:1px solid rgba(255,177,0,0.3); }
+  .dvi-status svg{ width:13px; height:13px; }
+
+  .dvi-open-btn{ width:100%; text-align:center; display:block; }
+
+  /* ---- Full report modal ---- */
+  .dvi-overlay{
+    position: fixed; inset:0; z-index: 1000;
+    background: rgba(6,5,4,0.82);
+    -webkit-backdrop-filter: blur(8px);
+    backdrop-filter: blur(8px);
+    display:none; align-items:center; justify-content:center; padding: 20px;
+  }
+  .dvi-overlay.show{ display:flex; }
+  .dvi-modal{
+    width:100%; max-width: 720px; max-height: 88vh;
+    display:flex; flex-direction:column;
+    background: rgba(18,15,12,0.97);
+    border: 1px solid rgba(244,242,236,0.12);
+    box-shadow: 0 24px 70px rgba(0,0,0,0.55);
+  }
+  .dvi-modal-head{
+    display:flex; align-items:flex-start; justify-content:space-between; gap:16px;
+    padding: 24px 26px; border-bottom: 1px solid rgba(244,242,236,0.1); flex-shrink:0;
+  }
+  .dvi-modal-head h3{ font-size: 21px; }
+  .dvi-modal-sub{ font-family:'Oswald', sans-serif; font-size: 11.5px; color: var(--steel); letter-spacing:0.04em; margin-top:6px; }
+  .dvi-close{ background:transparent; border:none; color:var(--steel); font-size:24px; line-height:1; cursor:pointer; padding:0 4px; transition: color .2s; flex-shrink:0; }
+  .dvi-close:hover{ color: var(--red); }
+
+  .dvi-modal-body{ flex:1; overflow-y:auto; padding: 22px 26px; }
+
+  .dvi-report-item{
+    border: 1px solid rgba(244,242,236,0.08);
+    background: rgba(6,5,4,0.3);
+    padding: 18px 20px;
+    margin-bottom: 16px;
+  }
+  .dvi-report-item:last-child{ margin-bottom:0; }
+  .dvi-ri-top{ display:flex; align-items:center; justify-content:space-between; gap:12px; margin-bottom: 10px; flex-wrap:wrap; }
+  .dvi-ri-name{ font-size: 18px; color: var(--white); }
+  .dvi-ri-note{ color:#c9c6bf; font-size: 14.5px; margin-bottom: 14px; line-height:1.6; }
+
+  .dvi-photo-row{ display:flex; gap:10px; margin-bottom: 14px; flex-wrap:wrap; }
+  .dvi-photo{
+    width: 74px; height: 56px; flex-shrink:0;
+    background: linear-gradient(135deg, #2a2521, #17140f);
+    border: 1px dashed rgba(244,242,236,0.18);
+    display:flex; align-items:center; justify-content:center;
+    color: var(--steel-dim);
+  }
+  .dvi-photo svg{ width:20px; height:20px; }
+
+  .dvi-ri-bottom{ display:flex; align-items:center; justify-content:space-between; gap:14px; flex-wrap:wrap; }
+  .dvi-ri-cost{ font-family:'Anton', sans-serif; font-size: 18px; color: var(--amber); }
+  .dvi-ri-cost .lbl{ font-family:'Oswald', sans-serif; font-size:10px; letter-spacing:0.08em; color:var(--steel); text-transform:uppercase; display:block; margin-bottom:2px; }
+
+  .dvi-decision{ display:flex; gap:8px; }
+  .dvi-decision button{
+    background:transparent; border:1px solid var(--steel-dim); color: var(--white);
+    padding: 8px 16px; font-family:'Oswald', sans-serif; font-size:11.5px; letter-spacing:0.05em; text-transform:uppercase;
+    cursor:pointer; transition: border-color .2s, background .2s, color .2s;
+  }
+  .dvi-decision button.approve.selected{ background:#3ecf6e; border-color:#3ecf6e; color:var(--black); }
+  .dvi-decision button.decline.selected{ background: var(--red); border-color: var(--red); color: var(--white); }
+  .dvi-decision button:hover{ border-color: var(--red); }
+
+  .dvi-modal-footer{
+    display:flex; align-items:center; justify-content:space-between; gap:16px; flex-wrap:wrap;
+    padding: 18px 26px; border-top: 1px solid rgba(244,242,236,0.1); flex-shrink:0;
+  }
+  .dvi-total{ font-family:'Oswald', sans-serif; font-size: 12px; letter-spacing:0.04em; color: var(--steel); text-transform:uppercase; }
+  .dvi-total strong{ display:block; font-family:'Anton', sans-serif; font-size: 24px; color: var(--amber); text-transform:none; letter-spacing:0; margin-top:2px; }
+  .dvi-modal-note{
+    padding: 0 26px 22px;
+    font-family:'Oswald', sans-serif; font-size: 11px; color: var(--steel-dim); letter-spacing:0.03em; line-height:1.7;
+  }
+
+  @media (max-width: 640px){
+    .dvi-modal{ max-height: 92vh; }
+    .dvi-modal-footer{ flex-direction:column; align-items:stretch; }
+    .dvi-modal-footer .btn-primary{ width:100%; text-align:center; }
+  }
+
   /* ============ DIAGNOSE / CHOOSE YOUR SERVICE ============ */
   .diagnose{
     position: relative;
@@ -706,6 +845,51 @@
     .pricing-table td.price-cell{ font-size: 17px; }
   }
 
+  /* ============ WHY CHOOSE US ============ */
+  .why-us{
+    position: relative;
+    padding: 90px 5% 100px;
+    overflow: hidden;
+  }
+  .why-us::before{
+    content:"";
+    position:absolute; bottom:-15%; left:50%; transform: translateX(-50%);
+    width:55vw; height:55vw;
+    background: radial-gradient(circle, rgba(226,36,27,0.08), transparent 65%);
+    pointer-events:none; z-index:0;
+  }
+  .why-us .section-head, .why-us .why-grid{ position:relative; z-index:1; }
+
+  .why-grid{
+    display:grid; grid-template-columns: repeat(3, 1fr);
+    gap: 20px;
+  }
+  .why-card{
+    background: rgba(28,24,19,0.5);
+    -webkit-backdrop-filter: blur(16px) saturate(150%);
+    backdrop-filter: blur(16px) saturate(150%);
+    border: 1px solid rgba(244,242,236,0.09);
+    padding: 30px 26px;
+    transition: border-color .25s, transform .25s;
+  }
+  .why-card:hover{ border-color: rgba(226,36,27,0.4); transform: translateY(-3px); }
+  .why-icon{
+    width:52px; height:52px; flex-shrink:0;
+    background: var(--red);
+    display:flex; align-items:center; justify-content:center;
+    margin-bottom: 20px;
+  }
+  .why-icon svg{ width:26px; height:26px; stroke: var(--white); fill:none; }
+  .why-card h3{ font-size: 19px; color: var(--white); margin-bottom: 10px; }
+  .why-card p{ font-size: 15px; color: var(--steel); line-height:1.6; }
+
+  @media (max-width: 900px){
+    .why-grid{ grid-template-columns: repeat(2, 1fr); }
+  }
+  @media (max-width: 560px){
+    .why-grid{ grid-template-columns: 1fr; }
+  }
+
   /* ============ CONTACT / FOOTER ============ */
   footer{
     position: relative;
@@ -842,6 +1026,15 @@
     font-family: 'Cairo', sans-serif; font-style: normal; font-weight: 400;
   }
 
+
+  .mobile-app-btn{
+    display:flex; align-items:center; gap:8px;
+    background: transparent; border: 1px solid var(--steel-dim); color: var(--white);
+    font-family:'Oswald', sans-serif; font-size: 12px; letter-spacing: 0.06em; text-transform: uppercase;
+    padding: 9px 16px; cursor:pointer; transition: border-color .2s, color .2s;
+  }
+  .mobile-app-btn:hover{ border-color: var(--amber); color: var(--amber); }
+  .mobile-app-btn svg{ width:15px; height:15px; flex-shrink:0; }
   .lang-toggle{
     display:flex; align-items:center; gap:6px;
     border: 1px solid var(--steel-dim); background: transparent; color: var(--white);
@@ -988,6 +1181,10 @@
     <a href="#contact" data-en="Contact" data-ar="تواصل معنا">Contact</a>
   </nav>
   <div class="header-actions">
+  <button type="button" class="mobile-app-btn">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="6" y="2" width="12" height="20" rx="2"/><path d="M11 18h2"/><path d="M9 6h6l-1 5H10z"/><path d="M12 11v2"/></svg>
+    <span data-en="Mobile App" data-ar="تطبيق الجوال">Mobile App</span>
+  </button>
   <button type="button" class="lang-toggle" onclick="setLang(currentLang==='en'?'ar':'en')">AR</button>
   <a class="call-pill" href="tel:+971000000000">
     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
@@ -1074,24 +1271,6 @@
   <div class="hero-photo-credit" data-en="Photo — Unsplash" data-ar="صورة — Unsplash">Photo — Unsplash</div>
 </section>
 
-<div class="trust-strip" id="about">
-  <div class="trust-item">
-    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M12 2l8 4v6c0 5-3.5 8.5-8 10-4.5-1.5-8-5-8-10V6l8-4z"/></svg>
-    <div><div class="t-title" data-en="Professional Team" data-ar="فريق محترف">Professional Team</div><div class="t-sub" data-en="Certified mechanics" data-ar="ميكانيكيون معتمدون">Certified mechanics</div></div>
-  </div>
-  <div class="trust-item">
-    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><circle cx="12" cy="8" r="6"/><path d="M8.5 13.5L6 22l6-3 6 3-2.5-8.5"/></svg>
-    <div><div class="t-title" data-en="Premium Quality" data-ar="جودة ممتازة">Premium Quality</div><div class="t-sub" data-en="OEM-grade parts" data-ar="قطع غيار أصلية">OEM-grade parts</div></div>
-  </div>
-  <div class="trust-item">
-    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 3"/></svg>
-    <div><div class="t-title" data-en="Fast &amp; Reliable" data-ar="سريع وموثوق">Fast &amp; Reliable</div><div class="t-sub" data-en="Same-day service" data-ar="خدمة في نفس اليوم">Same-day service</div></div>
-  </div>
-  <div class="trust-item">
-    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M7 11l3 3 7-7"/><path d="M21 12a9 9 0 11-6.219-8.56"/></svg>
-    <div><div class="t-title" data-en="Customer Satisfaction" data-ar="رضا العملاء">Customer Satisfaction</div><div class="t-sub" data-en="5-star rated" data-ar="تقييم 5 نجوم">5-star rated</div></div>
-  </div>
-</div>
 
 <section class="how-it-works" id="how-it-works">
   <div class="section-head">
@@ -1136,6 +1315,53 @@
     <a class="btn-primary" href="pages/service.html" data-en="Start With Step One" data-ar="ابدأ بالخطوة الأولى">Start With Step One</a>
   </div>
 </section>
+
+<section class="dvi" id="inspection">
+  <div class="section-head">
+    <div>
+      <div class="eyebrow" data-en="Digital Vehicle Inspection" data-ar="الفحص الرقمي للمركبة">Digital Vehicle Inspection</div>
+      <h2 data-en="See Exactly What We Find" data-ar="اطّلع بالضبط على ما نكتشفه">See Exactly What We Find</h2>
+    </div>
+    <div class="desc" data-en="Every visit includes a documented inspection you can review yourself — photos, notes, and clear recommendations, not just a verbal summary." data-ar="كل زيارة تتضمن فحصًا موثقًا يمكنك مراجعته بنفسك — صور وملاحظات وتوصيات واضحة، وليس مجرد ملخص شفهي.">Every visit includes a documented inspection you can review yourself — photos, notes, and clear recommendations, not just a verbal summary.</div>
+  </div>
+
+  <div class="dvi-card">
+    <div class="dvi-card-head">
+      <div>
+        <div class="dvi-vehicle" data-en="2022 Toyota Land Cruiser" data-ar="تويوتا لاند كروزر 2022">2022 Toyota Land Cruiser</div>
+        <div class="dvi-sub" data-en="Vehicle Inspection Report &middot; Sample" data-ar="تقرير فحص المركبة &middot; نموذج">Vehicle Inspection Report &middot; Sample</div>
+      </div>
+      <div class="dvi-date" data-en="19 Aug 2026" data-ar="19 أغسطس 2026">19 Aug 2026</div>
+    </div>
+
+    <div class="dvi-checklist" id="dviChecklist"></div>
+
+    <button type="button" class="btn-primary dvi-open-btn" id="viewReportBtn" data-en="View Inspection Report" data-ar="عرض تقرير الفحص">View Inspection Report</button>
+  </div>
+</section>
+
+<div class="dvi-overlay" id="dviOverlay">
+  <div class="dvi-modal">
+    <div class="dvi-modal-head">
+      <div>
+        <h3 data-en="Vehicle Inspection Report" data-ar="تقرير فحص المركبة">Vehicle Inspection Report</h3>
+        <div class="dvi-modal-sub" data-en="2022 Toyota Land Cruiser &middot; Plate: Sharjah 45213 &middot; Technician: R. Ahmed" data-ar="تويوتا لاند كروزر 2022 &middot; اللوحة: الشارقة 45213 &middot; الفني: ر. أحمد">2022 Toyota Land Cruiser &middot; Plate: Sharjah 45213 &middot; Technician: R. Ahmed</div>
+      </div>
+      <button type="button" class="dvi-close" id="dviCloseBtn" aria-label="Close">&times;</button>
+    </div>
+
+    <div class="dvi-modal-body" id="dviModalBody"></div>
+
+    <div class="dvi-modal-footer">
+      <div class="dvi-total">
+        <span data-en="Estimated Total (Approved Items)" data-ar="الإجمالي التقديري (البنود المعتمدة)">Estimated Total (Approved Items)</span>
+        <strong id="dviTotal">AED 0</strong>
+      </div>
+      <button type="button" class="btn-primary" id="dviSubmitBtn" data-en="Send My Decisions" data-ar="أرسل قراراتي">Send My Decisions</button>
+    </div>
+    <div class="dvi-modal-note" data-en="This is a demo report with sample data. Connecting real inspection photos, technician notes, and approvals to your workshop requires a backend and a real booking record." data-ar="هذا تقرير تجريبي يحتوي على بيانات نموذجية. ربط صور الفحص الحقيقية وملاحظات الفني والموافقات بورشتك يتطلب خادمًا خلفيًا وسجل حجز حقيقي.">This is a demo report with sample data. Connecting real inspection photos, technician notes, and approvals to your workshop requires a backend and a real booking record.</div>
+  </div>
+</div>
 
 <section class="diagnose" id="diagnose">
   <div class="section-head">
@@ -1213,6 +1439,61 @@
   </div>
 
   <div class="pricing-note" data-en="Prices shown are approximate starting estimates converted from AED at current exchange rates. Final pricing is always confirmed after inspection, before any work begins." data-ar="الأسعار المعروضة هي تقديرات أولية تقريبية محوّلة من الدرهم الإماراتي وفق أسعار الصرف الحالية. يتم دائمًا تأكيد السعر النهائي بعد الفحص وقبل بدء أي عمل.">Prices shown are approximate starting estimates converted from AED at current exchange rates. Final pricing is always confirmed after inspection, before any work begins.</div>
+</section>
+
+<section class="why-us" id="about">
+  <div class="section-head">
+    <div>
+      <div class="eyebrow" data-en="Why Choose Us" data-ar="لماذا تختارنا">Why Choose Us</div>
+      <h2 data-en="Why Choose Us?" data-ar="لماذا تختارنا؟">Why Choose Us?</h2>
+    </div>
+    <div class="desc" data-en="Not just promises — here's exactly what backs every visit to our workshop." data-ar="ليست مجرد وعود — إليك بالضبط ما يقف خلف كل زيارة لورشتنا.">Not just promises — here's exactly what backs every visit to our workshop.</div>
+  </div>
+
+  <div class="why-grid">
+    <div class="why-card">
+      <div class="why-icon">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M12 2l8 4v6c0 5-3.5 8.5-8 10-4.5-1.5-8-5-8-10V6l8-4z"/><path d="M9 12l2 2 4-4"/></svg>
+      </div>
+      <h3 data-en="Certified Technicians" data-ar="فنيون معتمدون">Certified Technicians</h3>
+      <p data-en="Professionally trained technicians using modern diagnostic equipment." data-ar="فنيون مدربون باحترافية يستخدمون أحدث معدات التشخيص.">Professionally trained technicians using modern diagnostic equipment.</p>
+    </div>
+    <div class="why-card">
+      <div class="why-icon">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/><path d="M8 9h8M8 13h5"/></svg>
+      </div>
+      <h3 data-en="Transparent Estimates" data-ar="أسعار تقديرية شفافة">Transparent Estimates</h3>
+      <p data-en="Know what you're paying for before work begins." data-ar="اعرف ما تدفع مقابله قبل بدء العمل.">Know what you're paying for before work begins.</p>
+    </div>
+    <div class="why-card">
+      <div class="why-icon">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><circle cx="12" cy="8" r="6"/><path d="M8.5 13.5L6 22l6-3 6 3-2.5-8.5"/></svg>
+      </div>
+      <h3 data-en="Quality Parts" data-ar="قطع غيار عالية الجودة">Quality Parts</h3>
+      <p data-en="OEM or high-quality replacement parts." data-ar="قطع غيار أصلية أو بديلة عالية الجودة.">OEM or high-quality replacement parts.</p>
+    </div>
+    <div class="why-card">
+      <div class="why-icon">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M12 2l8 4v6c0 5-3.5 8.5-8 10-4.5-1.5-8-5-8-10V6l8-4z"/></svg>
+      </div>
+      <h3 data-en="Warranty Protection" data-ar="ضمان الحماية">Warranty Protection</h3>
+      <p data-en="Backed by our workmanship and parts warranty." data-ar="مدعوم بضمان على الصنعة وقطع الغيار.">Backed by our workmanship and parts warranty.</p>
+    </div>
+    <div class="why-card">
+      <div class="why-icon">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><rect x="4" y="2" width="16" height="20" rx="2"/><path d="M8 7h8M8 11h8M8 15h5"/></svg>
+      </div>
+      <h3 data-en="Digital Inspection" data-ar="فحص رقمي">Digital Inspection</h3>
+      <p data-en="Receive clear inspection results and recommendations." data-ar="احصل على نتائج فحص وتوصيات واضحة.">Receive clear inspection results and recommendations.</p>
+    </div>
+    <div class="why-card">
+      <div class="why-icon">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"/></svg>
+      </div>
+      <h3 data-en="Customer Updates" data-ar="تحديثات للعميل">Customer Updates</h3>
+      <p data-en="Stay informed through SMS / WhatsApp / Email." data-ar="ابقَ على اطلاع عبر الرسائل النصية / واتساب / البريد الإلكتروني.">Stay informed through SMS / WhatsApp / Email.</p>
+    </div>
+  </div>
 </section>
 
 <footer id="contact">
@@ -1573,6 +1854,137 @@ document.querySelectorAll('.currency-btn').forEach(btn => {
 
 renderPricingTable();
 
+/* ============ DIGITAL VEHICLE INSPECTION ============ */
+const dviData = [
+  {
+    name_en: "Brake Pads", name_ar: "فحمات الفرامل", status: "warn", label_en: "Attention", label_ar: "يتطلب انتباه",
+    note_en: "Front pads at approximately 20% remaining. Recommend replacement within the next 2 weeks.",
+    note_ar: "الفحمات الأمامية متبقٍ منها حوالي 20%. يوصى بالاستبدال خلال الأسبوعين القادمين.",
+    cost: 320, photos: 2
+  },
+  {
+    name_en: "Battery", name_ar: "البطارية", status: "good", label_en: "Good", label_ar: "جيدة",
+    note_en: "Tested at 92% health — no action needed at this time.",
+    note_ar: "تم اختبارها بنسبة سلامة 92% — لا حاجة لأي إجراء حاليًا.",
+    cost: 0, photos: 1
+  },
+  {
+    name_en: "Engine Oil", name_ar: "زيت المحرك", status: "warn", label_en: "Due", label_ar: "مستحق",
+    note_en: "Oil change is due based on current mileage and service history.",
+    note_ar: "حان موعد تغيير الزيت بناءً على المسافة المقطوعة الحالية وسجل الصيانة.",
+    cost: 110, photos: 1
+  },
+  {
+    name_en: "Tires", name_ar: "الإطارات", status: "good", label_en: "Good", label_ar: "جيدة",
+    note_en: "Tread depth is within the safe range on all four tyres.",
+    note_ar: "عمق نقشة الإطارات ضمن الحد الآمن في جميع الإطارات الأربعة.",
+    cost: 0, photos: 2
+  },
+  {
+    name_en: "Suspension", name_ar: "نظام التعليق", status: "warn", label_en: "Recommended", label_ar: "موصى به",
+    note_en: "Minor wear noted on the front shock absorbers. Recommend a follow-up inspection in 3 months.",
+    note_ar: "لوحظ تآكل بسيط في ممتصات الصدمات الأمامية. يوصى بمتابعة الفحص خلال 3 أشهر.",
+    cost: 260, photos: 3
+  },
+];
+
+const dviDecisions = {}; // index -> 'approve' | 'decline'
+
+function dviIsAr(){ return document.documentElement.lang === 'ar'; }
+
+function renderDviChecklist(){
+  const isAr = dviIsAr();
+  document.getElementById('dviChecklist').innerHTML = dviData.map(item => `
+    <div class="dvi-row">
+      <span class="dvi-item-name">${isAr ? item.name_ar : item.name_en}</span>
+      <span class="dvi-status ${item.status}">
+        ${item.status === 'good'
+          ? '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M20 6L9 17l-5-5"/></svg>'
+          : '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 9v4M12 17h.01"/><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/></svg>'}
+        ${isAr ? item.label_ar : item.label_en}
+      </span>
+    </div>
+  `).join('');
+}
+renderDviChecklist();
+
+function renderDviModal(){
+  const isAr = dviIsAr();
+  document.getElementById('dviModalBody').innerHTML = dviData.map((item, i) => {
+    const photos = Array.from({ length: item.photos }).map(() => `
+      <div class="dvi-photo">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M4 7h3l2-3h6l2 3h3a1 1 0 0 1 1 1v11a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V8a1 1 0 0 1 1-1z"/><circle cx="12" cy="13" r="4"/></svg>
+      </div>`).join('');
+
+    const decisionHtml = item.status === 'warn' ? `
+      <div class="dvi-decision" data-idx="${i}">
+        <button type="button" class="approve ${dviDecisions[i] === 'approve' ? 'selected' : ''}" data-action="approve" data-idx="${i}" data-en="Approve" data-ar="موافقة">${isAr ? 'موافقة' : 'Approve'}</button>
+        <button type="button" class="decline ${dviDecisions[i] === 'decline' ? 'selected' : ''}" data-action="decline" data-idx="${i}" data-en="Decline" data-ar="رفض">${isAr ? 'رفض' : 'Decline'}</button>
+      </div>` : '';
+
+    return `
+      <div class="dvi-report-item">
+        <div class="dvi-ri-top">
+          <span class="dvi-ri-name">${isAr ? item.name_ar : item.name_en}</span>
+          <span class="dvi-status ${item.status}">
+            ${item.status === 'good'
+              ? '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M20 6L9 17l-5-5"/></svg>'
+              : '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 9v4M12 17h.01"/><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/></svg>'}
+            ${isAr ? item.label_ar : item.label_en}
+          </span>
+        </div>
+        <p class="dvi-ri-note">${isAr ? item.note_ar : item.note_en}</p>
+        <div class="dvi-photo-row">${photos}</div>
+        <div class="dvi-ri-bottom">
+          ${item.cost > 0 ? `<div class="dvi-ri-cost"><span class="lbl">${isAr ? 'التكلفة التقديرية' : 'Estimated Cost'}</span>AED ${item.cost}</div>` : '<div></div>'}
+          ${decisionHtml}
+        </div>
+      </div>
+    `;
+  }).join('');
+
+  document.querySelectorAll('.dvi-decision button').forEach(btn => {
+    btn.addEventListener('click', () => {
+      const idx = Number(btn.dataset.idx);
+      const action = btn.dataset.action;
+      dviDecisions[idx] = dviDecisions[idx] === action ? undefined : action;
+      renderDviModal();
+      updateDviTotal();
+    });
+  });
+
+  updateDviTotal();
+}
+
+function updateDviTotal(){
+  const total = dviData.reduce((sum, item, i) => sum + (dviDecisions[i] === 'approve' ? item.cost : 0), 0);
+  document.getElementById('dviTotal').textContent = 'AED ' + total.toLocaleString('en-US');
+}
+
+document.getElementById('viewReportBtn').addEventListener('click', () => {
+  renderDviModal();
+  document.getElementById('dviOverlay').classList.add('show');
+});
+document.getElementById('dviCloseBtn').addEventListener('click', () => {
+  document.getElementById('dviOverlay').classList.remove('show');
+});
+document.getElementById('dviOverlay').addEventListener('click', (e) => {
+  if (e.target.id === 'dviOverlay') document.getElementById('dviOverlay').classList.remove('show');
+});
+document.getElementById('dviSubmitBtn').addEventListener('click', () => {
+  const isAr = dviIsAr();
+  const decided = Object.keys(dviDecisions).filter(k => dviDecisions[k]).length;
+  const needed = dviData.filter(d => d.status === 'warn').length;
+  if (decided < needed){
+    alert(isAr ? 'يرجى الموافقة أو الرفض لكل بند قبل الإرسال.' : 'Please approve or decline every flagged item before sending.');
+    return;
+  }
+  alert(isAr
+    ? 'تم إرسال قراراتك (تجريبي). في نسخة حقيقية، سيتم إعلام الورشة والمتابعة بناءً على اختياراتك.'
+    : 'Your decisions have been sent (demo only). In a live version, the workshop would be notified and proceed based on your choices.');
+  document.getElementById('dviOverlay').classList.remove('show');
+});
+
 /* ============ BILINGUAL ENGINE (EN / AR) ============ */
 
 /* ============ LOGIN DROPDOWN ============ */
@@ -1700,6 +2112,8 @@ function applyTranslations(){
     btn.textContent = currentLang === 'ar' ? 'EN' : 'AR';
   });
   if (typeof renderPricingTable === 'function') renderPricingTable();
+  if (typeof renderDviChecklist === 'function') renderDviChecklist();
+  if (typeof renderDviModal === 'function' && document.getElementById('dviOverlay').classList.contains('show')) renderDviModal();
 }
 function setLang(l){ currentLang = l; applyTranslations(); }
 applyTranslations();

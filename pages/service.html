@@ -9,6 +9,15 @@
 <link href="https://fonts.googleapis.com/css2?family=Anton&family=Barlow+Condensed:wght@400;500;600;700&family=Oswald:wght@400;500;600&family=Cairo:wght@400;600;700;800;900&display=swap" rel="stylesheet">
 <script src="https://accounts.google.com/gsi/client" async defer></script>
 <script async defer crossorigin="anonymous" src="https://connect.facebook.net/en_US/sdk.js"></script>
+<link rel="manifest" href="../manifest.json">
+<meta name="theme-color" content="#e2241b">
+<link rel="icon" href="../assets/icons/icon-192.png">
+<link rel="apple-touch-icon" href="../assets/icons/icon-192.png">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="Orion Fx">
+<script>window.ORION_SW_PATH = "../sw.js";</script>
+<script src="../assets/pwa.js" defer></script>
 <style>
 
   :root{
@@ -452,6 +461,15 @@
     font-family: 'Cairo', sans-serif; letter-spacing: 0;
   }
 
+
+  .mobile-app-btn{
+    display:flex; align-items:center; gap:8px;
+    background: transparent; border: 1px solid var(--steel-dim); color: var(--white);
+    font-family:'Oswald', sans-serif; font-size: 12px; letter-spacing: 0.06em; text-transform: uppercase;
+    padding: 9px 16px; cursor:pointer; transition: border-color .2s, color .2s;
+  }
+  .mobile-app-btn:hover{ border-color: var(--amber); color: var(--amber); }
+  .mobile-app-btn svg{ width:15px; height:15px; flex-shrink:0; }
   .lang-toggle{
     display:flex; align-items:center; gap:6px;
     border: 1px solid var(--steel-dim); background: transparent; color: var(--white);
@@ -593,6 +611,10 @@
     <a href="../index.html#contact" data-en="Contact" data-ar="تواصل معنا">Contact</a>
   </nav>
   <div class="header-actions">
+  <button type="button" class="mobile-app-btn">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="6" y="2" width="12" height="20" rx="2"/><path d="M11 18h2"/><path d="M9 6h6l-1 5H10z"/><path d="M12 11v2"/></svg>
+    <span data-en="Mobile App" data-ar="تطبيق الجوال">Mobile App</span>
+  </button>
   <button type="button" class="lang-toggle" onclick="setLang(currentLang==='en'?'ar':'en')">AR</button>
   <a class="call-pill" href="tel:+971000000000">
     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
