@@ -191,6 +191,63 @@
   .f-row{ display:flex; flex-direction:column; gap:8px; }
   .f-row.full{ grid-column: 1 / -1; }
 
+  .btn-outline{
+    display:inline-flex; align-items:center; justify-content:center; gap:8px;
+    background: transparent; color: var(--white); border: 1px solid rgba(244,242,236,0.35);
+    padding: 0 20px; height: 46px; font-family:'Oswald', sans-serif; font-size: 13px; letter-spacing: 0.06em; text-transform: uppercase;
+    transition: border-color .25s, background .25s, color .25s; cursor: pointer; white-space:nowrap;
+  }
+  .btn-outline:hover{ border-color: var(--red); color: var(--red); }
+  .btn-outline svg{ width:15px; height:15px; flex-shrink:0; }
+
+  .vin-lookup{
+    background: rgba(226,36,27,0.06);
+    border: 1px solid rgba(226,36,27,0.25);
+    padding: 22px 24px;
+    margin-bottom: 26px;
+  }
+  .vin-lookup > label{ display:block; margin-bottom: 10px; }
+  .vin-lookup-row{ display:flex; gap: 12px; flex-wrap: wrap; }
+  .vin-lookup-row input{
+    flex:1; min-width: 220px; height: 46px; box-sizing:border-box;
+    background: rgba(6,5,4,0.6); border:1px solid var(--steel-dim); color: var(--white);
+    padding: 0 14px; font-family:'Barlow Condensed', sans-serif; font-size:16px; outline:none;
+    transition: border-color .2s;
+  }
+  .vin-lookup-row input:focus{ border-color: var(--red); }
+
+  .vin-lookup-result{ margin-top: 14px; }
+  .vin-lookup-result:empty{ display:none; }
+  .vin-lookup-status{
+    display:flex; align-items:center; gap:10px;
+    font-family:'Oswald', sans-serif; font-size: 13px; letter-spacing:0.03em; padding: 12px 16px;
+  }
+  .vin-lookup-status svg{ width:18px; height:18px; flex-shrink:0; }
+  .vin-lookup-status.found{ background: rgba(62,207,110,0.1); border:1px solid rgba(62,207,110,0.35); color:#3ecf6e; }
+  .vin-lookup-status.notfound{ background: rgba(255,177,0,0.08); border:1px solid rgba(255,177,0,0.3); color: var(--amber); }
+  .vin-lookup-status.loading{ background: rgba(244,242,236,0.05); border:1px solid rgba(244,242,236,0.15); color: var(--steel); }
+
+  .vin-lookup-try{
+    margin-top: 14px; display:flex; align-items:center; gap:10px; flex-wrap:wrap;
+    font-family:'Oswald', sans-serif; font-size: 11.5px; color: var(--steel-dim); letter-spacing:0.03em;
+  }
+  .vin-try-chip{
+    background: transparent; border: 1px dashed var(--steel-dim); color: var(--steel);
+    padding: 4px 12px; font-family:'Oswald', sans-serif; font-size: 11.5px; letter-spacing:0.03em;
+    cursor:pointer; transition: border-color .2s, color .2s;
+  }
+  .vin-try-chip:hover{ border-color: var(--red); color: var(--red); }
+
+  .vin-lookup-note{
+    margin-top: 14px; font-family:'Oswald', sans-serif; font-size: 11px; color: var(--steel-dim); letter-spacing:0.03em; line-height:1.7;
+  }
+
+  @media (max-width: 600px){
+    .vin-lookup-row{ flex-direction:column; }
+    .vin-lookup-row .btn-outline{ width:100%; }
+  }
+
+
   label{
     font-family:'Oswald', sans-serif; font-size: 11px; letter-spacing:0.1em;
     color: var(--steel); text-transform: uppercase;
@@ -608,6 +665,7 @@
     <a href="../index.html#services" data-en="Services" data-ar="الخدمات">Services</a>
     <a href="../index.html#about" data-en="Why Us" data-ar="لماذا نحن">Why Us</a>
     <a href="service.html" class="current" data-en="Book A Service" data-ar="احجز خدمة">Book A Service</a>
+    <a href="vehicle-history.html" data-en="My Vehicle" data-ar="سيارتي">My Vehicle</a>
     <a href="../index.html#contact" data-en="Contact" data-ar="تواصل معنا">Contact</a>
   </nav>
   <div class="header-actions">
@@ -721,6 +779,24 @@
           <div class="f-sub" data-en="Tell us about the vehicle coming in" data-ar="أخبرنا عن السيارة القادمة للصيانة">Tell us about the vehicle coming in</div>
         </div>
       </div>
+      <div class="vin-lookup">
+        <label data-en="VIN or License Plate" data-ar="رقم الهيكل أو رقم اللوحة">VIN or License Plate</label>
+        <div class="vin-lookup-row">
+          <input type="text" id="vinLookupInput" data-en-ph="e.g. 5UXCR6C06P9N12345 or Sharjah 55210" data-ar-ph="مثال: 5UXCR6C06P9N12345 أو الشارقة 55210" placeholder="e.g. 5UXCR6C06P9N12345 or Sharjah 55210">
+          <button type="button" class="btn-outline" id="vinLookupBtn">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="M21 21l-4.3-4.3"/></svg>
+            <span data-en="Look Up Vehicle" data-ar="ابحث عن السيارة">Look Up Vehicle</span>
+          </button>
+        </div>
+        <div class="vin-lookup-result" id="vinLookupResult"></div>
+        <div class="vin-lookup-try">
+          <span data-en="Demo tip — try:" data-ar="نصيحة تجريبية — جرّب:">Demo tip — try:</span>
+          <button type="button" class="vin-try-chip" data-value="Sharjah 55210">Sharjah 55210</button>
+          <button type="button" class="vin-try-chip" data-value="Sharjah 20456">Sharjah 20456</button>
+        </div>
+        <div class="vin-lookup-note" data-en="VINs are checked against the free NHTSA vehicle database (US-market vehicles). License plates use sample data for this demo. Either way, you can always fill in or correct the fields below yourself." data-ar="يتم التحقق من رقم الهيكل عبر قاعدة بيانات NHTSA المجانية (للمركبات المسوّقة في الولايات المتحدة). أرقام اللوحات تستخدم بيانات تجريبية في هذا العرض. في الحالتين، يمكنك دائمًا تعبئة أو تصحيح الحقول أدناه بنفسك.">VINs are checked against the free NHTSA vehicle database (US-market vehicles). License plates use sample data for this demo. Either way, you can always fill in or correct the fields below yourself.</div>
+      </div>
+
       <div class="f-grid cols-3">
         <div class="f-row">
           <label><span data-en="Make" data-ar="الشركة المصنعة">Make</span> <span class="req">*</span></label>
@@ -1115,6 +1191,100 @@ document.getElementById('confirmClose').addEventListener('click', () => {
 renderCalendar();
 renderSlots();
 updateSummary();
+
+/* ============ VIN / LICENSE PLATE VEHICLE LOOKUP ============ */
+// License plates aren't publicly decodable — this uses sample data for the demo.
+// VINs are checked against NHTSA's free, public, no-key-required vPIC API (US-market vehicles only).
+const vinDemoPlates = {
+  "sharjah 55210": { make: "BMW", model: "X5 xDrive40i", year: 2023, fuel: "Petrol" },
+  "sharjah 20456": { make: "Toyota", model: "Camry", year: 2022, fuel: "Petrol" },
+  "dubai 88213": { make: "Nissan", model: "Patrol", year: 2021, fuel: "Petrol" },
+};
+
+function vinLooksLikeVin(str){
+  const s = str.trim().toUpperCase();
+  return /^[A-HJ-NPR-Z0-9]{17}$/.test(s); // 17 chars, no I/O/Q per VIN spec
+}
+
+function vinFuelToSelectValue(nhtsaFuel){
+  const f = (nhtsaFuel || '').toLowerCase();
+  if (f.includes('electric')) return 'Electric';
+  if (f.includes('hybrid')) return 'Hybrid';
+  if (f.includes('diesel')) return 'Diesel';
+  return 'Petrol';
+}
+
+function vinShowStatus(type, message){
+  const box = document.getElementById('vinLookupResult');
+  const icons = {
+    loading: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 12a9 9 0 1 1-6.219-8.56"/></svg>',
+    found: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="M20 6L9 17l-5-5"/></svg>',
+    notfound: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 9v4M12 17h.01"/><circle cx="12" cy="12" r="10"/></svg>',
+  };
+  box.innerHTML = `<div class="vin-lookup-status ${type}">${icons[type] || ''}<span>${message}</span></div>`;
+}
+
+function vinFillFields(make, model, year, fuel){
+  document.getElementById('carMake').value = make || '';
+  document.getElementById('carModel').value = model || '';
+  if (year) document.getElementById('carYear').value = year;
+  if (fuel) document.getElementById('carFuel').value = fuel;
+  updateSummary();
+}
+
+async function vinLookup(rawValue){
+  const value = (rawValue || '').trim();
+  if (!value){
+    vinShowStatus('notfound', t('Enter a VIN or license plate number first.', 'أدخل رقم الهيكل أو رقم اللوحة أولاً.'));
+    return;
+  }
+
+  const normalized = value.toLowerCase().replace(/\s+/g, ' ');
+
+  // 1. Check demo plate data first (also covers a plate typed in any case/spacing)
+  if (vinDemoPlates[normalized]){
+    const v = vinDemoPlates[normalized];
+    vinShowStatus('found', `✓ ${v.year} ${v.make} ${v.model}`);
+    vinFillFields(v.make, v.model, v.year, v.fuel);
+    return;
+  }
+
+  // 2. If it looks like a real VIN, try the free NHTSA vPIC API
+  if (vinLooksLikeVin(value)){
+    vinShowStatus('loading', t('Looking up VIN…', 'جارٍ البحث عن رقم الهيكل…'));
+    try{
+      const res = await fetch(`https://vpic.nhtsa.dot.gov/api/vehicles/decodevinvalues/${encodeURIComponent(value)}?format=json`);
+      const data = await res.json();
+      const r = (data.Results && data.Results[0]) || {};
+      if (r.Make && r.Model && r.ModelYear){
+        vinShowStatus('found', `✓ ${r.ModelYear} ${r.Make} ${r.Model}`);
+        vinFillFields(r.Make, r.Model, r.ModelYear, vinFuelToSelectValue(r.FuelTypePrimary));
+        return;
+      }
+    }catch(err){
+      console.error('NHTSA VIN lookup failed:', err);
+    }
+  }
+
+  // 3. Nothing matched
+  vinShowStatus('notfound', t("Couldn't auto-identify this vehicle — please enter the details below manually.", 'تعذّر التعرف على السيارة تلقائيًا — يُرجى إدخال التفاصيل أدناه يدويًا.'));
+}
+
+document.getElementById('vinLookupBtn').addEventListener('click', () => {
+  vinLookup(document.getElementById('vinLookupInput').value);
+});
+document.getElementById('vinLookupInput').addEventListener('keydown', (e) => {
+  if (e.key === 'Enter'){
+    e.preventDefault();
+    vinLookup(document.getElementById('vinLookupInput').value);
+  }
+});
+document.querySelectorAll('.vin-try-chip').forEach(chip => {
+  chip.addEventListener('click', () => {
+    document.getElementById('vinLookupInput').value = chip.dataset.value;
+    vinLookup(chip.dataset.value);
+  });
+});
 
 /* ============ LOGIN DROPDOWN ============ */
 function toggleLoginBox(force){
