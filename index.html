@@ -134,6 +134,90 @@
   nav a:hover{ color: var(--red); }
   nav a:hover::after{ width:100%; }
 
+  .nav-link-btn{
+    background:transparent; border:none; cursor:pointer;
+    font-family:'Oswald', sans-serif;
+    font-size: 13px;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--white);
+    position: relative;
+    padding: 0 0 4px;
+    transition: color .25s;
+  }
+  .nav-link-btn::after{
+    content:""; position:absolute; left:0; bottom:0; height:2px; width:0;
+    background: var(--red); transition: width .25s;
+  }
+  .nav-link-btn:hover{ color: var(--red); }
+  .nav-link-btn:hover::after{ width:100%; }
+
+  .roadside-btn{
+    display:flex; align-items:center; gap:7px;
+    background: transparent;
+    border: 1px solid rgba(226,36,27,0.5);
+    color: var(--red);
+    padding: 8px 14px;
+    font-family:'Oswald', sans-serif;
+    font-size: 11.5px;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+    cursor: pointer;
+    transition: background .2s, color .2s, border-color .2s;
+    white-space: nowrap;
+  }
+  .roadside-btn:hover{ background: var(--red); color: var(--white); border-color: var(--red); }
+
+  .roadside-overlay{
+    position: fixed; inset:0; z-index: 1000;
+    background: rgba(6,5,4,0.8);
+    -webkit-backdrop-filter: blur(8px);
+    backdrop-filter: blur(8px);
+    display:none; align-items:center; justify-content:center; padding: 20px;
+  }
+  .roadside-overlay.show{ display:flex; }
+  .roadside-card{
+    width:100%; max-width: 420px;
+    background: rgba(18,15,12,0.97);
+    border: 1px solid rgba(226,36,27,0.4);
+    box-shadow: 0 24px 70px rgba(0,0,0,0.55);
+    padding: 32px 28px;
+    text-align:center;
+  }
+  .roadside-icon{
+    width:56px; height:56px; margin:0 auto 18px;
+    border-radius:50%;
+    background: rgba(226,36,27,0.12); border:1px solid rgba(226,36,27,0.4);
+    display:flex; align-items:center; justify-content:center; font-size:26px;
+  }
+  .roadside-card h3{ font-size: 22px; margin-bottom: 10px; }
+  .roadside-card p{ color: var(--steel); font-size: 15px; margin-bottom: 24px; line-height:1.6; }
+  .roadside-actions{ display:flex; flex-direction:column; gap:12px; margin-bottom: 20px; }
+  .roadside-call-btn{
+    display:flex; align-items:center; justify-content:center; gap:10px;
+    background: var(--red); color: var(--white); border:none;
+    padding: 14px; font-family:'Oswald', sans-serif; font-size:14px; letter-spacing:0.08em; text-transform:uppercase;
+    cursor:pointer; transition: background .2s; text-decoration:none;
+  }
+  .roadside-call-btn:hover{ background: var(--amber); color: var(--black); }
+  .roadside-wa-btn{
+    display:flex; align-items:center; justify-content:center; gap:10px;
+    background: transparent; color: #25D366; border:1px solid #25D366;
+    padding: 14px; font-family:'Oswald', sans-serif; font-size:14px; letter-spacing:0.08em; text-transform:uppercase;
+    cursor:pointer; transition: background .2s, color .2s; text-decoration:none;
+  }
+  .roadside-wa-btn:hover{ background:#25D366; color:var(--black); }
+  .roadside-call-btn svg, .roadside-wa-btn svg{ width:18px; height:18px; flex-shrink:0; }
+  .roadside-close{
+    background:transparent; border:none; color:var(--steel); font-family:'Oswald', sans-serif; font-size:12px;
+    letter-spacing:0.05em; text-transform:uppercase; cursor:pointer; padding:6px;
+  }
+  .roadside-close:hover{ color: var(--red); }
+  .roadside-note{
+    margin-top:18px; padding-top:16px; border-top:1px dashed rgba(244,242,236,0.12);
+    font-family:'Oswald', sans-serif; font-size:11px; color: var(--steel-dim); letter-spacing:0.03em; line-height:1.7;
+  }
+
   .call-pill{
     display:flex; align-items:center; gap:10px;
     border: 1px solid var(--red);
@@ -890,6 +974,31 @@
     .why-grid{ grid-template-columns: 1fr; }
   }
 
+  /* ============ LOCATIONS ============ */
+  .locations{ padding: 90px 5% 100px; }
+  .locations-grid{ display:grid; grid-template-columns: repeat(2, 1fr); gap: 20px; }
+  .location-card{
+    background: rgba(28,24,19,0.5);
+    -webkit-backdrop-filter: blur(16px) saturate(150%);
+    backdrop-filter: blur(16px) saturate(150%);
+    border: 1px solid rgba(244,242,236,0.09);
+    padding: 30px 30px 34px;
+  }
+  .location-card-soon{ opacity:0.7; border-style: dashed; }
+  .location-badge{
+    display:inline-block; font-family:'Oswald', sans-serif; font-size: 10.5px; letter-spacing:0.08em;
+    color: var(--red); text-transform: uppercase; background: rgba(226,36,27,0.1);
+    border:1px solid rgba(226,36,27,0.3); padding: 4px 10px; margin-bottom: 16px;
+  }
+  .location-badge.soon{ color: var(--steel); background: rgba(139,141,146,0.08); border-color: rgba(139,141,146,0.3); }
+  .location-card h3{ font-size: 24px; margin-bottom: 10px; }
+  .location-card p{ color: var(--steel); font-size: 15px; line-height:1.6; margin-bottom: 18px; }
+  .location-meta{ display:flex; flex-direction:column; gap:4px; margin-bottom: 22px; font-family:'Oswald', sans-serif; font-size: 13px; color: var(--white); letter-spacing:0.02em; }
+
+  @media (max-width: 760px){
+    .locations-grid{ grid-template-columns: 1fr; }
+  }
+
   /* ============ CONTACT / FOOTER ============ */
   footer{
     position: relative;
@@ -966,10 +1075,16 @@
     transition: color .2s;
   }
   .footer-links a:hover{ color: var(--red); }
+  .footer-links .footer-link-btn{
+    background:none; border:none; padding:0; font: inherit;
+    color: var(--steel-dim); cursor:pointer; transition: color .2s;
+  }
+  .footer-links .footer-link-btn:hover{ color: var(--red); }
 
   /* ============ RESPONSIVE ============ */
   @media (max-width: 900px){
-    nav, .call-pill{ display:none; }
+    nav{ display:none; }
+    .header-actions{ gap:8px; }
     .hero{ min-height: 78vh; padding-top: 40px; background-position: 65% center; }
     .hero-copy{ max-width: 100%; }
     .trust-strip{ grid-template-columns: repeat(2,1fr); }
@@ -980,6 +1095,13 @@
     .acc-item.active{ max-height: 720px; }
     .acc-subgrid{ grid-template-columns: 1fr; }
     .acc-count{ display:none; }
+  }
+
+  @media (max-width: 560px){
+    .login-btn span{ display:none; }
+    .login-btn{ padding: 9px 12px; }
+    .region-btn{ padding: 9px 10px; }
+    .nav-cta{ padding: 11px 16px; font-size: 12px; }
   }
 
   @media (prefers-reduced-motion: reduce){
@@ -1058,6 +1180,99 @@
   html[dir="rtl"] .btn-outline svg{ transform: scaleX(-1); }
   html[dir="rtl"] .call-pill svg{ transform: scaleX(-1); }
 
+
+  /* ============ REGION / LANGUAGE DROPDOWN ============ */
+
+  /* ============ NAV LOCATIONS DROPDOWN ============ */
+  .nav-loc-wrap{ position:relative; display:inline-flex; }
+  .nav-loc-btn{
+    display:flex; align-items:center; gap:5px;
+    background:none; border:none; color: var(--white); cursor:pointer; padding:0; margin:0;
+    font-family:'Oswald', sans-serif; font-size:13px; letter-spacing:0.12em; text-transform:uppercase;
+    position:relative; padding-bottom:4px; transition: color .25s;
+  }
+  .nav-loc-btn::after{ content:""; position:absolute; left:0; bottom:0; height:2px; width:0; background: var(--red); transition: width .25s; }
+  .nav-loc-btn:hover, .nav-loc-wrap.open .nav-loc-btn{ color: var(--red); }
+  .nav-loc-btn:hover::after, .nav-loc-wrap.open .nav-loc-btn::after{ width:100%; }
+  .nav-loc-btn svg{ width:11px; height:11px; transition: transform .25s; flex-shrink:0; }
+  .nav-loc-wrap.open .nav-loc-btn svg{ transform: rotate(180deg); }
+
+  .nav-loc-menu{
+    position:absolute; top: calc(100% + 16px); left:50%;
+    transform: translateX(-50%) translateY(-8px);
+    width: 190px;
+    background: rgba(12,10,8,0.94);
+    -webkit-backdrop-filter: blur(24px) saturate(150%);
+    backdrop-filter: blur(24px) saturate(150%);
+    border: 1px solid rgba(244,242,236,0.14);
+    box-shadow: 0 20px 60px rgba(0,0,0,0.6);
+    padding: 10px;
+    opacity:0; visibility:hidden; transition: opacity .25s ease, transform .25s ease, visibility .25s;
+    z-index: 600;
+  }
+  .nav-loc-wrap.open .nav-loc-menu{ opacity:1; visibility:visible; transform: translateX(-50%) translateY(0); }
+  .nav-loc-item{
+    display:flex; align-items:center; gap:10px;
+    padding: 10px 12px; color: var(--white); text-decoration:none;
+    font-family:'Barlow Condensed', sans-serif; font-size:16px;
+    transition: background .2s, color .2s;
+  }
+  .nav-loc-item:hover{ background: rgba(226,36,27,0.1); color: var(--red); }
+
+  .region-wrap{ position:relative; }
+  .region-btn{
+    display:flex; align-items:center; gap:6px;
+    background: transparent; border: 1px solid var(--steel-dim); color: var(--white);
+    font-family:'Oswald', sans-serif; font-size:13px; letter-spacing:0.04em; text-transform:uppercase;
+    padding: 9px 14px; cursor:pointer; transition: border-color .2s, color .2s;
+  }
+  .region-btn:hover, .region-btn.active{ border-color: var(--red); color: var(--red); }
+  .region-btn svg{ width:12px; height:12px; margin-left:2px; }
+
+  .region-dropdown{
+    position:absolute; top: calc(100% + 14px); right:0;
+    width: 220px;
+    background: rgba(12,10,8,0.94);
+    -webkit-backdrop-filter: blur(24px) saturate(150%);
+    backdrop-filter: blur(24px) saturate(150%);
+    border: 1px solid rgba(244,242,236,0.14);
+    box-shadow: 0 20px 60px rgba(0,0,0,0.6);
+    padding: 14px;
+    opacity:0; visibility:hidden; transform: translateY(-10px);
+    transition: opacity .25s ease, transform .25s ease, visibility .25s;
+    z-index: 600;
+  }
+  .region-dropdown.open{ opacity:1; visibility:visible; transform:translateY(0); }
+  html[dir="rtl"] .region-dropdown{ right:auto; left:0; }
+
+  .region-group-label{
+    font-family:'Oswald', sans-serif; font-size: 10px; letter-spacing:0.1em; color: var(--steel-dim);
+    text-transform: uppercase; padding: 6px 10px 4px;
+  }
+  .region-option{
+    width:100%; display:flex; align-items:center; gap:10px; text-align:left;
+    background: transparent; border:none; color: var(--white);
+    font-family:'Barlow Condensed', sans-serif; font-size: 16px;
+    padding: 9px 10px; cursor:pointer; transition: background .2s, color .2s;
+  }
+  .region-option:hover{ background: rgba(226,36,27,0.1); color: var(--red); }
+  .region-option.active{ color: var(--red); }
+  .region-divider{ height:1px; background: rgba(244,242,236,0.1); margin: 8px 4px; }
+
+  @media (max-width: 380px){
+    .region-dropdown{ width: 80vw; right: -40px; }
+    html[dir="rtl"] .region-dropdown{ left: -40px; }
+  }
+
+  /* ============ DOMINANT CTA ============ */
+  .nav-cta{
+    display:inline-flex; align-items:center; justify-content:center;
+    background: var(--red); color: var(--white); border: 1px solid var(--red);
+    padding: 13px 26px; font-family:'Oswald', sans-serif; font-size: 13px; letter-spacing:0.08em; text-transform:uppercase;
+    transition: background .25s, color .25s, box-shadow .25s;
+    box-shadow: 0 0 0 rgba(226,36,27,0.4);
+  }
+  .nav-cta:hover{ background: var(--amber); border-color: var(--amber); color: var(--black); box-shadow: 0 6px 20px rgba(255,177,0,0.3); }
 
   /* ============ LOGIN DROPDOWN ============ */
   .header-actions{ display:flex; align-items:center; gap:14px; }
@@ -1147,6 +1362,25 @@
   .login-signup-row{ text-align:center; font-size:13px; color:var(--steel); margin-top:8px; }
   .login-signup-row a{ color: var(--red); text-decoration:underline; margin-inline-start:4px; }
 
+  /* ============ MY GARAGE ACCOUNT MENU ============ */
+  .account-menu-list{ display:flex; flex-direction:column; gap:6px; margin-bottom:16px; }
+  .account-menu-item{
+    display:flex; align-items:center; gap:12px;
+    background: rgba(6,5,4,0.4); border:1px solid var(--steel-dim); color: var(--white);
+    padding: 11px 14px; font-family:'Barlow Condensed', sans-serif; font-size:16px;
+    text-decoration:none; cursor:pointer; transition: border-color .2s, background .2s;
+  }
+  .account-menu-item:hover{ border-color: var(--red); background: rgba(226,36,27,0.06); }
+  .account-menu-item.disabled{ color: var(--steel); cursor:default; opacity:0.7; }
+  .account-menu-item.disabled:hover{ border-color: var(--steel-dim); background: rgba(6,5,4,0.4); }
+  .account-menu-item .soon-tag{
+    margin-inline-start:auto; font-family:'Oswald', sans-serif; font-size:9.5px; letter-spacing:0.06em; text-transform:uppercase;
+    color: var(--amber); border:1px solid rgba(255,177,0,0.35); padding: 2px 8px; white-space:nowrap;
+  }
+  .account-menu-note{
+    margin-top:14px; font-family:'Oswald', sans-serif; font-size:10.5px; color: var(--steel-dim); letter-spacing:0.02em; line-height:1.7;
+  }
+
   @media (max-width: 380px){
     .login-dropdown{ width: 90vw; right: -60px; }
     html[dir="rtl"] .login-dropdown{ left: -60px; }
@@ -1170,33 +1404,56 @@
     <div class="logo-badge">OF</div>
     <div>
       <div class="logo-text">ORION<span>FX</span></div>
-      <div class="logo-sub" data-en="YOUR CAR &nbsp;·&nbsp; OUR PASSION" data-ar="سيارتك &nbsp;·&nbsp; شغفنا">YOUR CAR &nbsp;·&nbsp; OUR PASSION</div>
+      <div class="logo-sub" data-en="AUTOMOTIVE" data-ar="أوتوموتيف">AUTOMOTIVE</div>
     </div>
   </div>
   <nav>
-    <a href="#home" data-en="Home" data-ar="الرئيسية">Home</a>
     <a href="#services" data-en="Services" data-ar="الخدمات">Services</a>
+    <a href="#how-it-works" data-en="How It Works" data-ar="كيف نعمل">How It Works</a>
     <a href="#about" data-en="Why Us" data-ar="لماذا نحن">Why Us</a>
-    <a href="pages/service.html" data-en="Book A Service" data-ar="احجز خدمة">Book A Service</a>
-    <a href="pages/vehicle-history.html" data-en="My Vehicle" data-ar="سيارتي">My Vehicle</a>
+    <button type="button" class="nav-link-btn mobile-app-btn">
+      <span data-en="Mobile App" data-ar="تطبيق الجوال">Mobile App</span>
+    </button>
+    <div class="nav-loc-wrap" id="navLocWrap">
+      <button type="button" class="nav-loc-btn" onclick="toggleNavLocDropdown()">
+        <span data-en="Locations" data-ar="الفروع">Locations</span>
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M6 9l6 6 6-6"/></svg>
+      </button>
+      <div class="nav-loc-menu" id="navLocMenu">
+        <a class="nav-loc-item" href="pages/location-uae.html">🇦🇪 <span data-en="UAE" data-ar="الإمارات">UAE</span></a>
+        <a class="nav-loc-item" href="pages/location-usa.html">🇺🇸 <span data-en="USA" data-ar="الولايات المتحدة">USA</span></a>
+        <a class="nav-loc-item" href="pages/location-canada.html">🇨🇦 <span data-en="Canada" data-ar="كندا">Canada</span></a>
+      </div>
+    </div>
     <a href="#contact" data-en="Contact" data-ar="تواصل معنا">Contact</a>
   </nav>
   <div class="header-actions">
-  <button type="button" class="mobile-app-btn">
-    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="6" y="2" width="12" height="20" rx="2"/><path d="M11 18h2"/><path d="M9 6h6l-1 5H10z"/><path d="M12 11v2"/></svg>
-    <span data-en="Mobile App" data-ar="تطبيق الجوال">Mobile App</span>
+  <div class="region-wrap" id="regionWrap">
+    <button type="button" class="region-btn" id="regionBtn" onclick="toggleRegionBox()">
+      🌐 <span id="regionLabel">UAE</span>
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg>
+    </button>
+    <div class="region-dropdown" id="regionDropdown">
+      <div class="region-group-label" data-en="Region" data-ar="المنطقة">Region</div>
+      <button type="button" class="region-option active" data-region="AE" data-currency="AED">🇦🇪 <span data-en="UAE" data-ar="الإمارات">UAE</span></button>
+      <button type="button" class="region-option" data-region="US" data-currency="USD">🇺🇸 <span data-en="USA" data-ar="الولايات المتحدة">USA</span></button>
+      <button type="button" class="region-option" data-region="CA" data-currency="CAD">🇨🇦 <span data-en="Canada" data-ar="كندا">Canada</span></button>
+      <div class="region-divider"></div>
+      <div class="region-group-label" data-en="Language" data-ar="اللغة">Language</div>
+      <button type="button" class="region-option" data-lang="en">English</button>
+      <button type="button" class="region-option" data-lang="ar">العربية</button>
+    </div>
+  </div>
+  <button type="button" class="roadside-btn" id="roadsideBtn" onclick="toggleRoadsideBox()">
+    🚨 <span data-en="Roadside Assistance" data-ar="المساعدة على الطريق">Roadside Assistance</span>
   </button>
-  <button type="button" class="lang-toggle" onclick="setLang(currentLang==='en'?'ar':'en')">AR</button>
-  <a class="call-pill" href="tel:+971000000000">
-    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
-    +971-00-000-0000
-  </a>
   <div class="login-wrap" id="loginWrap">
     <button type="button" class="login-btn" id="loginBtn" onclick="toggleLoginBox()">
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
-      <span data-en="Login" data-ar="تسجيل الدخول">Login</span>
+      <svg id="loginBtnIcon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+      <span id="loginBtnLabel" data-en="My Garage" data-ar="جراجي">My Garage</span>
     </button>
     <div class="login-dropdown" id="loginDropdown">
+      <div id="loginFormView">
       <div class="login-head">
         <h4 data-en="Login To Your Account" data-ar="تسجيل الدخول إلى حسابك">Login To Your Account</h4>
         <button type="button" class="login-close" onclick="toggleLoginBox(false)" aria-label="Close">&times;</button>
@@ -1234,10 +1491,50 @@
       <div class="login-signup-row">
         <span data-en="Don't have an account?" data-ar="ليس لديك حساب؟">Don't have an account?</span><a href="#" data-en="Sign Up" data-ar="إنشاء حساب">Sign Up</a>
       </div>
+      </div>
+
+      <div id="accountMenuView" style="display:none">
+        <div class="login-head">
+          <h4>&#128100; <span id="accountUserName">Ahmed</span></h4>
+          <button type="button" class="login-close" onclick="toggleLoginBox(false)" aria-label="Close">&times;</button>
+        </div>
+        <div class="account-menu-list">
+          <a class="account-menu-item" href="pages/vehicle-history.html">&#128663; <span data-en="My Vehicles" data-ar="سياراتي">My Vehicles</span></a>
+          <a class="account-menu-item" href="pages/service.html">&#128197; <span data-en="Appointments" data-ar="المواعيد">Appointments</span></a>
+          <a class="account-menu-item" href="pages/vehicle-history.html">&#128295; <span data-en="Service History" data-ar="سجل الصيانة">Service History</span></a>
+          <a class="account-menu-item" href="#inspection">&#128269; <span data-en="Inspection Reports" data-ar="تقارير الفحص">Inspection Reports</span></a>
+          <div class="account-menu-item disabled">&#128176; <span data-en="Estimates" data-ar="التقديرات">Estimates</span><span class="soon-tag" data-en="Coming Soon" data-ar="قريبًا">Coming Soon</span></div>
+          <div class="account-menu-item disabled">&#129534; <span data-en="Invoices" data-ar="الفواتير">Invoices</span><span class="soon-tag" data-en="Coming Soon" data-ar="قريبًا">Coming Soon</span></div>
+          <a class="account-menu-item" href="pages/vehicle-history.html">&#128276; <span data-en="Maintenance Reminders" data-ar="تذكيرات الصيانة">Maintenance Reminders</span></a>
+        </div>
+        <button type="button" class="login-submit" id="logoutBtn" onclick="orionLogout()" data-en="Log Out" data-ar="تسجيل الخروج">Log Out</button>
+        <div class="account-menu-note" data-en="Demo account menu. Estimates and Invoices aren't built yet — everything here is clearly marked so nothing pretends to be real before it is." data-ar="قائمة حساب تجريبية. لم يتم بناء التقديرات والفواتير بعد — كل شيء هنا موضّح بوضوح حتى لا يبدو أي شيء حقيقيًا قبل أن يكون كذلك.">Demo account menu. Estimates and Invoices aren't built yet — everything here is clearly marked so nothing pretends to be real before it is.</div>
+      </div>
     </div>
   </div>
+  <a class="nav-cta" href="pages/service.html" data-en="Book A Service" data-ar="احجز خدمة">Book A Service</a>
   </div>
 </header>
+
+<div class="roadside-overlay" id="roadsideOverlay">
+  <div class="roadside-card">
+    <div class="roadside-icon">🚨</div>
+    <h3 data-en="Need Emergency Assistance?" data-ar="تحتاج مساعدة طارئة؟">Need Emergency Assistance?</h3>
+    <p data-en="If your vehicle has broken down or you're stuck on the road, reach us using either option below." data-ar="إذا تعطلت سيارتك أو كنت عالقًا على الطريق، تواصل معنا باستخدام أحد الخيارين أدناه.">If your vehicle has broken down or you're stuck on the road, reach us using either option below.</p>
+    <div class="roadside-actions">
+      <a class="roadside-call-btn" href="tel:+971000000000">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
+        <span data-en="Call Now" data-ar="اتصل الآن">Call Now</span>
+      </a>
+      <a class="roadside-wa-btn" id="roadsideWaBtn" href="#" target="_blank" rel="noopener">
+        <svg viewBox="0 0 24 24" fill="currentColor"><path d="M17.5 14.4c-.3-.1-1.7-.9-2-1s-.5-.1-.7.1-.8 1-.9 1.2-.3.2-.6.1a8.2 8.2 0 0 1-2.4-1.5 9 9 0 0 1-1.7-2.1c-.2-.3 0-.5.1-.6l.4-.5.3-.5c.1-.2 0-.3 0-.5s-.7-1.7-1-2.3-.5-.5-.7-.5h-.6a1.2 1.2 0 0 0-.9.4 3.6 3.6 0 0 0-1.1 2.7 6.3 6.3 0 0 0 1.3 3.3 14.4 14.4 0 0 0 5.5 4.9c.8.3 1.4.5 1.9.7a4.6 4.6 0 0 0 2.1.1 3.5 3.5 0 0 0 2.3-1.6 2.8 2.8 0 0 0 .2-1.6c-.1-.1-.3-.2-.6-.3z"/><path d="M12 2a10 10 0 0 0-8.6 15L2 22l5.2-1.4A10 10 0 1 0 12 2zm0 18.2a8.2 8.2 0 0 1-4.2-1.1l-.3-.2-3.1.8.8-3-.2-.3A8.2 8.2 0 1 1 12 20.2z"/></svg>
+        <span data-en="Request Roadside Assistance" data-ar="اطلب المساعدة على الطريق">Request Roadside Assistance</span>
+      </a>
+    </div>
+    <button type="button" class="roadside-close" onclick="toggleRoadsideBox(false)" data-en="Close" data-ar="إغلاق">Close</button>
+    <div class="roadside-note" data-en="Roadside assistance is available during business hours — Mon–Sat, 8:00–18:00. Outside these hours, please call and leave a message, or send a WhatsApp request and we'll respond as soon as we're open." data-ar="خدمة المساعدة على الطريق متاحة خلال ساعات العمل — الإثنين إلى السبت، من 8:00 إلى 18:00. خارج هذه الساعات، يُرجى الاتصال وترك رسالة، أو إرسال طلب عبر واتساب وسنرد بمجرد فتح الورشة.">Roadside assistance is available during business hours — Mon–Sat, 8:00–18:00. Outside these hours, please call and leave a message, or send a WhatsApp request and we'll respond as soon as we're open.</div>
+  </div>
+</div>
 
 <section class="hero" id="home">
   <div class="hero-glow"></div>
@@ -1497,6 +1794,34 @@
   </div>
 </section>
 
+<section class="locations" id="locations">
+  <div class="section-head">
+    <div>
+      <div class="eyebrow" data-en="Locations" data-ar="الفروع">Locations</div>
+      <h2 data-en="Find Us" data-ar="موقعنا">Find Us</h2>
+    </div>
+    <div class="desc" data-en="Currently serving Sharjah, with more locations on the way as we grow across the UAE." data-ar="نخدم حاليًا الشارقة، مع فروع إضافية قادمة مع توسعنا في جميع أنحاء الإمارات.">Currently serving Sharjah, with more locations on the way as we grow across the UAE.</div>
+  </div>
+
+  <div class="locations-grid">
+    <div class="location-card">
+      <div class="location-badge" data-en="Main Workshop" data-ar="الورشة الرئيسية">Main Workshop</div>
+      <h3 data-en="Sharjah" data-ar="الشارقة">Sharjah</h3>
+      <p data-en="Orion Fx, Sharjah, United Arab Emirates" data-ar="أوريون إف إكس، الشارقة، الإمارات العربية المتحدة">Orion Fx, Sharjah, United Arab Emirates</p>
+      <div class="location-meta">
+        <span data-en="Mon&ndash;Sat &middot; 8:00 &ndash; 18:00" data-ar="الإثنين&ndash;السبت &middot; 8:00 &ndash; 18:00">Mon&ndash;Sat &middot; 8:00 &ndash; 18:00</span>
+        <span>+971-00-000-0000</span>
+      </div>
+      <a class="btn-outline" href="https://www.google.com/maps/search/?api=1&query=Orion+Fx+Sharjah+UAE" target="_blank" rel="noopener" data-en="Get Directions" data-ar="احصل على الاتجاهات">Get Directions</a>
+    </div>
+    <div class="location-card location-card-soon">
+      <div class="location-badge soon" data-en="Coming Soon" data-ar="قريبًا">Coming Soon</div>
+      <h3 data-en="Dubai" data-ar="دبي">Dubai</h3>
+      <p data-en="Expanding to serve more of the UAE — join our list to be notified when we open." data-ar="نتوسع لخدمة المزيد من مناطق الإمارات — انضم إلى قائمتنا ليصلك إشعار عند الافتتاح.">Expanding to serve more of the UAE — join our list to be notified when we open.</p>
+    </div>
+  </div>
+</section>
+
 <footer id="contact">
   <div>
     <h2 data-en="Get In Touch" data-ar="تواصل معنا">Get In Touch</h2>
@@ -1542,8 +1867,10 @@
   </div>
 
   <div class="bottom-bar">
-    <div data-en="© 2026 Orion Fx. All rights reserved, Sharjah, UAE." data-ar="© 2026 أوريون إف إكس. جميع الحقوق محفوظة، الشارقة، الإمارات.">© 2026 Orion Fx. All rights reserved, Sharjah, UAE.</div>
+    <div data-en="© 2026 Orion Fx Automotive. All rights reserved, Sharjah, UAE." data-ar="© 2026 أوريون إف إكس أوتوموتيف. جميع الحقوق محفوظة، الشارقة، الإمارات.">© 2026 Orion Fx Automotive. All rights reserved, Sharjah, UAE.</div>
     <div class="footer-links">
+      <a href="./pages/vehicle-history.html" data-en="My Vehicle" data-ar="سيارتي">My Vehicle</a>
+      <button type="button" class="mobile-app-btn footer-link-btn"><span data-en="Install App" data-ar="تثبيت التطبيق">Install App</span></button>
       <a href="./pages/policy.html" data-en="Privacy Policy" data-ar="سياسة الخصوصية">Privacy Policy</a>
       <a href="./pages/terms.html" data-en="Terms of Service" data-ar="شروط الخدمة">Terms of Service</a>
       <a href="./pages/cookies.html" data-en="Cookie Policy" data-ar="سياسة ملفات تعريف الارتباط">Cookie Policy</a>
@@ -2003,6 +2330,66 @@ document.getElementById('dviSubmitBtn').addEventListener('click', () => {
 
 /* ============ BILINGUAL ENGINE (EN / AR) ============ */
 
+/* ============ REGION / LANGUAGE DROPDOWN ============ */
+function toggleRegionBox(force){
+  const dd = document.getElementById('regionDropdown');
+  const btn = document.getElementById('regionBtn');
+  if (!dd || !btn) return;
+  const shouldOpen = typeof force === 'boolean' ? force : !dd.classList.contains('open');
+  dd.classList.toggle('open', shouldOpen);
+  btn.classList.toggle('active', shouldOpen);
+}
+document.addEventListener('click', (e) => {
+  const wrap = document.getElementById('regionWrap');
+  if (wrap && !wrap.contains(e.target)) toggleRegionBox(false);
+});
+document.addEventListener('keydown', (e) => {
+  if (e.key === 'Escape') toggleRegionBox(false);
+});
+
+document.querySelectorAll('.region-option[data-region]').forEach(btn => {
+  btn.addEventListener('click', () => {
+    document.querySelectorAll('.region-option[data-region]').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    document.getElementById('regionLabel').textContent = btn.dataset.region === 'AE' ? 'UAE' : (btn.dataset.region === 'US' ? 'USA' : 'Canada');
+
+    // keep the Transparent Pricing currency switcher (if present on this page) in sync
+    const matchingCurrencyBtn = document.querySelector(`.currency-btn[data-currency="${btn.dataset.currency}"]`);
+    if (matchingCurrencyBtn) matchingCurrencyBtn.click();
+
+    toggleRegionBox(false);
+  });
+});
+
+document.querySelectorAll('.region-option[data-lang]').forEach(btn => {
+  btn.addEventListener('click', () => {
+    setLang(btn.dataset.lang);
+    toggleRegionBox(false);
+  });
+});
+
+/* ============ ROADSIDE ASSISTANCE ============ */
+function toggleRoadsideBox(force){
+  const overlay = document.getElementById('roadsideOverlay');
+  if (!overlay) return;
+  const shouldOpen = typeof force === 'boolean' ? force : !overlay.classList.contains('show');
+  overlay.classList.toggle('show', shouldOpen);
+  if (shouldOpen){
+    const isAr = document.documentElement.lang === 'ar';
+    const msg = isAr
+      ? 'مرحبًا، أحتاج إلى مساعدة على الطريق. موقعي الحالي: '
+      : "Hi, I need roadside assistance. My current location: ";
+    const waBtn = document.getElementById('roadsideWaBtn');
+    if (waBtn) waBtn.href = 'https://wa.me/971000000000?text=' + encodeURIComponent(msg);
+  }
+}
+document.getElementById('roadsideOverlay').addEventListener('click', (e) => {
+  if (e.target.id === 'roadsideOverlay') toggleRoadsideBox(false);
+});
+document.addEventListener('keydown', (e) => {
+  if (e.key === 'Escape') toggleRoadsideBox(false);
+});
+
 /* ============ LOGIN DROPDOWN ============ */
 function toggleLoginBox(force){
   const dd = document.getElementById('loginDropdown');
@@ -2033,14 +2420,56 @@ function togglePasswordVisibility(){
   }
 }
 
+/* ============ MY GARAGE — LOGGED-IN STATE (demo only) ============ */
+let orionLoggedIn = false;
+
+function orionSetLoggedIn(name){
+  orionLoggedIn = true;
+  const displayName = (name || 'Ahmed').split(' ')[0];
+  const icon = document.getElementById('loginBtnIcon');
+  const label = document.getElementById('loginBtnLabel');
+  if (icon) icon.style.display = 'none';
+  if (label){
+    label.setAttribute('data-en', '\u{1F464} ' + displayName);
+    label.setAttribute('data-ar', '\u{1F464} ' + displayName);
+    label.textContent = '\u{1F464} ' + displayName;
+  }
+  const formView = document.getElementById('loginFormView');
+  const menuView = document.getElementById('accountMenuView');
+  if (formView) formView.style.display = 'none';
+  if (menuView) menuView.style.display = 'block';
+  const nameEl = document.getElementById('accountUserName');
+  if (nameEl) nameEl.textContent = displayName;
+}
+
+function orionLogout(){
+  orionLoggedIn = false;
+  const icon = document.getElementById('loginBtnIcon');
+  const label = document.getElementById('loginBtnLabel');
+  if (icon) icon.style.display = '';
+  if (label){
+    label.setAttribute('data-en', 'My Garage');
+    label.setAttribute('data-ar', 'جراجي');
+    const isAr = document.documentElement.lang === 'ar';
+    label.textContent = isAr ? 'جراجي' : 'My Garage';
+  }
+  const formView = document.getElementById('loginFormView');
+  const menuView = document.getElementById('accountMenuView');
+  if (formView) formView.style.display = '';
+  if (menuView) menuView.style.display = 'none';
+  toggleLoginBox(false);
+}
+
 const loginFormEl = document.getElementById('loginForm');
 if (loginFormEl){
   loginFormEl.addEventListener('submit', (e) => {
     e.preventDefault();
+    const userId = document.getElementById('loginUserId').value.trim();
     const msg = (typeof currentLang !== 'undefined' && currentLang === 'ar')
-      ? 'هذا نموذج دخول تجريبي. قم بربطه بخادم المصادقة الخاص بك لتفعيل تسجيل الدخول الفعلي.'
-      : 'This is a demo login form. Connect it to your authentication backend to enable real sign-in.';
+      ? 'هذا نموذج دخول تجريبي. قم بربطه بخادم المصادقة الخاص بك لتفعيل تسجيل الدخول الفعلي. سنسجّل دخولك بشكل تجريبي الآن.'
+      : "This is a demo login form. Connect it to your authentication backend to enable real sign-in. We'll sign you in as a demo for now.";
     alert(msg);
+    orionSetLoggedIn(userId || 'Ahmed');
   });
 }
 
@@ -2065,7 +2494,7 @@ function handleGoogleCredentialResponse(response){
     const payload = JSON.parse(decodeURIComponent(escape(atob(response.credential.split('.')[1].replace(/-/g,'+').replace(/_/g,'/')))));
     const msg = (typeof currentLang !== 'undefined' && currentLang === 'ar') ? 'مرحبًا، ' : 'Welcome, ';
     alert(msg + (payload.name || payload.email) + '!');
-    toggleLoginBox(false);
+    orionSetLoggedIn(payload.name || payload.email);
   }catch(err){
     console.error('Google login error:', err);
   }
@@ -2104,12 +2533,25 @@ if (facebookBtn){
         FB.api('/me', { fields: 'name,email' }, (userInfo) => {
           const msg = (typeof currentLang !== 'undefined' && currentLang === 'ar') ? 'مرحبًا، ' : 'Welcome, ';
           alert(msg + userInfo.name + '!');
-          toggleLoginBox(false);
+          orionSetLoggedIn(userInfo.name);
         });
       }
     }, { scope: 'public_profile,email' });
   });
 }
+
+
+/* ============ NAV LOCATIONS DROPDOWN ============ */
+function toggleNavLocDropdown(force){
+  const wrap = document.getElementById('navLocWrap');
+  if (!wrap) return;
+  const shouldOpen = typeof force === 'boolean' ? force : !wrap.classList.contains('open');
+  wrap.classList.toggle('open', shouldOpen);
+}
+document.addEventListener('click', (e) => {
+  const wrap = document.getElementById('navLocWrap');
+  if (wrap && !wrap.contains(e.target)) toggleNavLocDropdown(false);
+});
 
 let currentLang = 'en';
 function applyTranslations(){
