@@ -177,42 +177,76 @@
   }
   .roadside-overlay.show{ display:flex; }
   .roadside-card{
-    width:100%; max-width: 420px;
+    width:100%; max-width: 460px; max-height: 88vh; overflow-y:auto;
     background: rgba(18,15,12,0.97);
     border: 1px solid rgba(226,36,27,0.4);
     box-shadow: 0 24px 70px rgba(0,0,0,0.55);
-    padding: 32px 28px;
-    text-align:center;
+    padding: 26px 26px 28px;
   }
-  .roadside-icon{
-    width:56px; height:56px; margin:0 auto 18px;
-    border-radius:50%;
+  .roadside-head{ display:flex; align-items:flex-start; justify-content:space-between; gap:14px; margin-bottom: 20px; }
+  .roadside-head-title{ display:flex; align-items:center; gap:14px; }
+  .roadside-emoji{
+    width:46px; height:46px; flex-shrink:0; border-radius:50%;
     background: rgba(226,36,27,0.12); border:1px solid rgba(226,36,27,0.4);
-    display:flex; align-items:center; justify-content:center; font-size:26px;
+    display:flex; align-items:center; justify-content:center; font-size:22px;
   }
-  .roadside-card h3{ font-size: 22px; margin-bottom: 10px; }
-  .roadside-card p{ color: var(--steel); font-size: 15px; margin-bottom: 24px; line-height:1.6; }
-  .roadside-actions{ display:flex; flex-direction:column; gap:12px; margin-bottom: 20px; }
-  .roadside-call-btn{
-    display:flex; align-items:center; justify-content:center; gap:10px;
-    background: var(--red); color: var(--white); border:none;
-    padding: 14px; font-family:'Oswald', sans-serif; font-size:14px; letter-spacing:0.08em; text-transform:uppercase;
-    cursor:pointer; transition: background .2s; text-decoration:none;
-  }
-  .roadside-call-btn:hover{ background: var(--amber); color: var(--black); }
-  .roadside-wa-btn{
-    display:flex; align-items:center; justify-content:center; gap:10px;
-    background: transparent; color: #25D366; border:1px solid #25D366;
-    padding: 14px; font-family:'Oswald', sans-serif; font-size:14px; letter-spacing:0.08em; text-transform:uppercase;
-    cursor:pointer; transition: background .2s, color .2s; text-decoration:none;
-  }
-  .roadside-wa-btn:hover{ background:#25D366; color:var(--black); }
-  .roadside-call-btn svg, .roadside-wa-btn svg{ width:18px; height:18px; flex-shrink:0; }
+  .roadside-card h3{ font-size: 19px; margin-bottom: 3px; }
+  .roadside-sub{ color: var(--steel); font-size: 13.5px; }
   .roadside-close{
-    background:transparent; border:none; color:var(--steel); font-family:'Oswald', sans-serif; font-size:12px;
-    letter-spacing:0.05em; text-transform:uppercase; cursor:pointer; padding:6px;
+    background:transparent; border:none; color:var(--steel); font-size:22px; line-height:1;
+    cursor:pointer; padding:0 4px; transition: color .2s; flex-shrink:0;
   }
   .roadside-close:hover{ color: var(--red); }
+
+  .roadside-issue-label{
+    font-family:'Oswald', sans-serif; font-size: 11px; letter-spacing:0.08em; text-transform:uppercase;
+    color: var(--steel); margin-bottom: 10px;
+  }
+  .roadside-issue-grid{
+    display:grid; grid-template-columns: repeat(2, 1fr); gap: 8px;
+    margin-bottom: 22px;
+  }
+  .roadside-issue-btn{
+    display:flex; align-items:center; gap:8px;
+    background: rgba(6,5,4,0.4); border: 1px solid var(--steel-dim); color: var(--white);
+    padding: 10px 12px; font-family:'Barlow Condensed', sans-serif; font-size:14.5px;
+    cursor:pointer; transition: border-color .2s, background .2s;
+  }
+  .roadside-issue-btn:hover{ border-color: rgba(226,36,27,0.5); }
+  .roadside-issue-btn.selected{ border-color: var(--red); background: rgba(226,36,27,0.1); color: var(--white); }
+
+  .roadside-actions{ display:flex; flex-direction:column; gap:10px; margin-bottom: 6px; }
+  .roadside-action-btn{
+    display:flex; align-items:center; justify-content:center; gap:10px;
+    padding: 13px; font-family:'Oswald', sans-serif; font-size:13.5px; letter-spacing:0.06em; text-transform:uppercase;
+    cursor:pointer; transition: background .2s, color .2s; text-decoration:none; border:none;
+  }
+  .roadside-action-btn.call{ background: var(--red); color: var(--white); }
+  .roadside-action-btn.call:hover{ background: var(--amber); color: var(--black); }
+  .roadside-action-btn.request{ background: transparent; color: var(--white); border:1px solid rgba(244,242,236,0.35); }
+  .roadside-action-btn.request:hover{ border-color: var(--red); color: var(--red); }
+  .roadside-action-btn.whatsapp{ background: transparent; color: #25D366; border:1px solid #25D366; }
+  .roadside-action-btn.whatsapp:hover{ background:#25D366; color:var(--black); }
+  .roadside-action-btn.sms{ background: transparent; color: var(--amber); border:1px solid rgba(255,177,0,0.5); }
+  .roadside-action-btn.sms:hover{ background: var(--amber); color:var(--black); }
+
+  .roadside-request-form{ display:none; margin-top: 14px; padding-top: 16px; border-top: 1px dashed rgba(244,242,236,0.12); }
+  .roadside-request-form.show{ display:block; }
+  .rf-field{ margin-bottom: 12px; display:flex; flex-direction:column; gap:6px; }
+  .rf-field label{ font-family:'Oswald', sans-serif; font-size:10px; letter-spacing:0.08em; color:var(--steel); text-transform:uppercase; }
+  .rf-field input{
+    height:40px; box-sizing:border-box; background: rgba(6,5,4,0.6); border:1px solid var(--steel-dim); color:var(--white);
+    padding: 0 12px; font-family:'Barlow Condensed', sans-serif; font-size:15px; outline:none; transition: border-color .2s;
+  }
+  .rf-field input:focus{ border-color: var(--red); }
+  .roadside-call-btn{
+    display:flex; align-items:center; justify-content:center; gap:10px; width:100%;
+    background: var(--red); color: var(--white); border:none;
+    padding: 13px; font-family:'Oswald', sans-serif; font-size:13.5px; letter-spacing:0.06em; text-transform:uppercase;
+    cursor:pointer; transition: background .2s;
+  }
+  .roadside-call-btn:hover{ background: var(--amber); color: var(--black); }
+
   .roadside-note{
     margin-top:18px; padding-top:16px; border-top:1px dashed rgba(244,242,236,0.12);
     font-family:'Oswald', sans-serif; font-size:11px; color: var(--steel-dim); letter-spacing:0.03em; line-height:1.7;
@@ -1184,7 +1218,6 @@
   /* ============ REGION / LANGUAGE DROPDOWN ============ */
 
   /* ============ NAV LOCATIONS DROPDOWN ============ */
-  .nav-loc-wrap{ position:relative; display:inline-flex; }
   .nav-loc-btn{
     display:flex; align-items:center; gap:5px;
     background:none; border:none; color: var(--white); cursor:pointer; padding:0; margin:0;
@@ -1192,32 +1225,49 @@
     position:relative; padding-bottom:4px; transition: color .25s;
   }
   .nav-loc-btn::after{ content:""; position:absolute; left:0; bottom:0; height:2px; width:0; background: var(--red); transition: width .25s; }
-  .nav-loc-btn:hover, .nav-loc-wrap.open .nav-loc-btn{ color: var(--red); }
-  .nav-loc-btn:hover::after, .nav-loc-wrap.open .nav-loc-btn::after{ width:100%; }
+  .nav-loc-btn:hover{ color: var(--red); }
+  .nav-loc-btn:hover::after{ width:100%; }
   .nav-loc-btn svg{ width:11px; height:11px; transition: transform .25s; flex-shrink:0; }
-  .nav-loc-wrap.open .nav-loc-btn svg{ transform: rotate(180deg); }
 
-  .nav-loc-menu{
+  .nav-svc-wrap{ position:relative; display:inline-flex; }
+  .nav-svc-menu{
     position:absolute; top: calc(100% + 16px); left:50%;
     transform: translateX(-50%) translateY(-8px);
-    width: 190px;
-    background: rgba(12,10,8,0.94);
+    width: 620px;
+    background: rgba(12,10,8,0.96);
     -webkit-backdrop-filter: blur(24px) saturate(150%);
     backdrop-filter: blur(24px) saturate(150%);
     border: 1px solid rgba(244,242,236,0.14);
     box-shadow: 0 20px 60px rgba(0,0,0,0.6);
-    padding: 10px;
+    padding: 24px 26px 18px;
     opacity:0; visibility:hidden; transition: opacity .25s ease, transform .25s ease, visibility .25s;
     z-index: 600;
+    display:grid; grid-template-columns: repeat(4, 1fr); gap: 20px;
   }
-  .nav-loc-wrap.open .nav-loc-menu{ opacity:1; visibility:visible; transform: translateX(-50%) translateY(0); }
-  .nav-loc-item{
-    display:flex; align-items:center; gap:10px;
-    padding: 10px 12px; color: var(--white); text-decoration:none;
-    font-family:'Barlow Condensed', sans-serif; font-size:16px;
-    transition: background .2s, color .2s;
+  .nav-svc-wrap.open .nav-svc-menu{ opacity:1; visibility:visible; transform: translateX(-50%) translateY(0); }
+  .nav-svc-col{ display:flex; flex-direction:column; }
+  .nav-svc-col-title{
+    font-family:'Oswald', sans-serif; font-size: 11px; letter-spacing:0.1em; text-transform:uppercase;
+    color: var(--red); margin-bottom: 12px; padding-bottom: 8px; border-bottom: 1px solid rgba(244,242,236,0.1);
   }
-  .nav-loc-item:hover{ background: rgba(226,36,27,0.1); color: var(--red); }
+  .nav-svc-item{
+    display:block; padding: 6px 0; color: var(--white); text-decoration:none;
+    font-family:'Barlow Condensed', sans-serif; font-size:15px;
+    transition: color .2s;
+  }
+  .nav-svc-item:hover{ color: var(--red); }
+  .nav-svc-footer{
+    grid-column: 1 / -1; margin-top: 6px; padding-top: 14px; border-top: 1px solid rgba(244,242,236,0.1);
+  }
+  .nav-svc-footer a{
+    color: var(--amber); text-decoration:none; font-family:'Oswald', sans-serif; font-size: 12.5px;
+    letter-spacing:0.06em; text-transform:uppercase; transition: color .2s;
+  }
+  .nav-svc-footer a:hover{ color: var(--red); }
+
+  @media (max-width: 1100px){
+    .nav-svc-menu{ width: 460px; grid-template-columns: repeat(2, 1fr); }
+  }
 
   .region-wrap{ position:relative; }
   .region-btn{
@@ -1381,10 +1431,583 @@
     margin-top:14px; font-family:'Oswald', sans-serif; font-size:10.5px; color: var(--steel-dim); letter-spacing:0.02em; line-height:1.7;
   }
 
+  .mg-header-row{ display:flex; align-items:center; justify-content:space-between; margin-bottom:12px; }
+  .mg-title{
+    font-family:'Anton', sans-serif; font-size:16px; text-transform:uppercase; letter-spacing:0.02em; color: var(--white);
+  }
+  .mg-divider{ height:1px; background: rgba(244,242,236,0.1); margin: 16px 0; }
+
+  .mg-signin-head{ display:flex; align-items:flex-start; gap:12px; margin-bottom:18px; }
+  .mg-signin-icon{
+    width:38px; height:38px; flex-shrink:0; border-radius:50%;
+    background: rgba(226,36,27,0.12); border:1px solid rgba(226,36,27,0.35);
+    display:flex; align-items:center; justify-content:center; font-size:17px;
+  }
+  .mg-signin-head h4{ font-size:15px; color: var(--white); margin-bottom:4px; }
+  .mg-signin-head p{ font-size:12.5px; color: var(--steel); line-height:1.5; }
+
+  .mg-preview-list{ display:flex; flex-direction:column; gap:9px; }
+  .mg-preview-item{
+    display:flex; align-items:center; gap:10px;
+    font-family:'Barlow Condensed', sans-serif; font-size:14.5px; color: var(--steel);
+  }
+
+  .mg-profile{ display:flex; align-items:center; gap:12px; margin-bottom:16px; }
+  .mg-avatar{
+    width:44px; height:44px; flex-shrink:0; border-radius:50%;
+    background: rgba(226,36,27,0.12); border:1px solid rgba(226,36,27,0.35);
+    display:flex; align-items:center; justify-content:center; font-size:20px;
+  }
+  .mg-profile-name{ font-family:'Anton', sans-serif; font-size:16px; color: var(--white); }
+  .mg-profile-email{ font-family:'Oswald', sans-serif; font-size:11.5px; color: var(--steel); margin-top:2px; }
+
+  .mg-link-item{
+    display:flex; align-items:center; gap:10px; width:100%;
+    background:transparent; border:none; color: var(--white);
+    font-family:'Barlow Condensed', sans-serif; font-size:15.5px;
+    padding: 10px 2px; cursor:pointer; text-align:left; transition: color .2s;
+  }
+  .mg-link-item:hover{ color: var(--red); }
+  html[dir="rtl"] .mg-link-item{ text-align:right; }
+
   @media (max-width: 380px){
     .login-dropdown{ width: 90vw; right: -60px; }
     html[dir="rtl"] .login-dropdown{ left: -60px; }
   }
+
+
+
+/* =========================================================
+   ORION FX AUTOMOTIVE — COMPACT PREMIUM NAVBAR
+   ========================================================= */
+
+:root {
+    --nav-height: 70px;
+    --nav-orange: #ff5a00;
+    --nav-orange-light: #ff7a22;
+    --nav-text: #f5f5f5;
+    --nav-muted: #b8b8b8;
+    --nav-border: rgba(255,255,255,0.10);
+    --nav-bg: rgba(8, 9, 11, 0.88);
+}
+
+
+/* ---------- NAVBAR ---------- */
+
+header,
+.navbar,
+.site-header,
+.main-header {
+    height: var(--nav-height);
+    min-height: var(--nav-height);
+    padding: 0 28px !important;
+
+    background:
+        linear-gradient(
+            90deg,
+            rgba(12,12,14,0.97),
+            rgba(18,15,15,0.94),
+            rgba(10,10,11,0.97)
+        ) !important;
+
+    border-bottom: 1px solid var(--nav-border);
+
+    backdrop-filter: blur(18px);
+    -webkit-backdrop-filter: blur(18px);
+
+    display: flex;
+    align-items: center;
+
+    position: sticky;
+    top: 0;
+    z-index: 9999;
+
+    box-sizing: border-box;
+}
+
+
+/* ---------- NAV INNER ---------- */
+
+header > *,
+.navbar > *,
+.nav-inner,
+.nav-container {
+    max-height: var(--nav-height);
+}
+
+
+/* ---------- LOGO ---------- */
+
+.logo,
+.brand,
+.nav-logo {
+    display: flex;
+    align-items: center;
+
+    height: 100%;
+
+    flex-shrink: 0;
+
+    margin-right: 30px;
+}
+
+.logo img,
+.brand img,
+.nav-logo img {
+    width: auto !important;
+    max-width: 175px;
+    max-height: 48px !important;
+
+    object-fit: contain;
+}
+
+
+/* ---------- NAV LINKS ---------- */
+
+nav a,
+.nav-link,
+.navbar a {
+    font-size: 12px !important;
+    font-weight: 600;
+
+    letter-spacing: 0.7px;
+
+    color: var(--nav-muted);
+
+    text-decoration: none;
+
+    padding: 8px 10px !important;
+
+    border: 0 !important;
+    background: transparent !important;
+
+    transition:
+        color .2s ease,
+        transform .2s ease;
+}
+
+
+nav a:hover,
+.nav-link:hover,
+.navbar a:hover {
+    color: #fff;
+
+    transform: translateY(-1px);
+}
+
+
+/* ---------- ACTIVE LINK ---------- */
+
+nav a.active,
+.nav-link.active {
+    color: #fff;
+}
+
+
+/* ---------- NAV LINKS CONTAINER ---------- */
+
+nav ul,
+.nav-menu,
+.nav-links {
+    display: flex;
+
+    align-items: center;
+
+    gap: 3px !important;
+
+    margin: 0 !important;
+    padding: 0 !important;
+
+    list-style: none;
+}
+
+
+/* ---------- DROPDOWN ARROW ---------- */
+
+.nav-link .arrow,
+.dropdown-arrow {
+    font-size: 9px;
+
+    margin-left: 4px;
+
+    color: #aaa;
+}
+
+
+/* ---------- MOBILE APP ---------- */
+
+.mobile-app-link,
+.mobile-app-btn {
+    border: 0 !important;
+
+    background: transparent !important;
+
+    color: var(--nav-muted) !important;
+
+    padding: 8px 10px !important;
+}
+
+.mobile-app-link:hover,
+.mobile-app-btn:hover {
+    color: #fff !important;
+}
+
+
+/* ---------- LOCATION SELECTOR ---------- */
+
+.location-selector,
+.region-selector,
+.country-selector {
+    height: 36px;
+
+    display: flex;
+    align-items: center;
+
+    padding: 0 10px !important;
+
+    border: 1px solid rgba(255,255,255,.12) !important;
+
+    border-radius: 7px;
+
+    background: rgba(255,255,255,.035) !important;
+
+    font-size: 11px !important;
+
+    color: #ddd !important;
+}
+
+.location-selector:hover,
+.region-selector:hover,
+.country-selector:hover {
+    border-color: rgba(255,90,0,.45) !important;
+}
+
+
+/* ---------- EMERGENCY ---------- */
+
+.roadside-btn,
+.emergency-btn,
+.roadside-assistance {
+    height: 36px;
+
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+
+    padding: 0 13px !important;
+
+    border: 1px solid rgba(255,75,50,.45) !important;
+
+    border-radius: 7px;
+
+    background: rgba(255,60,40,.035) !important;
+
+    color: #ff6b55 !important;
+
+    font-size: 10px !important;
+
+    font-weight: 700;
+
+    letter-spacing: .5px;
+
+    white-space: nowrap;
+
+    transition: all .2s ease;
+}
+
+.roadside-btn:hover,
+.emergency-btn:hover,
+.roadside-assistance:hover {
+    background: rgba(255,60,40,.10) !important;
+
+    border-color: #ff5b45 !important;
+
+    transform: translateY(-1px);
+}
+
+
+/* ---------- MY GARAGE ---------- */
+
+.my-garage,
+.garage-btn,
+.my-garage-btn {
+    height: 36px;
+
+    display: inline-flex;
+
+    align-items: center;
+    justify-content: center;
+
+    gap: 7px;
+
+    padding: 0 12px !important;
+
+    border: 1px solid rgba(255,255,255,.10) !important;
+
+    border-radius: 7px;
+
+    background: rgba(255,255,255,.035) !important;
+
+    color: #eee !important;
+
+    font-size: 11px !important;
+
+    font-weight: 600;
+
+    white-space: nowrap;
+
+    transition: all .2s ease;
+}
+
+.my-garage:hover,
+.garage-btn:hover,
+.my-garage-btn:hover {
+    border-color: rgba(255,90,0,.45) !important;
+
+    color: #fff !important;
+
+    background: rgba(255,90,0,.07) !important;
+}
+
+
+/* ---------- BOOK SERVICE ---------- */
+
+.book-service,
+.book-service-btn,
+.btn-book,
+.nav-book-btn {
+    height: 40px !important;
+
+    display: inline-flex;
+
+    align-items: center;
+    justify-content: center;
+
+    padding: 0 18px !important;
+
+    border: 0 !important;
+
+    border-radius: 7px;
+
+    background:
+        linear-gradient(
+            135deg,
+            var(--nav-orange),
+            #e94700
+        ) !important;
+
+    color: #fff !important;
+
+    font-size: 11px !important;
+
+    font-weight: 800;
+
+    letter-spacing: .7px;
+
+    white-space: nowrap;
+
+    box-shadow:
+        0 5px 18px rgba(255,90,0,.20);
+
+    transition:
+        transform .2s ease,
+        box-shadow .2s ease;
+}
+
+.book-service:hover,
+.book-service-btn:hover,
+.btn-book:hover,
+.nav-book-btn:hover {
+    transform: translateY(-1px);
+
+    box-shadow:
+        0 7px 22px rgba(255,90,0,.32);
+}
+
+
+/* ---------- RIGHT SIDE ---------- */
+
+.nav-actions,
+.nav-right,
+.header-actions {
+    display: flex;
+
+    align-items: center;
+
+    gap: 7px !important;
+
+    margin-left: auto;
+}
+
+
+/* ---------- REMOVE BOX EFFECT FROM NORMAL NAV ITEMS ---------- */
+
+nav li,
+.nav-menu li {
+    border: 0 !important;
+    background: transparent !important;
+}
+
+
+/* ---------- NAVBAR SCROLL ---------- */
+
+header.scrolled,
+.navbar.scrolled {
+    height: 64px;
+
+    background:
+        rgba(5,6,8,.96) !important;
+
+    box-shadow:
+        0 8px 30px rgba(0,0,0,.28);
+}
+
+
+/* =========================================================
+   DESKTOP COMPRESSION
+   ========================================================= */
+
+@media (min-width: 1100px) {
+
+    header,
+    .navbar,
+    .site-header,
+    .main-header {
+        padding-left: 24px !important;
+        padding-right: 24px !important;
+    }
+
+    .logo,
+    .brand,
+    .nav-logo {
+        margin-right: 22px;
+    }
+
+    nav a,
+    .nav-link,
+    .navbar a {
+        padding-left: 8px !important;
+        padding-right: 8px !important;
+    }
+}
+
+
+/* =========================================================
+   TABLET
+   ========================================================= */
+
+@media (max-width: 1100px) {
+
+    header,
+    .navbar,
+    .site-header,
+    .main-header {
+        padding: 0 18px !important;
+    }
+
+    nav a,
+    .nav-link,
+    .navbar a {
+        font-size: 11px !important;
+
+        padding-left: 6px !important;
+        padding-right: 6px !important;
+    }
+
+    .roadside-btn,
+    .emergency-btn,
+    .roadside-assistance {
+        padding: 0 9px !important;
+    }
+
+    .book-service,
+    .book-service-btn,
+    .btn-book,
+    .nav-book-btn {
+        padding: 0 13px !important;
+    }
+}
+
+
+/* =========================================================
+   MOBILE
+   ========================================================= */
+
+@media (max-width: 768px) {
+
+    header,
+    .navbar,
+    .site-header,
+    .main-header {
+        height: 62px;
+        min-height: 62px;
+
+        padding: 0 14px !important;
+    }
+
+    .logo img,
+    .brand img,
+    .nav-logo img {
+        max-width: 145px;
+
+        max-height: 42px !important;
+    }
+
+    .nav-menu,
+    nav ul,
+    .nav-links {
+        display: none;
+    }
+
+    .roadside-btn,
+    .emergency-btn,
+    .roadside-assistance {
+        width: 36px;
+        height: 36px;
+
+        padding: 0 !important;
+
+        font-size: 0 !important;
+    }
+
+    .roadside-btn::before,
+    .emergency-btn::before,
+    .roadside-assistance::before {
+        content: "\1F6A8";
+
+        font-size: 15px;
+    }
+
+    .my-garage,
+    .garage-btn,
+    .my-garage-btn {
+        width: 36px;
+        height: 36px;
+
+        padding: 0 !important;
+
+        font-size: 0 !important;
+    }
+
+    .my-garage::before,
+    .garage-btn::before,
+    .my-garage-btn::before {
+        content: "\2659";
+
+        font-size: 18px;
+    }
+
+    .book-service,
+    .book-service-btn,
+    .btn-book,
+    .nav-book-btn {
+        height: 36px !important;
+
+        padding: 0 12px !important;
+
+        font-size: 9px !important;
+    }
+}
 
 </style>
 </head>
@@ -1408,28 +2031,57 @@
     </div>
   </div>
   <nav>
-    <a href="#services" data-en="Services" data-ar="الخدمات">Services</a>
+    <div class="nav-svc-wrap" id="navSvcWrap">
+      <button type="button" class="nav-loc-btn" onclick="toggleNavSvcDropdown()">
+        <span data-en="Services" data-ar="الخدمات">Services</span>
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M6 9l6 6 6-6"/></svg>
+      </button>
+      <div class="nav-svc-menu" id="navSvcMenu">
+        <div class="nav-svc-col">
+          <div class="nav-svc-col-title" data-en="Maintenance" data-ar="الصيانة">Maintenance</div>
+          <a class="nav-svc-item" href="#services" data-cat="0" data-en="Oil &amp; Filter Change" data-ar="تغيير الزيت والفلتر">Oil &amp; Filter Change</a>
+          <a class="nav-svc-item" href="#services" data-cat="0" data-en="Brake Service" data-ar="خدمة الفرامل">Brake Service</a>
+          <a class="nav-svc-item" href="#services" data-cat="0" data-en="Battery Service" data-ar="خدمة البطارية">Battery Service</a>
+          <a class="nav-svc-item" href="#services" data-cat="0" data-en="Tire Service" data-ar="خدمة الإطارات">Tire Service</a>
+          <a class="nav-svc-item" href="#services" data-cat="0" data-en="Wheel Alignment" data-ar="ضبط زوايا العجلات">Wheel Alignment</a>
+        </div>
+        <div class="nav-svc-col">
+          <div class="nav-svc-col-title" data-en="Repair" data-ar="الإصلاح">Repair</div>
+          <a class="nav-svc-item" href="#services" data-cat="2" data-en="Engine Repair" data-ar="إصلاح المحرك">Engine Repair</a>
+          <a class="nav-svc-item" href="#services" data-cat="2" data-en="Transmission" data-ar="ناقل الحركة">Transmission</a>
+          <a class="nav-svc-item" href="#services" data-cat="2" data-en="Suspension" data-ar="نظام التعليق">Suspension</a>
+          <a class="nav-svc-item" href="#services" data-cat="2" data-en="Steering" data-ar="نظام التوجيه">Steering</a>
+          <a class="nav-svc-item" href="#services" data-cat="2" data-en="Cooling System" data-ar="نظام التبريد">Cooling System</a>
+        </div>
+        <div class="nav-svc-col">
+          <div class="nav-svc-col-title" data-en="Diagnostics" data-ar="التشخيص">Diagnostics</div>
+          <a class="nav-svc-item" href="#services" data-cat="1" data-en="Computer Diagnostics" data-ar="تشخيص بالكمبيوتر">Computer Diagnostics</a>
+          <a class="nav-svc-item" href="#services" data-cat="1" data-en="Check Engine" data-ar="فحص ضوء المحرك">Check Engine</a>
+          <a class="nav-svc-item" href="#services" data-cat="1" data-en="Electrical" data-ar="كهربائي">Electrical</a>
+          <a class="nav-svc-item" href="#services" data-cat="1" data-en="AC Diagnostics" data-ar="تشخيص التكييف">AC Diagnostics</a>
+        </div>
+        <div class="nav-svc-col">
+          <div class="nav-svc-col-title" data-en="Specialized" data-ar="خدمات متخصصة">Specialized</div>
+          <a class="nav-svc-item" href="#services" data-cat="5" data-en="EV / Hybrid" data-ar="كهربائية / هجينة">EV / Hybrid</a>
+          <a class="nav-svc-item" href="#services" data-cat="4" data-en="4&times;4 / SUV" data-ar="دفع رباعي / SUV">4&times;4 / SUV</a>
+          <a class="nav-svc-item" href="#services" data-cat="4" data-en="European Cars" data-ar="سيارات أوروبية">European Cars</a>
+          <a class="nav-svc-item" href="#services" data-cat="4" data-en="Luxury Vehicles" data-ar="سيارات فاخرة">Luxury Vehicles</a>
+        </div>
+        <div class="nav-svc-footer">
+          <a href="pages/service.html" data-en="Book Any Service &rarr;" data-ar="احجز أي خدمة &larr;">Book Any Service &rarr;</a>
+        </div>
+      </div>
+    </div>
     <a href="#how-it-works" data-en="How It Works" data-ar="كيف نعمل">How It Works</a>
     <a href="#about" data-en="Why Us" data-ar="لماذا نحن">Why Us</a>
     <button type="button" class="nav-link-btn mobile-app-btn">
       <span data-en="Mobile App" data-ar="تطبيق الجوال">Mobile App</span>
     </button>
-    <div class="nav-loc-wrap" id="navLocWrap">
-      <button type="button" class="nav-loc-btn" onclick="toggleNavLocDropdown()">
-        <span data-en="Locations" data-ar="الفروع">Locations</span>
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M6 9l6 6 6-6"/></svg>
-      </button>
-      <div class="nav-loc-menu" id="navLocMenu">
-        <a class="nav-loc-item" href="pages/location-uae.html">🇦🇪 <span data-en="UAE" data-ar="الإمارات">UAE</span></a>
-        <a class="nav-loc-item" href="pages/location-usa.html">🇺🇸 <span data-en="USA" data-ar="الولايات المتحدة">USA</span></a>
-        <a class="nav-loc-item" href="pages/location-canada.html">🇨🇦 <span data-en="Canada" data-ar="كندا">Canada</span></a>
-      </div>
-    </div>
     <a href="#contact" data-en="Contact" data-ar="تواصل معنا">Contact</a>
   </nav>
   <div class="header-actions">
   <div class="region-wrap" id="regionWrap">
-    <button type="button" class="region-btn" id="regionBtn" onclick="toggleRegionBox()">
+    <button type="button" class="region-btn location-selector" id="regionBtn" onclick="toggleRegionBox()">
       🌐 <span id="regionLabel">UAE</span>
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg>
     </button>
@@ -1448,91 +2100,117 @@
     🚨 <span data-en="Roadside Assistance" data-ar="المساعدة على الطريق">Roadside Assistance</span>
   </button>
   <div class="login-wrap" id="loginWrap">
-    <button type="button" class="login-btn" id="loginBtn" onclick="toggleLoginBox()">
+    <button type="button" class="login-btn my-garage" id="loginBtn" onclick="toggleLoginBox()">
       <svg id="loginBtnIcon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
       <span id="loginBtnLabel" data-en="My Garage" data-ar="جراجي">My Garage</span>
     </button>
     <div class="login-dropdown" id="loginDropdown">
-      <div id="loginFormView">
-      <div class="login-head">
-        <h4 data-en="Login To Your Account" data-ar="تسجيل الدخول إلى حسابك">Login To Your Account</h4>
+      <div class="mg-header-row">
+        <div class="mg-title" data-en="My Garage" data-ar="جراجي">My Garage</div>
         <button type="button" class="login-close" onclick="toggleLoginBox(false)" aria-label="Close">&times;</button>
       </div>
-      <form id="loginForm" onsubmit="return false;">
-        <div class="login-field">
-          <label data-en="User Id" data-ar="معرف المستخدم">User Id</label>
-          <input type="text" id="loginUserId" data-en-ph="Enter your User Id" data-ar-ph="أدخل معرف المستخدم" placeholder="Enter your User Id" autocomplete="username">
-        </div>
-        <div class="login-field">
-          <label data-en="Password" data-ar="كلمة المرور">Password</label>
-          <div class="pw-wrap">
-            <input type="password" id="loginPassword" data-en-ph="Enter your password" data-ar-ph="أدخل كلمة المرور" placeholder="Enter your password" autocomplete="current-password">
-            <button type="button" class="pw-eye" onclick="togglePasswordVisibility()" aria-label="Show password">
-              <svg id="eyeIconOpen" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M1 12s4-7 11-7 11 7 11 7-4 7-11 7-11-7-11-7z"/><circle cx="12" cy="12" r="3"/></svg>
-              <svg id="eyeIconClosed" style="display:none" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M17.94 17.94A10.94 10.94 0 0 1 12 19c-7 0-11-7-11-7a21.6 21.6 0 0 1 5.06-5.94M9.9 4.24A10.4 10.4 0 0 1 12 4c7 0 11 7 11 7a21.6 21.6 0 0 1-2.16 3.19m-6.72-1.07a3 3 0 1 1-4.24-4.24"/><path d="M1 1l22 22"/></svg>
-            </button>
+      <div class="mg-divider"></div>
+
+      <div id="loginFormView">
+        <div class="mg-signin-head">
+          <span class="mg-signin-icon">&#128274;</span>
+          <div>
+            <h4 data-en="Sign In To Your Garage" data-ar="سجّل الدخول إلى جراجك">Sign In To Your Garage</h4>
+            <p data-en="Access your vehicle services, appointments &amp; service history." data-ar="اطّلع على خدمات سيارتك ومواعيدك وسجل صيانتك.">Access your vehicle services, appointments &amp; service history.</p>
           </div>
         </div>
-        <div class="login-row-between">
-          <label class="remember-me"><input type="checkbox"><span data-en="Remember me" data-ar="تذكرني">Remember me</span></label>
-          <a href="#" class="forgot-link" data-en="Forgot password?" data-ar="نسيت كلمة المرور؟">Forgot password?</a>
+        <button type="button" class="social-btn" id="googleLoginBtn">
+          <svg viewBox="0 0 48 48"><path fill="#FFC107" d="M43.6 20.5H42V20H24v8h11.3C33.7 32.7 29.3 36 24 36c-6.6 0-12-5.4-12-12s5.4-12 12-12c3.1 0 5.8 1.1 8 3l6-6C34.6 5.1 29.6 3 24 3 12.4 3 3 12.4 3 24s9.4 21 21 21 21-9.4 21-21c0-1.2-.1-2.4-.4-3.5z"/><path fill="#FF3D00" d="M6.3 14.7l6.6 4.8C14.5 15.9 18.9 13 24 13c3.1 0 5.8 1.1 8 3l6-6C34.6 6.1 29.6 4 24 4 16.3 4 9.6 8.3 6.3 14.7z"/><path fill="#4CAF50" d="M24 44c5.5 0 10.4-1.9 14.1-5.1l-6.5-5.5C29.5 35.4 26.9 36 24 36c-5.3 0-9.7-3.3-11.3-8l-6.6 5.1C9.5 39.6 16.2 44 24 44z"/><path fill="#1976D2" d="M43.6 20.5H42V20H24v8h11.3c-.8 2.3-2.3 4.3-4.2 5.7l6.5 5.5C41 35.9 44 30.4 44 24c0-1.2-.1-2.4-.4-3.5z"/></svg>
+          <span data-en="Continue with Google" data-ar="المتابعة عبر جوجل">Continue with Google</span>
+        </button>
+        <button type="button" class="social-btn" id="facebookLoginBtn">
+          <svg viewBox="0 0 24 24" fill="#1877F2"><path d="M22 12a10 10 0 1 0-11.6 9.9v-7H7.9V12h2.5V9.8c0-2.5 1.5-3.9 3.8-3.9 1.1 0 2.2.2 2.2.2v2.5h-1.3c-1.2 0-1.6.8-1.6 1.6V12h2.8l-.4 2.9h-2.4v7A10 10 0 0 0 22 12z"/></svg>
+          <span data-en="Continue with Facebook" data-ar="المتابعة عبر فيسبوك">Continue with Facebook</span>
+        </button>
+
+        <div class="mg-divider"></div>
+
+        <div class="mg-preview-list">
+          <div class="mg-preview-item">&#128663; <span data-en="Manage Your Vehicles" data-ar="إدارة سياراتك">Manage Your Vehicles</span></div>
+          <div class="mg-preview-item">&#128197; <span data-en="Track Appointments" data-ar="متابعة المواعيد">Track Appointments</span></div>
+          <div class="mg-preview-item">&#128295; <span data-en="View Service History" data-ar="عرض سجل الصيانة">View Service History</span></div>
+          <div class="mg-preview-item">&#128269; <span data-en="View Inspection Reports" data-ar="عرض تقارير الفحص">View Inspection Reports</span></div>
+          <div class="mg-preview-item">&#128276; <span data-en="Get Maintenance Reminders" data-ar="تذكيرات الصيانة">Get Maintenance Reminders</span></div>
         </div>
-        <button type="submit" class="login-submit" data-en="Login" data-ar="تسجيل الدخول">Login</button>
-      </form>
-      <div class="login-divider"><span data-en="OR" data-ar="أو">OR</span></div>
-      <button type="button" class="social-btn" id="googleLoginBtn">
-        <svg viewBox="0 0 48 48"><path fill="#FFC107" d="M43.6 20.5H42V20H24v8h11.3C33.7 32.7 29.3 36 24 36c-6.6 0-12-5.4-12-12s5.4-12 12-12c3.1 0 5.8 1.1 8 3l6-6C34.6 5.1 29.6 3 24 3 12.4 3 3 12.4 3 24s9.4 21 21 21 21-9.4 21-21c0-1.2-.1-2.4-.4-3.5z"/><path fill="#FF3D00" d="M6.3 14.7l6.6 4.8C14.5 15.9 18.9 13 24 13c3.1 0 5.8 1.1 8 3l6-6C34.6 6.1 29.6 4 24 4 16.3 4 9.6 8.3 6.3 14.7z"/><path fill="#4CAF50" d="M24 44c5.5 0 10.4-1.9 14.1-5.1l-6.5-5.5C29.5 35.4 26.9 36 24 36c-5.3 0-9.7-3.3-11.3-8l-6.6 5.1C9.5 39.6 16.2 44 24 44z"/><path fill="#1976D2" d="M43.6 20.5H42V20H24v8h11.3c-.8 2.3-2.3 4.3-4.2 5.7l6.5 5.5C41 35.9 44 30.4 44 24c0-1.2-.1-2.4-.4-3.5z"/></svg>
-        <span data-en="Login with Google Account" data-ar="تسجيل الدخول عبر حساب جوجل">Login with Google Account</span>
-      </button>
-      <button type="button" class="social-btn" id="facebookLoginBtn">
-        <svg viewBox="0 0 24 24" fill="#1877F2"><path d="M22 12a10 10 0 1 0-11.6 9.9v-7H7.9V12h2.5V9.8c0-2.5 1.5-3.9 3.8-3.9 1.1 0 2.2.2 2.2.2v2.5h-1.3c-1.2 0-1.6.8-1.6 1.6V12h2.8l-.4 2.9h-2.4v7A10 10 0 0 0 22 12z"/></svg>
-        <span data-en="Login with Facebook Account" data-ar="تسجيل الدخول عبر فيسبوك">Login with Facebook Account</span>
-      </button>
-      <div class="login-signup-row">
-        <span data-en="Don't have an account?" data-ar="ليس لديك حساب؟">Don't have an account?</span><a href="#" data-en="Sign Up" data-ar="إنشاء حساب">Sign Up</a>
-      </div>
+
+        <div class="mg-divider"></div>
+
+        <button type="button" class="mg-link-item mobile-app-btn">
+          &#128241; <span data-en="Get the Mobile App" data-ar="حمّل تطبيق الجوال">Get the Mobile App</span>
+        </button>
       </div>
 
       <div id="accountMenuView" style="display:none">
-        <div class="login-head">
-          <h4>&#128100; <span id="accountUserName">Ahmed</span></h4>
-          <button type="button" class="login-close" onclick="toggleLoginBox(false)" aria-label="Close">&times;</button>
+        <div class="mg-profile">
+          <span class="mg-avatar">&#128100;</span>
+          <div>
+            <div class="mg-profile-name" id="accountUserName">Ahmed</div>
+            <div class="mg-profile-email" id="accountUserEmail">ahmed@email.com</div>
+          </div>
         </div>
         <div class="account-menu-list">
           <a class="account-menu-item" href="pages/vehicle-history.html">&#128663; <span data-en="My Vehicles" data-ar="سياراتي">My Vehicles</span></a>
-          <a class="account-menu-item" href="pages/service.html">&#128197; <span data-en="Appointments" data-ar="المواعيد">Appointments</span></a>
+          <a class="account-menu-item" href="pages/service.html">&#128197; <span data-en="My Appointments" data-ar="مواعيدي">My Appointments</span></a>
           <a class="account-menu-item" href="pages/vehicle-history.html">&#128295; <span data-en="Service History" data-ar="سجل الصيانة">Service History</span></a>
           <a class="account-menu-item" href="#inspection">&#128269; <span data-en="Inspection Reports" data-ar="تقارير الفحص">Inspection Reports</span></a>
-          <div class="account-menu-item disabled">&#128176; <span data-en="Estimates" data-ar="التقديرات">Estimates</span><span class="soon-tag" data-en="Coming Soon" data-ar="قريبًا">Coming Soon</span></div>
-          <div class="account-menu-item disabled">&#129534; <span data-en="Invoices" data-ar="الفواتير">Invoices</span><span class="soon-tag" data-en="Coming Soon" data-ar="قريبًا">Coming Soon</span></div>
           <a class="account-menu-item" href="pages/vehicle-history.html">&#128276; <span data-en="Maintenance Reminders" data-ar="تذكيرات الصيانة">Maintenance Reminders</span></a>
         </div>
-        <button type="button" class="login-submit" id="logoutBtn" onclick="orionLogout()" data-en="Log Out" data-ar="تسجيل الخروج">Log Out</button>
-        <div class="account-menu-note" data-en="Demo account menu. Estimates and Invoices aren't built yet — everything here is clearly marked so nothing pretends to be real before it is." data-ar="قائمة حساب تجريبية. لم يتم بناء التقديرات والفواتير بعد — كل شيء هنا موضّح بوضوح حتى لا يبدو أي شيء حقيقيًا قبل أن يكون كذلك.">Demo account menu. Estimates and Invoices aren't built yet — everything here is clearly marked so nothing pretends to be real before it is.</div>
+
+        <div class="mg-divider"></div>
+
+        <button type="button" class="mg-link-item mobile-app-btn">
+          &#128241; <span data-en="Get the Mobile App" data-ar="حمّل تطبيق الجوال">Get the Mobile App</span>
+        </button>
+        <div class="account-menu-item disabled">&#9881;&#65039; <span data-en="Account Settings" data-ar="إعدادات الحساب">Account Settings</span><span class="soon-tag" data-en="Coming Soon" data-ar="قريبًا">Coming Soon</span></div>
+        <button type="button" class="mg-link-item" id="logoutBtn" onclick="orionLogout()">
+          &#8618; <span data-en="Sign Out" data-ar="تسجيل الخروج">Sign Out</span>
+        </button>
+        <div class="account-menu-note" data-en="Demo account menu. Account Settings isn't built yet — everything here is clearly marked so nothing pretends to be real before it is." data-ar="قائمة حساب تجريبية. لم يتم بناء إعدادات الحساب بعد — كل شيء هنا موضّح بوضوح حتى لا يبدو أي شيء حقيقيًا قبل أن يكون كذلك.">Demo account menu. Account Settings isn't built yet — everything here is clearly marked so nothing pretends to be real before it is.</div>
       </div>
     </div>
   </div>
-  <a class="nav-cta" href="pages/service.html" data-en="Book A Service" data-ar="احجز خدمة">Book A Service</a>
+  <a class="nav-cta book-service" href="pages/service.html" data-en="Book A Service" data-ar="احجز خدمة">Book A Service</a>
   </div>
 </header>
 
 <div class="roadside-overlay" id="roadsideOverlay">
   <div class="roadside-card">
-    <div class="roadside-icon">🚨</div>
-    <h3 data-en="Need Emergency Assistance?" data-ar="تحتاج مساعدة طارئة؟">Need Emergency Assistance?</h3>
-    <p data-en="If your vehicle has broken down or you're stuck on the road, reach us using either option below." data-ar="إذا تعطلت سيارتك أو كنت عالقًا على الطريق، تواصل معنا باستخدام أحد الخيارين أدناه.">If your vehicle has broken down or you're stuck on the road, reach us using either option below.</p>
-    <div class="roadside-actions">
-      <a class="roadside-call-btn" href="tel:+971000000000">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
-        <span data-en="Call Now" data-ar="اتصل الآن">Call Now</span>
-      </a>
-      <a class="roadside-wa-btn" id="roadsideWaBtn" href="#" target="_blank" rel="noopener">
-        <svg viewBox="0 0 24 24" fill="currentColor"><path d="M17.5 14.4c-.3-.1-1.7-.9-2-1s-.5-.1-.7.1-.8 1-.9 1.2-.3.2-.6.1a8.2 8.2 0 0 1-2.4-1.5 9 9 0 0 1-1.7-2.1c-.2-.3 0-.5.1-.6l.4-.5.3-.5c.1-.2 0-.3 0-.5s-.7-1.7-1-2.3-.5-.5-.7-.5h-.6a1.2 1.2 0 0 0-.9.4 3.6 3.6 0 0 0-1.1 2.7 6.3 6.3 0 0 0 1.3 3.3 14.4 14.4 0 0 0 5.5 4.9c.8.3 1.4.5 1.9.7a4.6 4.6 0 0 0 2.1.1 3.5 3.5 0 0 0 2.3-1.6 2.8 2.8 0 0 0 .2-1.6c-.1-.1-.3-.2-.6-.3z"/><path d="M12 2a10 10 0 0 0-8.6 15L2 22l5.2-1.4A10 10 0 1 0 12 2zm0 18.2a8.2 8.2 0 0 1-4.2-1.1l-.3-.2-3.1.8.8-3-.2-.3A8.2 8.2 0 1 1 12 20.2z"/></svg>
-        <span data-en="Request Roadside Assistance" data-ar="اطلب المساعدة على الطريق">Request Roadside Assistance</span>
-      </a>
+    <div class="roadside-head">
+      <div class="roadside-head-title">
+        <span class="roadside-emoji">🚨</span>
+        <div>
+          <h3 data-en="Need Roadside Assistance?" data-ar="تحتاج مساعدة على الطريق؟">Need Roadside Assistance?</h3>
+          <div class="roadside-sub" data-en="We're here to help." data-ar="نحن هنا لمساعدتك.">We're here to help.</div>
+        </div>
+      </div>
+      <button type="button" class="roadside-close" onclick="toggleRoadsideBox(false)" aria-label="Close">&times;</button>
     </div>
-    <button type="button" class="roadside-close" onclick="toggleRoadsideBox(false)" data-en="Close" data-ar="إغلاق">Close</button>
-    <div class="roadside-note" data-en="Roadside assistance is available during business hours — Mon–Sat, 8:00–18:00. Outside these hours, please call and leave a message, or send a WhatsApp request and we'll respond as soon as we're open." data-ar="خدمة المساعدة على الطريق متاحة خلال ساعات العمل — الإثنين إلى السبت، من 8:00 إلى 18:00. خارج هذه الساعات، يُرجى الاتصال وترك رسالة، أو إرسال طلب عبر واتساب وسنرد بمجرد فتح الورشة.">Roadside assistance is available during business hours — Mon–Sat, 8:00–18:00. Outside these hours, please call and leave a message, or send a WhatsApp request and we'll respond as soon as we're open.</div>
+
+    <div class="roadside-issue-label" data-en="What do you need?" data-ar="ما الذي تحتاجه؟">What do you need?</div>
+    <div class="roadside-issue-grid" id="roadsideIssueGrid"></div>
+
+    <div class="roadside-actions" id="roadsideActionsRow"></div>
+
+    <div class="roadside-request-form" id="roadsideRequestForm">
+      <div class="rf-field">
+        <label data-en="Name" data-ar="الاسم">Name</label>
+        <input type="text" id="roadsideName" data-en-ph="Your name" data-ar-ph="اسمك" placeholder="Your name">
+      </div>
+      <div class="rf-field">
+        <label data-en="Mobile Number" data-ar="رقم الجوال">Mobile Number</label>
+        <input type="tel" id="roadsideMobile" data-en-ph="+971 00 000 0000" data-ar-ph="+971 00 000 0000" placeholder="+971 00 000 0000">
+      </div>
+      <button type="button" class="roadside-call-btn" id="roadsideSendRequestBtn">
+        <span data-en="Send Request" data-ar="إرسال الطلب">Send Request</span>
+      </button>
+    </div>
+
+    <div class="roadside-note" data-en="Roadside assistance is available during business hours — Mon&ndash;Sat, 8:00&ndash;18:00. Outside these hours, please call and leave a message, and we'll respond as soon as we're open." data-ar="خدمة المساعدة على الطريق متاحة خلال ساعات العمل — الإثنين إلى السبت، من 8:00 إلى 18:00. خارج هذه الساعات، يُرجى الاتصال وترك رسالة وسنرد بمجرد فتح الورشة.">Roadside assistance is available during business hours — Mon&ndash;Sat, 8:00&ndash;18:00. Outside these hours, please call and leave a message, and we'll respond as soon as we're open.</div>
   </div>
 </div>
 
@@ -2357,6 +3035,10 @@ document.querySelectorAll('.region-option[data-region]').forEach(btn => {
     const matchingCurrencyBtn = document.querySelector(`.currency-btn[data-currency="${btn.dataset.currency}"]`);
     if (matchingCurrencyBtn) matchingCurrencyBtn.click();
 
+    if (typeof renderRoadsideActions === 'function' && document.getElementById('roadsideOverlay').classList.contains('show')){
+      renderRoadsideActions();
+    }
+
     toggleRegionBox(false);
   });
 });
@@ -2369,18 +3051,107 @@ document.querySelectorAll('.region-option[data-lang]').forEach(btn => {
 });
 
 /* ============ ROADSIDE ASSISTANCE ============ */
+const roadsideIssues = [
+  { emoji: "🚗", en: "Vehicle Breakdown", ar: "تعطل السيارة" },
+  { emoji: "🔋", en: "Dead Battery", ar: "بطارية فارغة" },
+  { emoji: "🛞", en: "Flat Tire", ar: "إطار مثقوب" },
+  { emoji: "⛽", en: "Out of Fuel", ar: "نفاد الوقود" },
+  { emoji: "🔑", en: "Locked Out", ar: "نسيان المفتاح بالداخل" },
+  { emoji: "🚘", en: "Accident / Towing", ar: "حادث / سحب" },
+];
+let roadsideSelectedIssue = null;
+const ROADSIDE_PHONE = '+971000000000';
+const ROADSIDE_PHONE_WA = '971000000000';
+
+function roadsideIsAr(){ return document.documentElement.lang === 'ar'; }
+
+function getCurrentRoadsideRegion(){
+  const active = document.querySelector('.region-option[data-region].active');
+  return active ? active.dataset.region : 'AE';
+}
+
+function renderRoadsideIssueGrid(){
+  const isAr = roadsideIsAr();
+  document.getElementById('roadsideIssueGrid').innerHTML = roadsideIssues.map((issue, i) => `
+    <button type="button" class="roadside-issue-btn${roadsideSelectedIssue === i ? ' selected' : ''}" data-idx="${i}">
+      ${issue.emoji} <span>${isAr ? issue.ar : issue.en}</span>
+    </button>
+  `).join('');
+  document.querySelectorAll('.roadside-issue-btn').forEach(btn => {
+    btn.addEventListener('click', () => {
+      const idx = Number(btn.dataset.idx);
+      roadsideSelectedIssue = roadsideSelectedIssue === idx ? null : idx;
+      renderRoadsideIssueGrid();
+      renderRoadsideActions();
+    });
+  });
+}
+
+function roadsideIssueText(){
+  const isAr = roadsideIsAr();
+  if (roadsideSelectedIssue === null) return isAr ? 'مساعدة على الطريق' : 'roadside assistance';
+  const issue = roadsideIssues[roadsideSelectedIssue];
+  return isAr ? issue.ar : issue.en;
+}
+
+function renderRoadsideActions(){
+  const isAr = roadsideIsAr();
+  const region = getCurrentRoadsideRegion();
+  const container = document.getElementById('roadsideActionsRow');
+  const issueText = roadsideIssueText();
+
+  if (region === 'AE'){
+    container.innerHTML = `
+      <a class="roadside-action-btn call" href="tel:${ROADSIDE_PHONE}">📞 ${isAr ? 'اتصل الآن' : 'Call Now'}</a>
+      <button type="button" class="roadside-action-btn request" id="roadsideRequestBtn">📍 ${isAr ? 'اطلب المساعدة' : 'Request Assistance'}</button>
+      <a class="roadside-action-btn whatsapp" id="roadsideWaBtn" href="#" target="_blank" rel="noopener">💬 ${isAr ? 'واتساب' : 'WhatsApp'}</a>
+    `;
+    const waMsg = isAr
+      ? `مرحبًا، أحتاج مساعدة على الطريق (${issueText}). موقعي الحالي: `
+      : `Hi, I need roadside assistance (${issueText}). My current location: `;
+    document.getElementById('roadsideWaBtn').href = 'https://wa.me/' + ROADSIDE_PHONE_WA + '?text=' + encodeURIComponent(waMsg);
+    document.getElementById('roadsideRequestBtn').addEventListener('click', () => {
+      document.getElementById('roadsideRequestForm').classList.add('show');
+    });
+  } else {
+    container.innerHTML = `
+      <a class="roadside-action-btn call" href="tel:${ROADSIDE_PHONE}">📞 ${isAr ? 'اتصال' : 'Call'}</a>
+      <a class="roadside-action-btn sms" id="roadsideSmsBtn" href="#">💬 ${isAr ? 'رسالة نصية' : 'SMS'}</a>
+    `;
+    const smsMsg = isAr
+      ? `مرحبًا، أحتاج مساعدة على الطريق (${issueText}).`
+      : `Hi, I need roadside assistance (${issueText}).`;
+    document.getElementById('roadsideSmsBtn').href = 'sms:' + ROADSIDE_PHONE + '?&body=' + encodeURIComponent(smsMsg);
+    document.getElementById('roadsideRequestForm').classList.remove('show');
+  }
+}
+
+document.getElementById('roadsideSendRequestBtn').addEventListener('click', () => {
+  const isAr = roadsideIsAr();
+  const name = document.getElementById('roadsideName').value.trim();
+  const mobile = document.getElementById('roadsideMobile').value.trim();
+  if (!name || !mobile){
+    alert(isAr ? 'يرجى إدخال الاسم ورقم الجوال.' : 'Please enter your name and mobile number.');
+    return;
+  }
+  alert(isAr
+    ? `تم استلام طلبك (تجريبي)، ${name}. سيتواصل معك فريقنا بخصوص: ${roadsideIssueText()}.`
+    : `Request received (demo), ${name}. Our team will reach out regarding: ${roadsideIssueText()}.`);
+  document.getElementById('roadsideName').value = '';
+  document.getElementById('roadsideMobile').value = '';
+  toggleRoadsideBox(false);
+});
+
 function toggleRoadsideBox(force){
   const overlay = document.getElementById('roadsideOverlay');
   if (!overlay) return;
   const shouldOpen = typeof force === 'boolean' ? force : !overlay.classList.contains('show');
   overlay.classList.toggle('show', shouldOpen);
   if (shouldOpen){
-    const isAr = document.documentElement.lang === 'ar';
-    const msg = isAr
-      ? 'مرحبًا، أحتاج إلى مساعدة على الطريق. موقعي الحالي: '
-      : "Hi, I need roadside assistance. My current location: ";
-    const waBtn = document.getElementById('roadsideWaBtn');
-    if (waBtn) waBtn.href = 'https://wa.me/971000000000?text=' + encodeURIComponent(msg);
+    renderRoadsideIssueGrid();
+    renderRoadsideActions();
+  } else {
+    document.getElementById('roadsideRequestForm').classList.remove('show');
   }
 }
 document.getElementById('roadsideOverlay').addEventListener('click', (e) => {
@@ -2407,25 +3178,13 @@ document.addEventListener('keydown', (e) => {
   if (e.key === 'Escape') toggleLoginBox(false);
 });
 
-function togglePasswordVisibility(){
-  const pw = document.getElementById('loginPassword');
-  const eyeOpen = document.getElementById('eyeIconOpen');
-  const eyeClosed = document.getElementById('eyeIconClosed');
-  if (!pw) return;
-  const isPassword = pw.type === 'password';
-  pw.type = isPassword ? 'text' : 'password';
-  if (eyeOpen && eyeClosed){
-    eyeOpen.style.display = isPassword ? 'none' : 'block';
-    eyeClosed.style.display = isPassword ? 'block' : 'none';
-  }
-}
-
 /* ============ MY GARAGE — LOGGED-IN STATE (demo only) ============ */
 let orionLoggedIn = false;
 
-function orionSetLoggedIn(name){
+function orionSetLoggedIn(name, email){
   orionLoggedIn = true;
   const displayName = (name || 'Ahmed').split(' ')[0];
+  const displayEmail = email || 'ahmed@email.com';
   const icon = document.getElementById('loginBtnIcon');
   const label = document.getElementById('loginBtnLabel');
   if (icon) icon.style.display = 'none';
@@ -2440,6 +3199,8 @@ function orionSetLoggedIn(name){
   if (menuView) menuView.style.display = 'block';
   const nameEl = document.getElementById('accountUserName');
   if (nameEl) nameEl.textContent = displayName;
+  const emailEl = document.getElementById('accountUserEmail');
+  if (emailEl) emailEl.textContent = displayEmail;
 }
 
 function orionLogout(){
@@ -2458,19 +3219,6 @@ function orionLogout(){
   if (formView) formView.style.display = '';
   if (menuView) menuView.style.display = 'none';
   toggleLoginBox(false);
-}
-
-const loginFormEl = document.getElementById('loginForm');
-if (loginFormEl){
-  loginFormEl.addEventListener('submit', (e) => {
-    e.preventDefault();
-    const userId = document.getElementById('loginUserId').value.trim();
-    const msg = (typeof currentLang !== 'undefined' && currentLang === 'ar')
-      ? 'هذا نموذج دخول تجريبي. قم بربطه بخادم المصادقة الخاص بك لتفعيل تسجيل الدخول الفعلي. سنسجّل دخولك بشكل تجريبي الآن.'
-      : "This is a demo login form. Connect it to your authentication backend to enable real sign-in. We'll sign you in as a demo for now.";
-    alert(msg);
-    orionSetLoggedIn(userId || 'Ahmed');
-  });
 }
 
 /* ---- Google Sign-In ----
@@ -2494,7 +3242,7 @@ function handleGoogleCredentialResponse(response){
     const payload = JSON.parse(decodeURIComponent(escape(atob(response.credential.split('.')[1].replace(/-/g,'+').replace(/_/g,'/')))));
     const msg = (typeof currentLang !== 'undefined' && currentLang === 'ar') ? 'مرحبًا، ' : 'Welcome, ';
     alert(msg + (payload.name || payload.email) + '!');
-    orionSetLoggedIn(payload.name || payload.email);
+    orionSetLoggedIn(payload.name || payload.email, payload.email);
   }catch(err){
     console.error('Google login error:', err);
   }
@@ -2502,8 +3250,12 @@ function handleGoogleCredentialResponse(response){
 const googleBtn = document.getElementById('googleLoginBtn');
 if (googleBtn){
   googleBtn.addEventListener('click', () => {
+    const isAr = (typeof currentLang !== 'undefined' && currentLang === 'ar');
     if (!window.google || !google.accounts || !google.accounts.id || GOOGLE_CLIENT_ID.indexOf('YOUR_GOOGLE_CLIENT_ID') === 0){
-      alert('Set GOOGLE_CLIENT_ID in the code (see comment above) with your own Google OAuth Client ID to enable this button.');
+      alert(isAr
+        ? 'لم يتم إعداد تسجيل الدخول عبر جوجل بعد (يحتاج معرف عميل حقيقي). سنسجّل دخولك بحساب تجريبي الآن.'
+        : "Google Sign-In isn't configured yet (needs a real Client ID). We'll sign you in with a demo account for now.");
+      orionSetLoggedIn('Ahmed', 'ahmed@email.com');
       return;
     }
     google.accounts.id.prompt();
@@ -2524,16 +3276,20 @@ window.fbAsyncInit = function(){
 const facebookBtn = document.getElementById('facebookLoginBtn');
 if (facebookBtn){
   facebookBtn.addEventListener('click', () => {
+    const isAr = (typeof currentLang !== 'undefined' && currentLang === 'ar');
     if (!window.FB || FACEBOOK_APP_ID.indexOf('YOUR_FACEBOOK_APP_ID') === 0){
-      alert('Set FACEBOOK_APP_ID in the code (see comment above) with your own Facebook App ID to enable this button.');
+      alert(isAr
+        ? 'لم يتم إعداد تسجيل الدخول عبر فيسبوك بعد (يحتاج معرف تطبيق حقيقي). سنسجّل دخولك بحساب تجريبي الآن.'
+        : "Facebook Login isn't configured yet (needs a real App ID). We'll sign you in with a demo account for now.");
+      orionSetLoggedIn('Ahmed', 'ahmed@email.com');
       return;
     }
     FB.login((response) => {
       if (response.authResponse){
         FB.api('/me', { fields: 'name,email' }, (userInfo) => {
-          const msg = (typeof currentLang !== 'undefined' && currentLang === 'ar') ? 'مرحبًا، ' : 'Welcome, ';
+          const msg = isAr ? 'مرحبًا، ' : 'Welcome, ';
           alert(msg + userInfo.name + '!');
-          orionSetLoggedIn(userInfo.name);
+          orionSetLoggedIn(userInfo.name, userInfo.email);
         });
       }
     }, { scope: 'public_profile,email' });
@@ -2542,15 +3298,30 @@ if (facebookBtn){
 
 
 /* ============ NAV LOCATIONS DROPDOWN ============ */
-function toggleNavLocDropdown(force){
-  const wrap = document.getElementById('navLocWrap');
+function toggleNavSvcDropdown(force){
+  const wrap = document.getElementById('navSvcWrap');
   if (!wrap) return;
   const shouldOpen = typeof force === 'boolean' ? force : !wrap.classList.contains('open');
   wrap.classList.toggle('open', shouldOpen);
 }
 document.addEventListener('click', (e) => {
-  const wrap = document.getElementById('navLocWrap');
-  if (wrap && !wrap.contains(e.target)) toggleNavLocDropdown(false);
+  const wrap = document.getElementById('navSvcWrap');
+  if (wrap && !wrap.contains(e.target)) toggleNavSvcDropdown(false);
+});
+document.querySelectorAll('.nav-svc-item[data-cat]').forEach(link => {
+  link.addEventListener('click', (e) => {
+    e.preventDefault();
+    toggleNavSvcDropdown(false);
+    const targetIndex = Number(link.dataset.cat);
+    const section = document.getElementById('services');
+    if (section) section.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    if (typeof items !== 'undefined' && items[targetIndex] && typeof setActive === 'function'){
+      setTimeout(() => {
+        setActive(items[targetIndex]);
+        items[targetIndex].classList.add('active');
+      }, 450);
+    }
+  });
 });
 
 let currentLang = 'en';
@@ -2572,6 +3343,10 @@ function applyTranslations(){
   if (typeof renderPricingTable === 'function') renderPricingTable();
   if (typeof renderDviChecklist === 'function') renderDviChecklist();
   if (typeof renderDviModal === 'function' && document.getElementById('dviOverlay').classList.contains('show')) renderDviModal();
+  if (typeof renderRoadsideIssueGrid === 'function' && document.getElementById('roadsideOverlay').classList.contains('show')){
+    renderRoadsideIssueGrid();
+    renderRoadsideActions();
+  }
 }
 function setLang(l){ currentLang = l; applyTranslations(); }
 applyTranslations();
